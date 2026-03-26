@@ -7,7 +7,7 @@ const PromoCodes = {
     codes: {
         "SPRING26": {
             name: "Сезонный промокод на скидку в 50%",
-            discount: 70,
+            discount: 50,
             validUntil: "2026-06-01",
             maxUses: 0,
             usedCount: 0,

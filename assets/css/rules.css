@@ -1,1 +1,150 @@
-﻿
+﻿/* ============================================
+   rules.css - стили для страницы правил
+   ============================================ */
+
+/* Основные стили для правил */
+.rule-block {
+    margin-bottom: 40px;
+}
+
+.rule-title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #fb923c;
+    border-bottom: 2px solid rgba(249, 115, 22, 0.3);
+    padding-bottom: 10px;
+}
+
+.rule-section {
+    margin-bottom: 25px;
+}
+
+.rule-section-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #f97316;
+    padding-left: 12px;
+    border-left: 3px solid #f97316;
+}
+
+.rule-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 15px;
+}
+
+.rule-list li {
+    margin-bottom: 10px;
+    color: #d1d5db;
+    position: relative;
+    padding-left: 20px;
+}
+
+.rule-list li::before {
+    content: "•";
+    position: absolute;
+    left: 5px;
+    color: #f97316;
+}
+
+/* Нумерация правил */
+.rule-number {
+    display: inline-block;
+    font-weight: 600;
+    color: #fb923c;
+    margin-right: 8px;
+}
+
+/* Бейджи наказаний */
+.punishment-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-left: 8px;
+}
+
+.punishment-mute {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.punishment-ban {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.punishment-warn {
+    background: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.punishment-perm {
+    background: rgba(139, 92, 246, 0.2);
+    color: #8b5cf6;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+/* Таблица наказаний */
+.punishment-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.punishment-table th {
+    text-align: left;
+    color: #fb923c;
+    font-weight: 600;
+    padding: 8px 0;
+}
+
+.punishment-table td {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.punishment-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Инфо-бокс */
+.info-box {
+    background: rgba(249, 115, 22, 0.1);
+    border-left: 4px solid #f97316;
+    padding: 16px;
+    border-radius: 8px;
+    margin: 20px 0;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 768px) {
+    .rule-title {
+        font-size: 24px;
+    }
+
+    .rule-section-title {
+        font-size: 18px;
+    }
+
+    .punishment-table {
+        font-size: 12px;
+    }
+
+    .punishment-badge {
+        font-size: 10px;
+        padding: 1px 6px;
+        margin-left: 4px;
+    }
+
+    .rule-list li {
+        font-size: 14px;
+    }
+}
