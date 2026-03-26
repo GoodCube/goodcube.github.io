@@ -9,11 +9,40 @@ function PromoStats() {
 
     const stats = PromoCodes.getStats();
     const totalUsed = stats.reduce((sum, p) => sum + (p.maxUses === "∞" ? 0 : p.usedCount), 0);
+    const activeCount = stats.filter(p => p.active).length;
+    const inactiveCount = stats.filter(p => !p.active).length;
+
     console.log(`
-Всего промокодов: ${stats.length}
-Всего использований: ${totalUsed}
-One-time промокодов: ${stats.filter(p => p.oneTimeOnly).length}
+╔═══════════════════════════════════════════════════════════╗
+║ Всего промокодов: ${stats.length}
+║ Активных: ${activeCount} (✅)
+║ Отключенных: ${inactiveCount} (❌)
+║ Всего использований: ${totalUsed}
+║ One-time промокодов: ${stats.filter(p => p.oneTimeOnly).length}
+╚═══════════════════════════════════════════════════════════╝
     `);
+}
+
+// Включить промокод
+function PromoEnable(code) {
+    const result = PromoCodes.togglePromocode(code, true);
+    if (result) {
+        console.log(`✅ Промокод ${code.toUpperCase()} ВКЛЮЧЕН!`);
+    } else {
+        console.log(`❌ Промокод ${code.toUpperCase()} не найден!`);
+    }
+    PromoStats();
+}
+
+// Выключить промокод
+function PromoDisable(code) {
+    const result = PromoCodes.togglePromocode(code, false);
+    if (result) {
+        console.log(`❌ Промокод ${code.toUpperCase()} ОТКЛЮЧЕН!`);
+    } else {
+        console.log(`❌ Промокод ${code.toUpperCase()} не найден!`);
+    }
+    PromoStats();
 }
 
 // Добавить обычный промокод
@@ -24,13 +53,14 @@ function PromoAdd(code, discount, maxUses = 100, validUntil = "2026-12-31", minA
         validUntil: validUntil,
         maxUses: maxUses,
         minAmount: minAmount,
-        oneTimeOnly: false
+        oneTimeOnly: false,
+        active: true
     });
     console.log(`✅ Промокод ${code} добавлен!`);
     PromoStats();
 }
 
-// Добавить одноразовый промокод (только 1 раз на игрока)
+// Добавить одноразовый промокод
 function PromoOneTime(code, discount, validUntil = "2026-12-31", minAmount = 0) {
     PromoCodes.addPromocode(code, {
         name: `One-time ${code}`,
@@ -39,6 +69,7 @@ function PromoOneTime(code, discount, validUntil = "2026-12-31", minAmount = 0) 
         maxUses: 1,
         minAmount: minAmount,
         oneTimeOnly: true,
+        active: true,
         description: `Скидка ${discount}% (только один раз)`
     });
     console.log(`✅ One-time промокод ${code} (${discount}%) добавлен!`);
@@ -54,6 +85,7 @@ function PromoInfinity(code, discount, validUntil = "2026-12-31", minAmount = 0)
         maxUses: 0,
         minAmount: minAmount,
         oneTimeOnly: false,
+        active: true,
         description: `Бесконечная скидка ${discount}%`
     });
     console.log(`✅ Бесконечный промокод ${code} (${discount}%) добавлен!`);
@@ -96,7 +128,7 @@ function PromoCheck(code, amount = 100, playerName = "Тестовый_игро�
     return result;
 }
 
-// Очистить историю использования промокодов
+// Очистить историю
 function PromoClearHistory() {
     localStorage.removeItem('player_used_promocodes');
     console.log(`✅ История использования промокодов игроками очищена!`);

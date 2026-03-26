@@ -1,19 +1,19 @@
 ﻿// ============================================
-// ФАЙЛ: promocodes.js
-// Система управления промокодами для GoodCube
+// promocodes.js - система промокодов для GoodCube
 // ============================================
 
 const PromoCodes = {
     codes: {
         "SPRING26": {
-            name: "Сезонный промокод на скидку в 50%",
+            name: "Сезонный",
             discount: 50,
-            validUntil: "2026-06-01",
+            validUntil: "2026-06-01 00:00:00",
             maxUses: 0,
             usedCount: 0,
             minAmount: 0,
             oneTimeOnly: false,
-            description: "Сезонный промокод на скидку в 50%"
+            active: true,
+            description: "Скидка 50% на весь сезон"
         }
     },
 
@@ -23,6 +23,11 @@ const PromoCodes = {
 
         if (!promo) {
             return { valid: false, message: "Промокод не найден" };
+        }
+
+        // ПРОВЕРКА НА АКТИВНОСТЬ (НОВОЕ!)
+        if (promo.active === false) {
+            return { valid: false, message: "Промокод временно отключен администрацией" };
         }
 
         const today = new Date();
@@ -71,8 +76,10 @@ const PromoCodes = {
     applyPromocode: function(code, playerName = null) {
         code = code.toUpperCase().trim();
         const promo = this.codes[code];
-
         if (!promo) return false;
+
+        // Не применяем если отключен
+        if (promo.active === false) return false;
 
         if (promo.oneTimeOnly && playerName && playerName !== 'Не указан') {
             this.markPlayerUsed(code, playerName);
@@ -86,7 +93,6 @@ const PromoCodes = {
             this.saveToLocalStorage();
             return true;
         }
-
         return false;
     },
 
@@ -107,10 +113,8 @@ const PromoCodes = {
         if (saved) {
             const usedCodes = JSON.parse(saved);
             for (let code in usedCodes) {
-                if (this.codes[code]) {
-                    if (this.codes[code].maxUses > 0) {
-                        this.codes[code].usedCount = usedCodes[code].usedCount || 0;
-                    }
+                if (this.codes[code] && this.codes[code].maxUses > 0) {
+                    this.codes[code].usedCount = usedCodes[code].usedCount || 0;
                 }
             }
         }
@@ -125,6 +129,7 @@ const PromoCodes = {
             usedCount: 0,
             minAmount: data.minAmount || 0,
             oneTimeOnly: data.oneTimeOnly || false,
+            active: data.active !== undefined ? data.active : true,  // по умолчанию активен
             description: data.description || "Новый промокод"
         };
         this.saveToLocalStorage();
@@ -135,6 +140,17 @@ const PromoCodes = {
         code = code.toUpperCase().trim();
         if (this.codes[code]) {
             delete this.codes[code];
+            this.saveToLocalStorage();
+            return true;
+        }
+        return false;
+    },
+
+    // НОВАЯ ФУНКЦИЯ: включить/выключить промокод
+    togglePromocode: function(code, active) {
+        code = code.toUpperCase().trim();
+        if (this.codes[code]) {
+            this.codes[code].active = active;
             this.saveToLocalStorage();
             return true;
         }
@@ -154,7 +170,8 @@ const PromoCodes = {
                 maxUses: promo.maxUses === 0 ? "∞" : promo.maxUses,
                 remaining: promo.maxUses === 0 ? "∞" : promo.maxUses - promo.usedCount,
                 minAmount: promo.minAmount,
-                oneTimeOnly: promo.oneTimeOnly || false
+                oneTimeOnly: promo.oneTimeOnly || false,
+                active: promo.active || false      // показываем статус активности
             });
         }
         return stats;
@@ -162,98 +179,3 @@ const PromoCodes = {
 };
 
 PromoCodes.loadFromLocalStorage();
-
-// Функции для работы с промокодами (доступны в консоли)
-function PromoStats() {
-    console.log("📊 Статистика промокодов:");
-    console.table(PromoCodes.getStats());
-
-    const stats = PromoCodes.getStats();
-    const totalUsed = stats.reduce((sum, p) => sum + (p.maxUses === "∞" ? 0 : p.usedCount), 0);
-    console.log(`
-Всего промокодов: ${stats.length}
-Всего использований: ${totalUsed}
-One-time промокодов: ${stats.filter(p => p.oneTimeOnly).length}
-    `);
-}
-
-function PromoAdd(code, discount, maxUses = 100, validUntil = "2026-12-31", minAmount = 0) {
-    PromoCodes.addPromocode(code, {
-        name: `Промокод ${code}`,
-        discount: discount,
-        validUntil: validUntil,
-        maxUses: maxUses,
-        minAmount: minAmount,
-        oneTimeOnly: false
-    });
-    console.log(`✅ Промокод ${code} добавлен!`);
-    PromoStats();
-}
-
-function PromoOneTime(code, discount, validUntil = "2026-12-31", minAmount = 0) {
-    PromoCodes.addPromocode(code, {
-        name: `One-time ${code}`,
-        discount: discount,
-        validUntil: validUntil,
-        maxUses: 1,
-        minAmount: minAmount,
-        oneTimeOnly: true,
-        description: `Скидка ${discount}% (только один раз)`
-    });
-    console.log(`✅ One-time промокод ${code} (${discount}%) добавлен!`);
-    PromoStats();
-}
-
-function PromoInfinity(code, discount, validUntil = "2026-12-31", minAmount = 0) {
-    PromoCodes.addPromocode(code, {
-        name: `Бесконечный ${code}`,
-        discount: discount,
-        validUntil: validUntil,
-        maxUses: 0,
-        minAmount: minAmount,
-        oneTimeOnly: false,
-        description: `Бесконечная скидка ${discount}%`
-    });
-    console.log(`✅ Бесконечный промокод ${code} (${discount}%) добавлен!`);
-    PromoStats();
-}
-
-function PromoDelete(code) {
-    const result = PromoCodes.deletePromocode(code);
-    if (result) {
-        console.log(`✅ Промокод ${code} удален!`);
-    } else {
-        console.log(`❌ Промокод ${code} не найден!`);
-    }
-    PromoStats();
-}
-
-function PromoUpdate(code, updates) {
-    const promoCode = code.toUpperCase().trim();
-    if (PromoCodes.codes[promoCode]) {
-        Object.assign(PromoCodes.codes[promoCode], updates);
-        PromoCodes.saveToLocalStorage();
-        console.log(`✅ Промокод ${promoCode} обновлен!`);
-        PromoStats();
-    } else {
-        console.log(`❌ Промокод ${promoCode} не найден!`);
-    }
-}
-
-function PromoCheck(code, amount = 100, playerName = "Тестовый_игрок") {
-    const result = PromoCodes.validatePromocode(code, amount, playerName);
-    if (result.valid) {
-        console.log(`✅ ${result.message}`);
-        console.log(`💰 Итоговая сумма: ${result.discountedPrice}₽ (было ${amount}₽)`);
-    } else {
-        console.log(`❌ ${result.message}`);
-    }
-    return result;
-}
-
-function PromoClearHistory() {
-    localStorage.removeItem('player_used_promocodes');
-    console.log(`✅ История использования промокодов игроками очищена!`);
-}
-
-// Не выводим ничего в консоль при загрузке

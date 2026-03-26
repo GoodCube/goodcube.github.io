@@ -9,6 +9,7 @@ function initIcons() {
     }
 }
 
+
 // Копирование в буфер обмена
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {

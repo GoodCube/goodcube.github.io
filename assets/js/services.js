@@ -2,29 +2,31 @@
 // services.js - функции для дополнительных услуг
 // ============================================
 
-// ===== ФУНКЦИИ ДЛЯ РАЗМЬЮТА =====
+// ===== ФУНКЦИИ ДЛЯ РАЗМЬЮТА (по минутам) =====
 function calculateUnmutePrice() {
-    const hoursInput = document.getElementById('muteHours');
-    if (!hoursInput) return 150;
+    const minutesInput = document.getElementById('muteMinutes');
+    if (!minutesInput) return 150;
 
-    let hours = parseInt(hoursInput.value) || 0;
-    if (hours < 0) hours = 0;
+    let minutes = parseInt(minutesInput.value) || 0;
+    if (minutes < 0) minutes = 0;
 
     let price = 0;
     let priceDetail = '';
+    const hours = minutes / 60;
 
-    if (hours <= 3) {
+    // Формула: до 180 минут (3 часа) - 150₽
+    // Свыше 180 минут - +30₽ за каждые 10 минут
+    if (minutes <= 180) {
         price = 150;
-        priceDetail = 'Фиксированная цена за мут до 3 часов';
+        priceDetail = `Фиксированная цена за мут до 180 минут (3 часа)`;
     } else {
         const basePrice = 150;
-        const extraMinutes = (hours - 3) * 60;
+        const extraMinutes = minutes - 180;
         const extraBlocks = Math.ceil(extraMinutes / 10);
-        const extraPrice = extraBlocks * 30;
+        const extraPrice = extraBlocks * 10;
         price = basePrice + extraPrice;
 
-        const extraHours = hours - 3;
-        priceDetail = `150₽ (первые 3 часа) + ${extraPrice}₽ (${extraHours}ч = ${extraMinutes}мин = ${extraBlocks} блоков по 10мин)`;
+        priceDetail = `150₽ (первые 180 минут) + ${extraPrice}₽ (${extraMinutes} мин = ${extraBlocks} блоков по 10 мин)`;
     }
 
     const priceSpan = document.getElementById('unmutePrice');
@@ -36,35 +38,39 @@ function calculateUnmutePrice() {
 }
 
 function buyUnmute() {
-    const hoursInput = document.getElementById('muteHours');
-    let hours = parseInt(hoursInput?.value) || 0;
-    if (hours < 0) hours = 0;
+    const minutesInput = document.getElementById('muteMinutes');
+    let minutes = parseInt(minutesInput?.value) || 0;
+    if (minutes < 0) minutes = 0;
 
-    if (hours === 0) {
-        showToast('Укажите длительность мута (в часах)');
+    if (minutes === 0) {
+        showToast('Укажите длительность мута (в минутах)');
         return;
     }
 
     const price = calculateUnmutePrice();
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    let durationText = '';
 
-    let muteDescription = '';
-    if (hours <= 3) {
-        muteDescription = `мут до ${hours} часов`;
+    if (hours > 0 && remainingMinutes > 0) {
+        durationText = `${hours} ч ${remainingMinutes} мин`;
+    } else if (hours > 0) {
+        durationText = `${hours} ч`;
     } else {
-        const extraMinutes = (hours - 3) * 60;
-        const extraBlocks = Math.ceil(extraMinutes / 10);
-        muteDescription = `мут ${hours} часов (${extraBlocks} блоков по 10мин сверх 3ч)`;
+        durationText = `${minutes} мин`;
     }
 
     currentProduct = {
-        name: `Размьют (${muteDescription})`,
+        name: `Размьют (${durationText})`,
         price: price,
         type: 'service',
-        muteHours: hours
+        muteMinutes: minutes
     };
 
-    document.getElementById('modalTitle').textContent = `Услуга: Размьют`;
-    document.getElementById('modalDescription').innerHTML = `Снятие мута длительностью ${hours} часов<br>Сумма: <span class="text-green-400">${price} ₽</span>`;
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDescription');
+    if (modalTitle) modalTitle.textContent = `Услуга: Размьют`;
+    if (modalDesc) modalDesc.innerHTML = `Снятие мута длительностью ${durationText}<br>Сумма: <span class="text-green-400">${price} ₽</span>`;
 
     resetPromo();
     openContactModal();
@@ -103,36 +109,39 @@ function buyAccountTransfer() {
         newNickname: newNick
     };
 
-    document.getElementById('modalTitle').textContent = `Услуга: Перенос аккаунта`;
-    document.getElementById('modalDescription').innerHTML = `Перенос прогресса с <span class="text-orange-400">${oldNick}</span> на <span class="text-orange-400">${newNick}</span><br>Сумма: <span class="text-green-400">${price} ₽</span>`;
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDescription');
+    if (modalTitle) modalTitle.textContent = `Услуга: Перенос аккаунта`;
+    if (modalDesc) modalDesc.innerHTML = `Перенос прогресса с <span class="text-orange-400">${oldNick}</span> на <span class="text-orange-400">${newNick}</span><br>Сумма: <span class="text-green-400">${price} ₽</span>`;
 
     resetPromo();
     openContactModal();
 }
 
-// ===== ФУНКЦИИ ДЛЯ РАЗБАНА =====
+// ===== ФУНКЦИИ ДЛЯ РАЗБАНА (по минутам) =====
 function calculateUnbanPrice() {
-    const hoursInput = document.getElementById('banHours');
-    if (!hoursInput) return 50;
+    const minutesInput = document.getElementById('banMinutes');
+    if (!minutesInput) return 50;
 
-    let hours = parseInt(hoursInput.value) || 0;
-    if (hours < 0) hours = 0;
+    let minutes = parseInt(minutesInput.value) || 0;
+    if (minutes < 0) minutes = 0;
 
     let price = 0;
     let priceDetail = '';
 
-    if (hours <= 3) {
+    // Формула: до 180 минут (3 часа) - 50₽
+    // Свыше 180 минут - +10₽ за каждые 10 минут
+    if (minutes <= 180) {
         price = 50;
-        priceDetail = 'Фиксированная цена за бан до 3 часов';
+        priceDetail = `Фиксированная цена за бан до 180 минут (3 часа)`;
     } else {
         const basePrice = 50;
-        const extraMinutes = (hours - 3) * 60;
+        const extraMinutes = minutes - 180;
         const extraBlocks = Math.ceil(extraMinutes / 10);
         const extraPrice = extraBlocks * 10;
         price = basePrice + extraPrice;
 
-        const extraHours = hours - 3;
-        priceDetail = `50₽ (первые 3 часа) + ${extraPrice}₽ (${extraHours}ч = ${extraMinutes}мин = ${extraBlocks} блоков по 10мин)`;
+        priceDetail = `50₽ (первые 180 минут) + ${extraPrice}₽ (${extraMinutes} мин = ${extraBlocks} блоков по 10 мин)`;
     }
 
     const priceSpan = document.getElementById('unbanPrice');
@@ -144,35 +153,39 @@ function calculateUnbanPrice() {
 }
 
 function buyUnban() {
-    const hoursInput = document.getElementById('banHours');
-    let hours = parseInt(hoursInput?.value) || 0;
-    if (hours < 0) hours = 0;
+    const minutesInput = document.getElementById('banMinutes');
+    let minutes = parseInt(minutesInput?.value) || 0;
+    if (minutes < 0) minutes = 0;
 
-    if (hours === 0) {
-        showToast('Укажите длительность бана (в часах)');
+    if (minutes === 0) {
+        showToast('Укажите длительность бана (в минутах)');
         return;
     }
 
     const price = calculateUnbanPrice();
+    const hours = Math.floor(minutes / 60);
+    const remainingMinutes = minutes % 60;
+    let durationText = '';
 
-    let banDescription = '';
-    if (hours <= 3) {
-        banDescription = `бан до ${hours} часов`;
+    if (hours > 0 && remainingMinutes > 0) {
+        durationText = `${hours} ч ${remainingMinutes} мин`;
+    } else if (hours > 0) {
+        durationText = `${hours} ч`;
     } else {
-        const extraMinutes = (hours - 3) * 60;
-        const extraBlocks = Math.ceil(extraMinutes / 10);
-        banDescription = `бан ${hours} часов (${extraBlocks} блоков по 10мин сверх 3ч)`;
+        durationText = `${minutes} мин`;
     }
 
     currentProduct = {
-        name: `Разбан (${banDescription})`,
+        name: `Разбан (${durationText})`,
         price: price,
         type: 'service',
-        banHours: hours
+        banMinutes: minutes
     };
 
-    document.getElementById('modalTitle').textContent = `Услуга: Разбан`;
-    document.getElementById('modalDescription').innerHTML = `Снятие бана длительностью ${hours} часов<br>Сумма: <span class="text-green-400">${price} ₽</span>`;
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDescription');
+    if (modalTitle) modalTitle.textContent = `Услуга: Разбан`;
+    if (modalDesc) modalDesc.innerHTML = `Снятие бана длительностью ${durationText}<br>Сумма: <span class="text-green-400">${price} ₽</span>`;
 
     resetPromo();
     openContactModal();
