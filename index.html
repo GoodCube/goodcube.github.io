@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodCube - Донат Магазин</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        orange: {
+                            50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74',
+                            400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c',
+                            800: '#9a3412', 900: '#7c2d12', 950: '#431407',
+                        }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #ea580c, 0 0 10px #ea580c' },
+                            '100%': { boxShadow: '0 0 20px #f97316, 0 0 30px #f97316' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="font-sans antialiased minecraft-pattern">
+
+<!-- Navigation -->
+<nav class="fixed w-full z-50 glass border-b border-orange-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all">
+                        <i data-lucide="box" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gradient">GoodCube</span>
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Главная</a>
+                <a href="#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
+                <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
+                <a href="#contacts" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Контакты</a>
+                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
+                <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-yellow-500/40 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    Купить валюту
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 px-4 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 to-transparent pointer-events-none"></div>
+    <div class="absolute top-20 left-10 w-72 h-72 bg-orange-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
+    <div class="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+
+    <div class="max-w-7xl mx-auto text-center relative z-10">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-orange text-orange-400 text-sm font-semibold mb-6 animate-float">
+            <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+            Сервер онлайн • IP: игра.goodcube.ru
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+            Поддержи <span class="text-gradient">GoodCube</span><br>
+            Получи привилегии
+        </h1>
+
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+            Приобретай уникальные привилегии, предметы и возможности на нашем сервере.
+            Все средства идут на развитие проекта.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <a href="#donate" class="bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all hover:shadow-2xl hover:shadow-orange-500/30 flex items-center gap-3 group">
+                <i data-lucide="zap" class="w-5 h-5 group-hover:animate-pulse"></i>
+                Смотреть привилегии
+            </a>
+            <button onclick="copyIP()" class="glass hover:bg-white/10 text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all flex items-center gap-3 border border-white/20">
+                <i data-lucide="copy" class="w-5 h-5"></i>
+                <span id="ip-text">игра.goodcube.ru</span>
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Donate Section - Привилегии -->
+<section id="donate" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">
+                <span class="text-gradient">Привилегии</span> сервера
+            </h2>
+            <p class="text-gray-400 text-lg">Выбери подходящий донат-набор для себя</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- VIP -->
+            <div class="glass rounded-3xl p-8 hover-scale relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-all"></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30">
+                        <i data-lucide="star" class="w-6 h-6 text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">VIP</h3>
+                        <p class="text-orange-400 text-sm">Базовый статус</p>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2">35 ₽</div>
+                <p class="text-gray-500 mb-6 text-sm">рублей / навсегда</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-green-500"></i><span>Префикс [VIP] в чате</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-green-500"></i><span>3 слотов на приват</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-green-500"></i><span>Кит VIP (раз в 24 часа)</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-green-500"></i><span>Виртуальный сундук</span></li>
+                </ul>
+                <button onclick="buyPrivilege('VIP', 35)" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    Приобрести <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- PREMIUM -->
+            <div class="glass rounded-3xl p-8 hover-scale relative overflow-hidden group border-2 border-orange-500/50 shadow-lg shadow-orange-500/10">
+                <div class="absolute top-4 right-4"><span class="bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">ПОПУЛЯРНЫЙ</span></div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-600 flex items-center justify-center shadow-lg shadow-orange-600/30">
+                        <i data-lucide="crown" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">PREMIUM</h3>
+                        <p class="text-orange-400 text-sm">Расширенный статус</p>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2">150 ₽</div>
+                <p class="text-gray-500 mb-6 text-sm">рублей / навсегда</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Все возможности VIP</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Префикс [PREMIUM] с цветом</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>5 слотов на приват</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Кит Premium (раз в 24 часа)</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Команда /fly</span></li>
+                </ul>
+                <button onclick="buyPrivilege('PREMIUM', 150)" class="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2 shadow-lg shadow-orange-500/30">
+                    Приобрести <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- LEGEND -->
+            <div class="glass rounded-3xl p-8 hover-scale relative overflow-hidden group">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-600 to-red-600 flex items-center justify-center shadow-lg shadow-orange-600/30">
+                        <i data-lucide="flame" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">LEGEND</h3>
+                        <p class="text-orange-400 text-sm">Максимальный статус</p>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2">300 ₽</div>
+                <p class="text-gray-500 mb-6 text-sm">рублей / навсегда</p>
+                <ul class="space-y-3 mb-8">
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Все возможности PREMIUM</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Анимированный префикс</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>10 слотов на приват</span></li>
+                    <li class="flex items-center gap-3 text-gray-300"><i data-lucide="check" class="w-5 h-5 text-orange-500"></i><span>Кит Legend (раз в 24 часа)</span></li>
+                </ul>
+                <button onclick="buyPrivilege('LEGEND', 300)" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    Приобрести <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-10">
+            <!-- D MODER -->
+            <div class="glass rounded-3xl p-8 hover-scale relative overflow-hidden group">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30">
+                        <i data-lucide="shield" class="w-6 h-6 text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">D MODER</h3>
+                        <p class="text-orange-400 text-sm">Донат-Модератор</p>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2">350 ₽</div>
+                <p class="text-gray-500 mb-6 text-sm">рублей / навсегда</p>
+                <ul class="space-y-3 text-gray-300 mb-8">
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Префикс [D. MODER] в чате</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>10 слотов на приват</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Баны до 2 часов</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Кик игроков</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Вход во время тех. работ</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Доступ к тикетам</li>
+                </ul>
+                <button onclick="buyPrivilege('D MODER', 350)" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    Приобрести <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- D ADMIN -->
+            <div class="glass rounded-3xl p-8 hover-scale premium">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-12 h-12 rounded-2xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30">
+                        <i data-lucide="crown" class="w-6 h-6 text-orange-400"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-white">D ADMIN</h3>
+                        <p class="text-orange-400 text-sm">Донат-Администратор</p>
+                    </div>
+                </div>
+                <div class="text-4xl font-bold text-white mb-2">799 ₽</div>
+                <p class="text-gray-500 mb-6 text-sm">рублей / навсегда</p>
+                <ul class="space-y-3 text-gray-300 mb-8">
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Все возможности D MODER</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Разбор жалоб игроков</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Префикс [D. ADMIN] в чате</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Бан до 1 дня</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Все базовые команды администрирования</li>
+                    <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-green-500"></i>Приоритетный вход на сервер</li>
+                </ul>
+                <button onclick="buyPrivilege('D ADMIN', 799)" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                    Приобрести <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Дополнительные услуги -->
+            <div class="mt-12 col-span-full">
+                <h3 class="text-2xl font-bold text-center mb-8">Дополнительные услуги</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+
+                    <!-- Размьют -->
+                    <div class="glass rounded-2xl p-6 hover-scale">
+                        <div class="w-12 h-12 rounded-xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30 mb-3 mx-auto">
+                            <i data-lucide="mic" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2 text-center">Размьют</h4>
+                        <p class="text-gray-400 text-sm mb-3 text-center">Снятие блокировки чата</p>
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-500 mb-1 text-center">Длительность мута (часы):</label>
+                            <input type="number" id="muteHours" min="0" step="1" value="1"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white text-center focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div class="text-center mb-4">
+                            <span class="text-gray-400 text-sm">Стоимость:</span>
+                            <span class="text-white font-bold text-xl" id="unmutePrice">150</span>
+                            <span class="text-gray-400">₽</span>
+                            <div id="unmutePriceDetail" class="text-xs text-gray-500 mt-1"></div>
+                        </div>
+                        <button onclick="buyUnmute()" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-2 px-4 rounded-lg font-semibold transition-all w-full">
+                            Приобрести
+                        </button>
+                    </div>
+
+                    <!-- Перенос аккаунта -->
+                    <div class="glass rounded-2xl p-6 hover-scale">
+                        <div class="w-12 h-12 rounded-xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30 mb-3 mx-auto">
+                            <i data-lucide="refresh-cw" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2 text-center">Перенос аккаунта</h4>
+                        <p class="text-gray-400 text-sm mb-3 text-center">Перенос прогресса на другой аккаунт</p>
+                        <div class="mb-3">
+                            <input type="text" id="oldNickname" placeholder="Старый ник (с которого переносим)"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white text-center focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div class="mb-4">
+                            <input type="text" id="newNickname" placeholder="Новый ник (на который переносим)"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white text-center focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div class="text-center mb-4">
+                            <span class="text-gray-400 text-sm">Стоимость:</span>
+                            <span class="text-white font-bold text-xl">500</span>
+                            <span class="text-gray-400">₽</span>
+                        </div>
+                        <button onclick="buyAccountTransfer()" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-2 px-4 rounded-lg font-semibold transition-all w-full">
+                            Приобрести
+                        </button>
+                    </div>
+
+                    <!-- Разбан -->
+                    <div class="glass rounded-2xl p-6 hover-scale">
+                        <div class="w-12 h-12 rounded-xl bg-orange-900/50 flex items-center justify-center border border-orange-500/30 mb-3 mx-auto">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-orange-400"></i>
+                        </div>
+                        <h4 class="text-xl font-bold text-white mb-2 text-center">Разбан</h4>
+                        <p class="text-gray-400 text-sm mb-3 text-center">Снятие блокировки аккаунта</p>
+                        <div class="mb-4">
+                            <label class="block text-xs text-gray-500 mb-1 text-center">Длительность бана (часы):</label>
+                            <input type="number" id="banHours" min="0" step="1" value="1"
+                                   class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-white text-center focus:outline-none focus:border-orange-500">
+                        </div>
+                        <div class="text-center mb-4">
+                            <span class="text-gray-400 text-sm">Стоимость:</span>
+                            <span class="text-white font-bold text-xl" id="unbanPrice">50</span>
+                            <span class="text-gray-400">₽</span>
+                            <div id="unbanPriceDetail" class="text-xs text-gray-500 mt-1"></div>
+                        </div>
+                        <button onclick="buyUnban()" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white py-2 px-4 rounded-lg font-semibold transition-all w-full">
+                            Приобрести
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Staff Section -->
+<section id="staff" class="py-20 px-4">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold mb-4">Связь с <span class="text-gradient">администрацией</span></h2>
+            <p class="text-gray-400">Вопросы, жалобы, предложения</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="glass rounded-3xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-500 to-transparent"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-orange-900/50 flex items-center justify-center border-2 border-orange-500/30">
+                            <i data-lucide="user-cog" class="w-8 h-8 text-orange-400"></i>
+                        </div>
+                        <div><h3 class="text-xl font-bold text-white">PixelGlimmer</h3><p class="text-orange-400 text-sm">Со. Владелец проекта</p></div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-orange-500/20 text-orange-400 text-xs font-bold border border-orange-500/30">CO-OWNER</span>
+                </div>
+                <div class="space-y-4">
+                    <a href="https://t.me/dqaaq" target="_blank" class="flex items-center gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group">
+                        <div class="w-10 h-10 rounded-lg bg-[#0088cc]/20 flex items-center justify-center"><i data-lucide="send" class="w-5 h-5 text-[#0088cc]"></i></div>
+                        <div class="flex-1"><p class="text-sm text-gray-400">Telegram</p><p class="text-white font-medium group-hover:text-[#0088cc]">@dqaaq</p></div>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-600"></i>
+                    </a>
+                    <div onclick="copyToClipboard('pixelglimmer')" class="flex items-center gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group cursor-pointer">
+                        <div class="w-10 h-10 rounded-lg bg-[#5865F2]/20 flex items-center justify-center"><i data-lucide="message-circle" class="w-5 h-5 text-[#5865F2]"></i></div>
+                        <div class="flex-1"><p class="text-sm text-gray-400">Discord</p><p class="text-white font-medium group-hover:text-[#5865F2]">pixelglimmer</p></div>
+                        <i data-lucide="copy" class="w-4 h-4 text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="glass rounded-3xl p-8 relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 to-transparent"></div>
+                <div class="flex items-start justify-between mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 rounded-2xl bg-red-900/50 flex items-center justify-center border-2 border-red-500/30">
+                            <i data-lucide="shield" class="w-8 h-8 text-red-400"></i>
+                        </div>
+                        <div><h3 class="text-xl font-bold text-white">Move123_YT</h3><p class="text-red-400 text-sm">Владелец проекта</p></div>
+                    </div>
+                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-xs font-bold border border-red-500/30">OWNER</span>
+                </div>
+                <div class="space-y-4">
+                    <a href="https://t.me/move123_YT" target="_blank" class="flex items-center gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group">
+                        <div class="w-10 h-10 rounded-lg bg-[#0088cc]/20 flex items-center justify-center"><i data-lucide="send" class="w-5 h-5 text-[#0088cc]"></i></div>
+                        <div class="flex-1"><p class="text-sm text-gray-400">Telegram</p><p class="text-white font-medium group-hover:text-[#0088cc]">@move123_YT</p></div>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4 text-gray-600"></i>
+                    </a>
+                    <div onclick="copyToClipboard('move123_yt')" class="flex items-center gap-3 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group cursor-pointer">
+                        <div class="w-10 h-10 rounded-lg bg-[#5865F2]/20 flex items-center justify-center"><i data-lucide="message-circle" class="w-5 h-5 text-[#5865F2]"></i></div>
+                        <div class="flex-1"><p class="text-sm text-gray-400">Discord</p><p class="text-white font-medium group-hover:text-[#5865F2]">move123_yt</p></div>
+                        <i data-lucide="copy" class="w-4 h-4 text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="border-t border-orange-900/30 py-12 px-4 mt-20">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-3"><div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center"><i data-lucide="box" class="w-4 h-4 text-white"></i></div><span class="text-xl font-bold text-gradient">GoodCube</span></div>
+        <p class="text-gray-500 text-sm">© 2026 GoodCube. Все права защищены. Не является официальным продуктом Mojang.</p>
+        <div class="flex items-center gap-4">
+            <a href="https://t.me/move123_YT" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#0088cc]"><i data-lucide="send" class="w-5 h-5"></i></a>
+            <div onclick="copyToClipboard('move123_yt')" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#5865F2] cursor-pointer"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
+        </div>
+    </div>
+</footer>
+
+<!-- Currency Modal -->
+<div id="currencyModal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCurrencyModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div class="glass w-full max-w-lg rounded-3xl p-8 relative">
+            <button onclick="closeCurrencyModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center"><i data-lucide="x" class="w-5 h-5 text-gray-400"></i></button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="coins" class="w-8 h-8 text-white"></i></div>
+                <h3 class="text-2xl font-bold text-white mb-2">Покупка валюты</h3>
+                <p class="text-gray-400">Выберите количество монет для покупки</p>
+            </div>
+            <div class="mb-6 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20"><div class="flex items-center justify-between"><span class="text-gray-400">Курс:</span><span class="text-yellow-400 font-bold">1 рубль = 100 монет</span></div></div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Ваш ник в Minecraft:</label>
+                <div class="flex gap-2"><input type="text" id="currencyNick" placeholder="Введите ник" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-yellow-500"><button onclick="saveCurrencyNick()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Сохранить</button></div>
+                <p class="text-xs text-gray-500 mt-2">Сохраненный ник: <span id="displayCurrencyNick">не указан</span></p>
+            </div>
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-2"><label class="text-sm font-medium text-gray-400">Количество монет:</label><span class="text-yellow-400 font-bold text-xl" id="coinAmount">0</span></div>
+                <input type="range" id="coinSlider" min="0" max="5000000" step="1000" value="0" class="w-full mb-4" oninput="updateCoinAmount(this.value)">
+                <div class="flex gap-2"><input type="number" id="coinInput" min="0" max="5000000" step="1000" value="0" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-yellow-500" onchange="updateCoinFromInput(this.value)"><div class="bg-gray-800 rounded-lg px-4 py-3 flex items-center border border-gray-700"><span class="text-gray-400">монет</span></div></div>
+            </div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700"><div class="flex items-center justify-between"><span class="text-gray-400">К оплате:</span><div class="flex items-center gap-2"><span class="text-3xl font-bold text-white" id="rubAmount">0</span><span class="text-gray-400">₽</span></div></div></div>
+            <div class="mb-6 flex justify-between text-sm"><button onclick="setMaxCoins()" class="text-yellow-400 hover:text-yellow-300">Максимум (5,000,000 монет)</button><span class="text-gray-500">≈ 50,000 ₽</span></div>
+
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Промокод (если есть):</label>
+                <div class="flex gap-2"><input type="text" id="currencyPromocodeInput" placeholder="Введите промокод" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-yellow-500 uppercase"><button onclick="applyCurrencyPromocode()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Применить</button></div>
+                <div id="currencyPromocodeMessage" class="text-xs mt-2 hidden"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-yellow-600/10 hover:bg-yellow-600/20 border border-yellow-600/30 cursor-pointer" onclick="buyCurrency()">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center"><i data-lucide="wallet" class="w-6 h-6 text-white"></i></div>
+                    <div class="flex-1 text-left"><p class="text-white font-semibold">Оплатить ЮMoney</p><p class="text-yellow-500 text-sm">Банковской картой или из кошелька</p></div><i data-lucide="credit-card" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <a href="https://t.me/goodcube_news?direct" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 border border-[#0088cc]/30"><div class="w-12 h-12 rounded-xl bg-[#0088cc]"><i data-lucide="send" class="w-6 h-6 text-white"></i></div><div class="flex-1 text-left"><p class="text-white font-semibold">Написать в Telegram</p><p class="text-[#0088cc] text-sm">Директ</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#0088cc]"></i></a>
+                <a href="https://discord.com/channels/1261679260620558461/1480040232052326634/1480040861361373364" class="flex items-center gap-4 p-4 rounded-2xl bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30"><div class="w-12 h-12 rounded-xl bg-[#5865F2]"><i data-lucide="message-circle" class="w-6 h-6 text-white"></i></div><div class="flex-1 text-left"><p class="text-white font-semibold">Написать в Discord</p><p class="text-[#5865F2] text-sm">Через тикет</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#5865F2]"></i></a>
+            </div>
+            <div class="mt-6 p-4 rounded-xl bg-yellow-500/10 border border-yellow-500/20"><p class="text-yellow-400 text-sm text-center"><i data-lucide="info" class="w-4 h-4 inline mr-1"></i>Минимальная сумма покупки: 10 рублей (1000 монет)</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Modal (для привилегий) -->
+<div id="contactModal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeContactModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4">
+        <div class="glass w-full max-w-lg rounded-3xl p-8 relative">
+            <button onclick="closeContactModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center"><i data-lucide="x" class="w-5 h-5 text-gray-400"></i></button>
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 rounded-2xl bg-orange-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="shopping-bag" class="w-8 h-8 text-white"></i></div>
+                <h3 class="text-2xl font-bold text-white mb-2" id="modalTitle">Оформление покупки</h3>
+                <p class="text-gray-400" id="modalDescription">Выберите способ оплаты</p>
+            </div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Ваш ник в Minecraft:</label>
+                <div class="flex gap-2"><input type="text" id="minecraftNick" placeholder="Введите ник" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"><button onclick="saveNickname()" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Сохранить</button></div>
+                <p class="text-xs text-gray-500 mt-2">Сохраненный ник: <span id="displayNick">не указан</span></p>
+            </div>
+
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
+                <label class="block text-sm font-medium text-gray-400 mb-2">Промокод (если есть):</label>
+                <div class="flex gap-2"><input type="text" id="promocodeInput" placeholder="Введите промокод" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 uppercase"><button onclick="applyPromocode()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">Применить</button></div>
+                <div id="promocodeMessage" class="text-xs mt-2 hidden"></div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-4 rounded-2xl bg-yellow-600/10 hover:bg-yellow-600/20 border border-yellow-600/30 cursor-pointer" onclick="openYooMoney()">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center"><i data-lucide="wallet" class="w-6 h-6 text-white"></i></div>
+                    <div class="flex-1 text-left"><p class="text-white font-semibold">Оплатить ЮMoney</p><p class="text-yellow-500 text-sm">Банковской картой или из кошелька</p></div><i data-lucide="credit-card" class="w-5 h-5 text-yellow-500"></i>
+                </div>
+                <a href="https://t.me/goodcube_news?direct" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 border border-[#0088cc]/30"><div class="w-12 h-12 rounded-xl bg-[#0088cc]"><i data-lucide="send" class="w-6 h-6 text-white"></i></div><div class="flex-1 text-left"><p class="text-white font-semibold">Написать в Telegram</p><p class="text-[#0088cc] text-sm">Директ</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#0088cc]"></i></a>
+                <a href="https://discord.com/channels/1261679260620558461/1480040232052326634/1480040861361373364" class="flex items-center gap-4 p-4 rounded-2xl bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30"><div class="w-12 h-12 rounded-xl bg-[#5865F2]"><i data-lucide="message-circle" class="w-6 h-6 text-white"></i></div><div class="flex-1 text-left"><p class="text-white font-semibold">Написать в Discord</p><p class="text-[#5865F2] text-sm">Через тикет</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#5865F2]"></i></a>
+            </div>
+            <div class="mt-6 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20"><p class="text-orange-400 text-sm text-center"><i data-lucide="clock" class="w-4 h-4 inline mr-1"></i>При оплате через ЮMoney донат выдается автоматически в течение 5 минут</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]"><div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i><span id="toastMessage" class="text-white font-medium">Скопировано!</span></div></div>
+
+<!-- Particles Canvas -->
+<canvas id="particles"></canvas>
+
+<!-- Подключение скриптов -->
+<script src="assets/js/promocodes.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/payment.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/admin.js"></script>
+
+<script>
+    // ===== ФУНКЦИИ ДЛЯ ВАЛЮТЫ =====
+    let currentCurrencyDiscount = 0;
+    let currentCurrencyDiscountedPrice = 0;
+    let currentCurrencyPromoCode = null;
+
+    function resetCurrencyPromo() {
+        currentCurrencyDiscount = 0;
+        currentCurrencyDiscountedPrice = 0;
+        currentCurrencyPromoCode = null;
+        const input = document.getElementById('currencyPromocodeInput');
+        if (input) input.value = '';
+        const msgDiv = document.getElementById('currencyPromocodeMessage');
+        if (msgDiv) msgDiv.classList.add('hidden');
+    }
+
+    function applyCurrencyPromocode() {
+        const input = document.getElementById('currencyPromocodeInput');
+        const msgDiv = document.getElementById('currencyPromocodeMessage');
+        const code = input.value.trim();
+        if (!code) { showMessage('Введите промокод', 'error', msgDiv); return; }
+        const coins = parseInt(document.getElementById('coinSlider').value);
+        const amount = Math.floor(coins / 100);
+        const result = PromoCodes.validatePromocode(code, amount);
+        if (result.valid) {
+            currentCurrencyDiscount = result.discount;
+            currentCurrencyDiscountedPrice = result.discountedPrice;
+            currentCurrencyPromoCode = code;
+            showMessage(result.message, 'success', msgDiv);
+            const rubAmount = document.getElementById('rubAmount');
+            if (rubAmount) {
+                const original = amount;
+                rubAmount.innerHTML = `<span class="line-through text-gray-500 text-xl">${original}</span> <span class="text-green-400 text-3xl">${currentCurrencyDiscountedPrice}</span>`;
+            }
+        } else {
+            currentCurrencyDiscount = 0;
+            currentCurrencyPromoCode = null;
+            showMessage(result.message, 'error', msgDiv);
+            document.getElementById('rubAmount').textContent = amount;
+        }
+    }
+
+    function updateCoinAmount(value) {
+        const coins = parseInt(value);
+        document.getElementById('coinAmount').textContent = coins.toLocaleString();
+        document.getElementById('coinInput').value = coins;
+        const rubles = Math.floor(coins / 100);
+        if (currentCurrencyDiscount > 0) {
+            const discounted = rubles - (rubles * currentCurrencyDiscount / 100);
+            document.getElementById('rubAmount').innerHTML = `<span class="line-through text-gray-500 text-xl">${rubles}</span> <span class="text-green-400 text-3xl">${Math.floor(discounted)}</span>`;
+        } else {
+            document.getElementById('rubAmount').textContent = rubles;
+        }
+    }
+
+    function updateCoinFromInput(value) {
+        let coins = parseInt(value) || 0;
+        if (coins > 5000000) coins = 5000000;
+        if (coins < 0) coins = 0;
+        coins = Math.round(coins / 1000) * 1000;
+        document.getElementById('coinSlider').value = coins;
+        document.getElementById('coinAmount').textContent = coins.toLocaleString();
+        document.getElementById('coinInput').value = coins;
+        const rubles = Math.floor(coins / 100);
+        if (currentCurrencyDiscount > 0) {
+            const discounted = rubles - (rubles * currentCurrencyDiscount / 100);
+            document.getElementById('rubAmount').innerHTML = `<span class="line-through text-gray-500 text-xl">${rubles}</span> <span class="text-green-400 text-3xl">${Math.floor(discounted)}</span>`;
+        } else {
+            document.getElementById('rubAmount').textContent = rubles;
+        }
+    }
+
+    function setMaxCoins() { updateCoinFromInput(5000000); }
+
+    function saveCurrencyNick() {
+        const nickInput = document.getElementById('currencyNick');
+        if (nickInput && nickInput.value.trim()) {
+            localStorage.setItem('minecraft_nick', nickInput.value.trim());
+            document.getElementById('displayCurrencyNick').textContent = nickInput.value.trim();
+            showToast(`Ник ${nickInput.value.trim()} сохранен!`);
+            nickInput.value = '';
+        } else { showToast('Введите ник'); }
+    }
+
+    function buyCurrency() {
+        const coins = parseInt(document.getElementById('coinSlider').value);
+        let rubles = Math.floor(coins / 100);
+        if (coins < 1000) { showToast('Минимальная сумма: 1000 монет (10 рублей)'); return; }
+        const playerName = localStorage.getItem('minecraft_nick') || 'Не указан';
+        if (playerName === 'Не указан' && !confirm('Вы не указали ник в Minecraft. Продолжить?')) return;
+
+        let finalPrice = rubles;
+        let promoInfo = '';
+        if (currentCurrencyDiscount > 0) {
+            finalPrice = currentCurrencyDiscountedPrice;
+            promoInfo = ` (скидка ${currentCurrencyDiscount}%, было ${rubles}₽)`;
+        }
+
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'https://yoomoney.ru/quickpay/confirm.xml';
+        form.target = '_blank';
+        const orderId = 'goodcube_currency_' + Date.now() + '_' + Math.random().toString(36).substring(7);
+        const params = {
+            'receiver': '4100118384508073',
+            'quickpay-form': 'button',
+            'paymentType': 'AC',
+            'sum': finalPrice,
+            'label': orderId,
+            'targets': `${coins} монет для ${playerName}${promoInfo}`,
+            'formcomment': 'GoodCube: Покупка валюты',
+            'short-dest': `GoodCube: ${coins} монет`,
+            'comment': `Покупка ${coins} монет. Ник: ${playerName}. Промокод: ${currentCurrencyPromoCode || 'нет'}`
+        };
+        for (let key in params) { const input = document.createElement('input'); input.type = 'hidden'; input.name = key; input.value = params[key]; form.appendChild(input); }
+        document.body.appendChild(form); form.submit(); document.body.removeChild(form);
+        showToast(`Перенаправляем на оплату ${finalPrice}₽ за ${coins} монет...`);
+        if (currentCurrencyPromoCode) PromoCodes.applyPromocode(currentCurrencyPromoCode);
+        setTimeout(closeCurrencyModal, 2000);
+    }
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', function() {
+        if (document.getElementById('banHours')) calculateUnbanPrice();
+        if (document.getElementById('muteHours')) calculateUnmutePrice();
+    });
+</script>
+
+<style>
+    #particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+</style>
+<script>
+    const canvas = document.getElementById("particles");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let particles = [];
+    for(let i=0;i<80;i++){ particles.push({ x:Math.random()*canvas.width, y:Math.random()*canvas.height, r:Math.random()*2, dx:(Math.random()-0.5)*0.5, dy:(Math.random()-0.5)*0.5 }); }
+    function draw(){ ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle="#f97316"; particles.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill(); p.x+=p.dx; p.y+=p.dy; if(p.x<0||p.x>canvas.width)p.dx*=-1; if(p.y<0||p.y>canvas.height)p.dy*=-1; }); requestAnimationFrame(draw); }
+    draw();
+</script>
+</body>
+</html>

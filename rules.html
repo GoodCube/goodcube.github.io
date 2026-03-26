@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodCube — Правила и наказания сервера</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body{
+            background:#0f0f0f;
+            color:white;
+            font-family:Inter;
+        }
+
+        .glass{
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(10px);
+            border:1px solid rgba(255,255,255,0.08);
+        }
+
+        .text-gradient{
+            background:linear-gradient(135deg,#f97316,#fb923c);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+
+        .rule-block{
+            margin-bottom:40px;
+        }
+
+        .rule-title{
+            font-size:28px;
+            font-weight:800;
+            margin-bottom:20px;
+            color:#fb923c;
+            border-bottom:2px solid rgba(249,115,22,0.3);
+            padding-bottom:10px;
+        }
+
+        .rule-section{
+            margin-bottom:25px;
+        }
+
+        .rule-section-title{
+            font-size:20px;
+            font-weight:700;
+            margin-bottom:12px;
+            color:#f97316;
+            padding-left:12px;
+            border-left:3px solid #f97316;
+        }
+
+        .rule-list{
+            list-style:none;
+            padding-left:0;
+            margin-bottom:15px;
+        }
+
+        .rule-list li{
+            margin-bottom:10px;
+            color:#d1d5db;
+            position:relative;
+            padding-left:20px;
+        }
+
+        .rule-list li::before{
+            content:"•";
+            position:absolute;
+            left:5px;
+            color:#f97316;
+        }
+
+        .sub-list{
+            list-style:none;
+            padding-left:25px;
+            margin-top:5px;
+            margin-bottom:8px;
+        }
+
+        .sub-list li{
+            margin-bottom:8px;
+            color:#9ca3af;
+            font-size:14px;
+            position:relative;
+            padding-left:20px;
+        }
+
+        .sub-list li::before{
+            content:"◦";
+            position:absolute;
+            left:5px;
+            color:#fb923c;
+        }
+
+        .sub-sub-list{
+            list-style:none;
+            padding-left:40px;
+            margin-top:5px;
+            margin-bottom:8px;
+        }
+
+        .sub-sub-list li{
+            margin-bottom:6px;
+            color:#6b7280;
+            font-size:13px;
+            position:relative;
+            padding-left:20px;
+        }
+
+        .sub-sub-list li::before{
+            content:"▪";
+            position:absolute;
+            left:5px;
+            color:#fdba74;
+        }
+
+        .rule-number{
+            display:inline-block;
+            font-weight:600;
+            color:#fb923c;
+            margin-right:8px;
+        }
+
+        .punishment-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .punishment-mute {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .punishment-ban {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .punishment-warn {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3b82f6;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .punishment-perm {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8b5cf6;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .punishment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .punishment-table th {
+            text-align: left;
+            color: #fb923c;
+            font-weight: 600;
+            padding: 8px 0;
+        }
+
+        .punishment-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .punishment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-box {
+            background: rgba(249, 115, 22, 0.1);
+            border-left: 4px solid #f97316;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="fixed w-full z-50 glass border-b border-orange-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30">
+                    <i data-lucide="box" class="w-6 h-6 text-white"></i>
+                </div>
+                <span class="text-2xl font-bold text-gradient">GoodCube</span>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
+                <a href="index.html#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
+                <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
+                <a href="index.html#contacts" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Контакты</a>
+                <a href="rules.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Правила</a>
+                <a class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер (скоро..)</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-orange-500/40 flex items-center gap-2">
+                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+                    Купить донат
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- HEADER -->
+<section class="text-center pt-32 pb-8 px-6">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-orange-400 text-sm font-semibold mb-4">
+        <i data-lucide="scale" class="w-4 h-4"></i>
+        Последнее обновление: 26 марта 2026
+    </div>
+
+    <h1 class="text-5xl font-extrabold mb-4">
+        <span class="text-gradient">Правила</span> и наказания
+    </h1>
+
+    <p class="text-gray-400 max-w-xl mx-auto">
+        Перед началом игры обязательно ознакомьтесь с правилами проекта GoodCube.
+        Нарушение правил наказывается по системе, описанной ниже.
+    </p>
+</section>
+
+<!-- RULES -->
+<section class="max-w-5xl mx-auto px-6 pb-20">
+
+    <div class="glass rounded-2xl p-8">
+
+        <!-- Система наказаний -->
+        <div class="rule-block">
+            <div class="rule-title">⚖️ Система наказаний</div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="bell" class="w-5 h-5 text-blue-400"></i>
+                        <span class="font-bold text-blue-400">Предупреждение</span>
+                    </div>
+                    <p class="text-sm text-gray-400">За мелкие нарушения. 3 предупреждения = мут на 1 час</p>
+                </div>
+
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="mic-off" class="w-5 h-5 text-yellow-400"></i>
+                        <span class="font-bold text-yellow-400">Мут</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Запрет на отправку сообщений в чат</p>
+                </div>
+
+                <div class="bg-gray-800/50 rounded-xl p-4">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i data-lucide="shield-off" class="w-5 h-5 text-red-400"></i>
+                        <span class="font-bold text-red-400">Бан</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Полная блокировка аккаунта</p>
+                </div>
+            </div>
+
+            <table class="punishment-table">
+                <thead>
+                <tr><th>Нарушение</th><th>1-й раз</th><th>2-й раз</th><th>3-й раз и более</th></tr>
+                </thead>
+                <tbody>
+                <tr><td>Небольшой флуд/капс</td><td><span class="punishment-badge punishment-warn">Предупреждение</span></td><td><span class="punishment-badge punishment-mute">Мут 30 мин</span></td><td><span class="punishment-badge punishment-mute">Мут 3 часа</span></td></tr>
+                <tr><td>Оскорбления игроков</td><td><span class="punishment-badge punishment-mute">Мут 1 час</span></td><td><span class="punishment-badge punishment-mute">Мут 12 часов</span></td><td><span class="punishment-badge punishment-ban">Бан 3 дня</span></td></tr>
+                <tr><td>Нецензурная лексика</td><td><span class="punishment-badge punishment-mute">Мут 30 мин</span></td><td><span class="punishment-badge punishment-mute">Мут 3 часа</span></td><td><span class="punishment-badge punishment-mute">Мут 24 часа</span></td></tr>
+                <tr><td>Реклама сторонних проектов</td><td><span class="punishment-badge punishment-mute">Мут 6 часов</span></td><td><span class="punishment-badge punishment-ban">Бан 7 дней</span></td><td><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Расизм/разжигание</td><td><span class="punishment-badge punishment-ban">Бан 3 дня</span></td><td><span class="punishment-badge punishment-ban">Бан 14 дней</span></td><td><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Обход мута</td><td><span class="punishment-badge punishment-mute">+6 часов</span></td><td><span class="punishment-badge punishment-ban">Бан 1 день</span></td><td><span class="punishment-badge punishment-ban">Бан 7 дней</span></td></tr>
+                <tr><td>Читы (Xray, килл аура и др.)</td><td colspan="3"><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Мошенничество/скам</td><td><span class="punishment-badge punishment-ban">Бан 14 дней</span></td><td colspan="2"><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Спам командами (/help и др.)</td><td><span class="punishment-badge punishment-warn">Предупреждение</span></td><td><span class="punishment-badge punishment-mute">Мут 2 часа</span></td><td><span class="punishment-badge punishment-mute">Мут 12 часов</span></td></tr>
+                <tr><td>Оскорбление администрации</td><td><span class="punishment-badge punishment-ban">Бан 7 дней</span></td><td><span class="punishment-badge punishment-ban">Бан 30 дней</span></td><td><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Выдача себя за администрацию</td><td colspan="3"><span class="punishment-badge punishment-perm">Перманентный бан</span></td></tr>
+                <tr><td>Использование багов</td><td><span class="punishment-badge punishment-warn">Предупреждение</span></td><td><span class="punishment-badge punishment-ban">Бан 7 дней</span></td><td><span class="punishment-badge punishment-ban">Бан 30 дней</span></td></tr>
+                </tbody>
+            </table>
+
+            <div class="mt-4 text-sm text-gray-500">* Администрация имеет право менять наказание в зависимости от тяжести нарушения</div>
+        </div>
+
+        <!-- ОСНОВНЫЕ ПРАВИЛА -->
+        <div class="rule-block">
+            <div class="rule-title">📜 1. Основные правила</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">1.1. Общие положения</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">1.1.1</span> Незнание правил не освобождает вас от ответственности <span class="punishment-badge punishment-warn">Предупреждение</span></li>
+                    <li><span class="rule-number">1.1.2</span> Начав играть на сервере вы автоматически соглашаетесь с правилами</li>
+                    <li><span class="rule-number">1.1.3</span> Администратор вправе наказать игрока по причине, не указанной в правилах</li>
+                    <li><span class="rule-number">1.1.4</span> Администрация может изменять правила без уведомления</li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">1.2. Ответственность администрации</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">1.2.1</span> Администрация не несёт ответственности за невозможность игры</li>
+                    <li><span class="rule-number">1.2.2</span> Администрация не отвечает за потерю игровых ценностей</li>
+                    <li><span class="rule-number">1.2.3</span> Администрация не гарантирует стабильную работу сервера</li>
+                    <li><span class="rule-number">1.2.4</span> Администрация не несёт ответственность за ущерб из-за сбоев</li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">1.3. Обязанности игрока</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">1.3.1</span> Игрок обязан соблюдать все правила</li>
+                    <li><span class="rule-number">1.3.2</span> Администрация ведёт логи действий игроков</li>
+                    <li><span class="rule-number">1.3.3</span> Оскорбление администрации запрещено <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ПРАВИЛА ЧАТА -->
+        <div class="rule-block">
+            <div class="rule-title">💬 2. Правила чата</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">2.1. Запрещенные действия в чате</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">2.1.1</span> Запрещён капс, флуд и спам <span class="punishment-badge punishment-mute">Мут от 30 мин</span></li>
+                    <li><span class="rule-number">2.1.2</span> Запрещены оскорбления игроков <span class="punishment-badge punishment-mute">Мут от 1 часа</span></li>
+                    <li><span class="rule-number">2.1.3</span> Запрещена нецензурная лексика <span class="punishment-badge punishment-mute">Мут от 30 мин</span></li>
+                    <li><span class="rule-number">2.1.4</span> Запрещена реклама сторонних проектов <span class="punishment-badge punishment-ban">Бан от 7 дней</span></li>
+                    <li><span class="rule-number">2.1.5</span> Запрещено оскорблять родственников игроков <span class="punishment-badge punishment-ban">Бан от 3 дней</span></li>
+                    <li><span class="rule-number">2.1.6</span> Запрещён расизм и разжигание конфликтов <span class="punishment-badge punishment-ban">Бан от 3 дней</span></li>
+                    <li><span class="rule-number">2.1.7</span> Запрещён обход мута <span class="punishment-badge punishment-ban">Бан от 1 дня</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">2.2. Торговля и контакты</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">2.2.1</span> Чаты для торговли использовать только по назначению <span class="punishment-badge punishment-warn">Предупреждение</span></li>
+                    <li><span class="rule-number">2.2.2</span> Запрещено отправлять контакты в общий чат <span class="punishment-badge punishment-mute">Мут 3 часа</span></li>
+                    <li><span class="rule-number">2.2.3</span> Запрещена торговля вне сервера (например через Discord) <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">2.3. Прочие ограничения</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">2.3.1</span> Запрещено вызывать игроков на проверку читов <span class="punishment-badge punishment-mute">Мут 2 часа</span></li>
+                    <li><span class="rule-number">2.3.2</span> Самопризнание в нарушении может привести к бану</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- АККАУНТ -->
+        <div class="rule-block">
+            <div class="rule-title">👤 3. Аккаунт</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">3.1. Требования к нику</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">3.1.1</span> Ник не должен содержать оскорбления или мат <span class="punishment-badge punishment-ban">Бан до смены ника</span></li>
+                    <li><span class="rule-number">3.1.2</span> Ник не должен быть похож на администраторов <span class="punishment-badge punishment-ban">Принудительная смена</span></li>
+                    <li><span class="rule-number">3.1.3</span> Ник не должен быть похож на названия читов <span class="punishment-badge punishment-ban">Принудительная смена</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">3.2. Использование аккаунта</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">3.2.1</span> Запрещено передавать аккаунт другим людям <span class="punishment-badge punishment-ban">Бан 30 дней</span></li>
+                    <li><span class="rule-number">3.2.2</span> Ответственность несёт владелец аккаунта</li>
+                    <li><span class="rule-number">3.2.3</span> Запрещена продажа аккаунтов и привилегий <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                    <li><span class="rule-number">3.2.4</span> Максимум аккаунтов на один IP - 3 аккаунта, больше приравнивается к бану всех аккаунтов <span class="punishment-badge punishment-ban">Бан всех аккаунтов</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">3.3. Донат и привилегии</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">3.3.1</span> Донат нельзя перенести на другой аккаунт (только за доп. оплату) <span class="punishment-badge punishment-mute">Покупается на донат сайте</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ИГРОВЫЕ ПРАВИЛА -->
+        <div class="rule-block">
+            <div class="rule-title">⚔️ 4. Игровые правила</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">4.1. Запрещенные программы и моды</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">4.1.1</span> Запрещены читы, скрипты, кликеры <span class="punishment-badge punishment-ban">Бан 30 дней</span></li>
+                    <li><span class="rule-number">4.1.2</span> Запрещённые моды: Xray Ultimate, Mineral Tracker, Freecam и любые чит-моды <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                    <li><span class="rule-number">4.1.3</span> Запрещено помогать нарушителям <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                    <li><span class="rule-number">4.1.4</span> Запрещено играть после многочисленных банов за читы <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">4.2. Запрещенные действия</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">4.2.1</span> Запрещено мошенничество <span class="punishment-badge punishment-ban">Бан от 14 дней</span></li>
+                    <li><span class="rule-number">4.2.2</span> Запрещена торговля игровыми вещами за реальные деньги <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                    <li><span class="rule-number">4.2.3</span> Запрещено вызывать лаги сервера <span class="punishment-badge punishment-ban">Бан от 3 дней</span></li>
+                    <li><span class="rule-number">4.2.4</span> Запрещено использовать баги сервера <span class="punishment-badge punishment-ban">Бан от 7 дней</span></li>
+                    <li><span class="rule-number">4.2.5</span> Запрещено играть с превышением лимита игроков в команде <span class="punishment-badge punishment-warn">Предупреждение</span></li>
+                    <li><span class="rule-number">4.2.6</span> Запрещено строить нацистскую символику и непристойности <span class="punishment-badge punishment-ban">Бан 14 дней</span></li>
+                    <li><span class="rule-number">4.2.7</span> Запрещено подстрекать других игроков нарушать правила <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                    <li><span class="rule-number">4.2.8</span> Запрещено выдавать себя за администрацию <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PVP ПРАВИЛА -->
+        <div class="rule-block">
+            <div class="rule-title">⚡ 5. PvP правила</div>
+
+            <ul class="rule-list">
+                <li><span class="rule-number">5.1</span> Запрещено убивать игроков на спавне <span class="punishment-badge punishment-ban">Бан 2 часа + варн</span></li>
+                <li><span class="rule-number">5.2</span> Запрещено использовать баги для получения преимущества в PvP <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                <li><span class="rule-number">5.3</span> Запрещено "кемпить" (убивать игрока сразу после возрождения) <span class="punishment-badge punishment-ban">Бан 3 часа</span></li>
+                <li><span class="rule-number">5.4</span> Запрещено выдавать себя за дружественного игрока для убийства <span class="punishment-badge punishment-ban">Бан 3 дня</span></li>
+            </ul>
+        </div>
+
+        <!-- СТРОИТЕЛЬСТВО -->
+        <div class="rule-block">
+            <div class="rule-title">🏗️ 6. Строительство</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">6.1. Запрещенные постройки</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">6.1.1</span> Запрещено строить непристойные изображения <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                    <li><span class="rule-number">6.1.2</span> Запрещено строить лаг-машины <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                    <li><span class="rule-number">6.1.3</span> Запрещено строить нацистскую символику <span class="punishment-badge punishment-ban">Бан 14 дней</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">6.2. Размещение построек</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">6.2.1</span> Запрещено строить слишком близко к спавну без разрешения <span class="punishment-badge punishment-warn">Снос постройки</span></li>
+                    <li><span class="rule-number">6.2.2</span> Запрещено застраивать чужие территории <span class="punishment-badge punishment-ban">Снос + бан 7 дней</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЭКОНОМИКА -->
+        <div class="rule-block">
+            <div class="rule-title">💰 7. Экономика</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">7.1. Запрещенные схемы</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">7.1.1</span> Запрещено создавать схемы для "накрутки" валюты <span class="punishment-badge punishment-ban">Бан 14 дней</span></li>
+                    <li><span class="rule-number">7.1.2</span> Запрещено использовать альт-аккаунты для передачи валюты <span class="punishment-badge punishment-ban">Бан всех аккаунтов</span></li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">7.2. Торговля</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">7.2.1</span> Запрещено обманывать в торговле <span class="punishment-badge punishment-ban">Бан 7 дней</span></li>
+                    <li><span class="rule-number">7.2.2</span> Запрещено продавать предметы за реальные деньги <span class="punishment-badge punishment-perm">Перманентный бан</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ПООЩРЕНИЯ -->
+        <div class="rule-block">
+            <div class="rule-title">🎁 8. Поощрения за соблюдение правил</div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">8.1. За активную помощь</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">8.1.1</span> Активные помощники получают еженедельные бонусы</li>
+                    <li><span class="rule-number">8.1.2</span> За помощь новичкам - повышение рейтинга</li>
+                </ul>
+            </div>
+
+            <div class="rule-section">
+                <div class="rule-section-title">8.2. За достижения</div>
+                <ul class="rule-list">
+                    <li><span class="rule-number">8.2.1</span> Лучшие строители месяца получают приставку [Builder]</li>
+                    <li><span class="rule-number">8.2.2</span> За активность в чате - возможность стать модератором</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- АПЕЛЛЯЦИЯ -->
+        <div class="info-box">
+            <div class="flex items-center gap-3 mb-2">
+                <i data-lucide="message-square" class="w-6 h-6 text-orange-400"></i>
+                <span class="font-bold text-orange-400 text-lg">9. Обжалование наказаний</span>
+            </div>
+            <p class="text-gray-300 mb-3">
+                Если вы считаете, что были наказаны ошибочно, вы можете обжаловать наказание в нашем Discord или Telegram.
+            </p>
+            <div class="flex gap-4">
+                <a href="https://t.me/dqaaq" class="text-[#0088cc] hover:underline flex items-center gap-1">
+                    <i data-lucide="send" class="w-4 h-4"></i> Telegram
+                </a>
+                <div onclick="copyToClipboard('pixelglimmer')" class="text-[#5865F2] hover:underline flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i> Discord: pixelglimmer
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 text-center text-orange-400 font-bold text-xl">
+            ⚠️ НЕЗНАНИЕ ПРАВИЛ НЕ ОСВОБОЖДАЕТ ОТ ОТВЕТСТВЕННОСТИ ⚠️
+        </div>
+
+        <div class="mt-6 text-center text-sm text-gray-600">
+            Версия правил 3.2 от 26.03.2026
+        </div>
+
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center text-gray-500 pb-10">
+    © 2026 GoodCube. Все права защищены.
+</footer>
+
+<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]">
+    <div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3 shadow-2xl">
+        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+        <span id="toastMessage" class="text-white font-medium">Скопировано!</span>
+    </div>
+</div>
+
+<script>
+    lucide.createIcons()
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            showToast(`Скопировано: ${text}`);
+        });
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+        toastMessage.textContent = message;
+        toast.classList.remove('translate-y-20', 'opacity-0');
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-20', 'opacity-0');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>

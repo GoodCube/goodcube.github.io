@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoodCube - Страница не найдена</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        orange: {
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            200: '#fed7aa',
+                            300: '#fdba74',
+                            400: '#fb923c',
+                            500: '#f97316',
+                            600: '#ea580c',
+                            700: '#c2410c',
+                            800: '#9a3412',
+                            900: '#7c2d12',
+                            950: '#431407',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'glow': 'glow 2s ease-in-out infinite alternate',
+                        'bounce-slow': 'bounce 3s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        glow: {
+                            '0%': { boxShadow: '0 0 5px #ea580c, 0 0 10px #ea580c' },
+                            '100%': { boxShadow: '0 0 20px #f97316, 0 0 30px #f97316' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0f0f0f;
+            color: #ffffff;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glass-orange {
+            background: rgba(234, 88, 12, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(234, 88, 12, 0.3);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hover-scale {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-scale:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(234, 88, 12, 0.3);
+        }
+        .minecraft-pattern {
+            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 20px 20px;
+        }
+        .error-cube {
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .floating-cubes span {
+            position: absolute;
+            bottom: -50px;
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            animation: float-cube 15s linear infinite;
+        }
+        @keyframes float-cube {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans antialiased minecraft-pattern min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 glass border-b border-orange-900/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-3 group">
+                        <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all">
+                            <i data-lucide="box" class="w-6 h-6 text-white"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-gradient">GoodCube</span>
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
+                    <a href="index.html#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
+                    <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
+                    <a href="index.html#contacts" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Контакты</a>
+                    <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
+                    <a class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер (скоро..)</a>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="window.location.href='index.html'" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-orange-500/40 flex items-center gap-2">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        На главную
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Floating Cubes Animation -->
+    <div class="floating-cubes fixed inset-0 pointer-events-none overflow-hidden">
+        <script>
+            for(let i = 0; i < 15; i++) {
+                document.write(`<span style="left: ${Math.random() * 100}%; width: ${Math.random() * 30 + 10}px; height: ${Math.random() * 30 + 10}px; animation-delay: ${Math.random() * 10}s; animation-duration: ${Math.random() * 10 + 10}s;"></span>`);
+            }
+        </script>
+    </div>
+
+    <!-- Main 404 Content -->
+    <main class="flex-1 flex items-center justify-center px-4 py-32 relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <!-- Animated 404 -->
+            <div class="relative mb-8">
+                <div class="text-[150px] md:text-[200px] font-extrabold text-gradient opacity-20 select-none absolute inset-0 flex items-center justify-center">
+                    404
+                </div>
+                <div class="relative flex items-center justify-center gap-4 md:gap-8">
+                    <div class="error-cube w-50 h-50 md:w-50 md:h-50 ">
+                    </div>
+
+					
+                </div>
+            </div>
+
+            <!-- Error Message -->
+            <div class="glass-orange rounded-3xl p-8 md:p-12 max-w-2xl mx-auto mb-8">
+                <i data-lucide="map-pin-off" class="w-16 h-16 text-orange-400 mx-auto mb-4 animate-bounce-slow"></i>
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">
+                    <span class="text-gradient">404</span> — Страница не найдена
+                </h1>
+                <p class="text-xl text-gray-300 mb-6">
+                    Кажется, этот блок затерялся в глубинах мира... 
+                    Возможно, он был разрушен крипером или ещё не сгенерирован.
+                </p>
+                
+                <!-- Minecraft Style Message -->
+                <div class="bg-gray-900/50 rounded-2xl p-4 mb-6 font-mono text-left border border-orange-500/20">
+                    <p class="text-gray-400 mb-2">[SERVER] Не удалось загрузить чанк:</p>
+                    <p class="text-red-400 mb-1">>> Ошибка: 404 chunk not found</p>
+                    <p class="text-yellow-400 mb-1">>> Координаты: X: ???, Y: ??, Z: ???</p>
+                    <p class="text-green-400">>> Используй /spawn чтобы вернуться на главную</p>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                    <a href="index.html" class="glass hover:bg-white/5 rounded-xl p-4 transition-all group">
+                        <i data-lucide="home" class="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-white font-semibold">Главная</p>
+                        <p class="text-gray-400 text-sm">Вернуться на спавн</p>
+                    </a>
+                    <a href="index.html#donate" class="glass hover:bg-white/5 rounded-xl p-4 transition-all group">
+                        <i data-lucide="shopping-bag" class="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-white font-semibold">Донат</p>
+                        <p class="text-gray-400 text-sm">Поддержать проект</p>
+                    </a>
+                    <a href="titles.html" class="glass hover:bg-white/5 rounded-xl p-4 transition-all group">
+                        <i data-lucide="sparkles" class="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-white font-semibold">Титулы</p>
+                        <p class="text-gray-400 text-sm">Уникальные префиксы</p>
+                    </a>
+                    <a href="rules.html" class="glass hover:bg-white/5 rounded-xl p-4 transition-all group">
+                        <i data-lucide="scroll" class="w-6 h-6 text-orange-400 mx-auto mb-2 group-hover:scale-110 transition-transform"></i>
+                        <p class="text-white font-semibold">Правила</p>
+                        <p class="text-gray-400 text-sm">Законы сервера</p>
+                    </a>
+                </div>
+
+                <!-- Search Suggestion -->
+                <div class="flex items-center justify-center gap-2 text-gray-400 text-sm">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                    <span>Может, вы искали:</span>
+                </div>
+                <div class="flex flex-wrap justify-center gap-2 mt-3">
+                    <a href="index.html" class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm hover:bg-orange-500/20 transition-colors">#главная</a>
+                    <a href="titles.html" class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm hover:bg-orange-500/20 transition-colors">#титулы</a>
+                    <a href="launcher.html" class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm hover:bg-orange-500/20 transition-colors">#лаунчер</a>
+                    <a href="rules.html" class="px-3 py-1 rounded-full bg-orange-500/10 text-orange-400 text-sm hover:bg-orange-500/20 transition-colors">#правила</a>
+                </div>
+            </div>
+
+            <!-- Random Joke -->
+            <div class="text-gray-500 text-sm animate-pulse">
+                <i data-lucide="smile" class="w-4 h-4 inline mr-1"></i>
+                Знаете шутку про 404? Я тоже нет, она не нашлась...
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-orange-900/30 py-8 px-4 relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center">
+                    <i data-lucide="box" class="w-4 h-4 text-white"></i>
+                </div>
+                <span class="text-xl font-bold text-gradient">GoodCube</span>
+            </div>
+            
+            <p class="text-gray-500 text-sm">
+                © 2026 GoodCube. Чанк не найден, но сервер жив!
+            </p>
+
+            <div class="flex items-center gap-4">
+                <a href="https://t.me/move123_YT" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#0088cc] hover:border-[#0088cc]/50 transition-all">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                </a>
+                <div onclick="copyToClipboard('move123_yt')" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#5865F2] hover:border-[#5865F2]/50 transition-all cursor-pointer">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]">
+        <div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3 shadow-2xl">
+            <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
+            <span id="toastMessage" class="text-white font-medium">Скопировано!</span>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast(`Скопировано: ${text}`);
+            });
+        }
+
+        // Toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
+            toastMessage.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Random 404 messages
+        const messages = [
+            "Кажется, крипер взорвал эту страницу...",
+            "404 | Страница в другом измерении",
+            "Этот чанк ещё не сгенерирован",
+            "Страница ушла на фарм мобов",
+            "Notch забрал эту страницу с собой"
+        ];
+
+        // Set random message
+        const messageElement = document.querySelector('.text-gray-300');
+        if (messageElement) {
+            messageElement.textContent = messages[Math.floor(Math.random() * messages.length)];
+        }
+    </script>
+</body>
+</html>
