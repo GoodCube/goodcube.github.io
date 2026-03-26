@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Minecraft](https://img.shields.io/badge/Minecraft-1.20+-green?style=for-the-badge&logo=minecraft)
+![Minecraft](https://img.shields.io/badge/Minecraft-1.16.5-green?style=for-the-badge&logo=minecraft)
 ![Java](https://img.shields.io/badge/Java-17-red?style=for-the-badge&logo=java)
 ![GitHub Pages](https://img.shields.io/badge/GitHub-Pages-blue?style=for-the-badge&logo=github)
 ![License](https://img.shields.io/badge/License-MIT-orange?style=for-the-badge)
