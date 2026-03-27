@@ -2,135 +2,40 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>GoodCube - Титулы и Префиксы</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <script src="assets/js/promocodes.js"></script>
+    <style>
+        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .glass-orange { background: rgba(234,88,12,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(234,88,12,0.3); }
+        .text-gradient { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hover-scale { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .hover-scale:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(234,88,12,0.3); }
+        .minecraft-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
+        .title-gradient-zeus { background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-hyper { background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-red { background: linear-gradient(135deg, #f87171 0%, #dc2626 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-gold { background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-green { background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-cyan { background: linear-gradient(135deg, #22d3ee 0%, #0891b2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .title-gradient-diamond { background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 50%, #3b82f6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        @media (max-width: 768px) { .grid { gap: 1rem !important; } .glass.rounded-2xl { padding: 1rem !important; } .text-3xl { font-size: 1.5rem !important; } }
+    </style>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        orange: {
-                            50: '#fff7ed',
-                            100: '#ffedd5',
-                            200: '#fed7aa',
-                            300: '#fdba74',
-                            400: '#fb923c',
-                            500: '#f97316',
-                            600: '#ea580c',
-                            700: '#c2410c',
-                            800: '#9a3412',
-                            900: '#7c2d12',
-                            950: '#431407',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    animation: {
-                        'float': 'float 6s ease-in-out infinite',
-                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'glow': 'glow 2s ease-in-out infinite alternate',
-                        'shine': 'shine 2s linear infinite',
-                    },
-                    keyframes: {
-                        float: {
-                            '0%, 100%': { transform: 'translateY(0)' },
-                            '50%': { transform: 'translateY(-20px)' },
-                        },
-                        glow: {
-                            '0%': { boxShadow: '0 0 5px #ea580c, 0 0 10px #ea580c' },
-                            '100%': { boxShadow: '0 0 20px #f97316, 0 0 30px #f97316' }
-                        },
-                        shine: {
-                            '0%': { backgroundPosition: '-200% center' },
-                            '100%': { backgroundPosition: '200% center' },
-                        }
-                    }
+                    colors: { orange: { 50: '#fff7ed', 100: '#ffedd5', 200: '#fed7aa', 300: '#fdba74', 400: '#fb923c', 500: '#f97316', 600: '#ea580c', 700: '#c2410c', 800: '#9a3412', 900: '#7c2d12', 950: '#431407' } },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: { 'float': 'float 6s ease-in-out infinite' },
+                    keyframes: { float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-20px)' } } }
                 }
             }
         }
     </script>
-    <style>
-        body {
-            background-color: #0f0f0f;
-            color: #ffffff;
-        }
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .glass-orange {
-            background: rgba(234, 88, 12, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(234, 88, 12, 0.3);
-        }
-        .text-gradient {
-            background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .text-gradient-gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .hover-scale {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .hover-scale:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(234, 88, 12, 0.3);
-        }
-        .minecraft-pattern {
-            background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
-            background-size: 20px 20px;
-        }
-        .title-gradient-zeus {
-            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-hyper {
-            background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-red {
-            background: linear-gradient(135deg, #f87171 0%, #dc2626 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-gold {
-            background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-green {
-            background: linear-gradient(135deg, #4ade80 0%, #16a34a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-cyan {
-            background: linear-gradient(135deg, #22d3ee 0%, #0891b2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-pink {
-            background: linear-gradient(135deg, #f472b6 0%, #db2777 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .title-gradient-diamond {
-            background: linear-gradient(135deg, #67e8f9 0%, #06b6d4 50%, #3b82f6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-    </style>
 </head>
 <body class="font-sans antialiased minecraft-pattern">
 
@@ -140,26 +45,23 @@
         <div class="flex items-center justify-between h-16">
             <div class="flex items-center gap-3">
                 <a href="index.html" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30">
                         <i data-lucide="box" class="w-6 h-6 text-white"></i>
                     </div>
                     <span class="text-2xl font-bold text-gradient">GoodCube</span>
                 </a>
             </div>
-
             <div class="hidden md:flex items-center gap-8">
-                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
-                <a href="index.html#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
+                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors">Главная</a>
+                <a href="index.html#donate" class="text-gray-300 hover:text-orange-400 transition-colors">Донат</a>
                 <a href="titles.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Титулы</a>
-                <a href="index.html#contacts" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Контакты</a>
-                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
-                <a class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер (скоро..)</a>
+                <a href="commits.html" class="text-gray-300 hover:text-orange-400 transition-colors">Commits</a>
+                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors">Правила</a>
+                <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors">Лаунчер</a>
             </div>
-
             <div class="flex items-center gap-4">
-                <button onclick="openContactModal()" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-orange-500/40 flex items-center gap-2">
-                    <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-                    Купить донат
+                <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-6 py-2 rounded-full font-semibold flex items-center gap-2">
+                    <i data-lucide="coins" class="w-4 h-4"></i> Купить валюту
                 </button>
             </div>
         </div>
@@ -168,28 +70,15 @@
 
 <!-- Hero Section -->
 <section class="relative pt-32 pb-12 px-4 overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 to-transparent pointer-events-none"></div>
-    <div class="absolute top-20 left-10 w-72 h-72 bg-orange-600/20 rounded-full blur-3xl animate-pulse-slow"></div>
-    <div class="absolute bottom-20 right-10 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
-
+    <div class="absolute inset-0 bg-gradient-to-b from-orange-900/20 to-transparent"></div>
     <div class="max-w-7xl mx-auto text-center relative z-10">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-orange text-orange-400 text-sm font-semibold mb-6 animate-float">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-            Уникальные префиксы для чата
+            <i data-lucide="sparkles" class="w-4 h-4"></i> Уникальные префиксы для чата
         </div>
-
-        <h1 class="text-5xl md:text-6xl font-extrabold mb-6 leading-tight">
-            <span class="text-gradient">Титулы</span> и Префиксы
-        </h1>
-
-        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">
-            Выделись среди других игроков уникальным цветным префиксом в чате.
-            Все титулы навсегда!
-        </p>
-
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-6"><span class="text-gradient">Титулы</span> и Префиксы</h1>
+        <p class="text-xl text-gray-400 max-w-2xl mx-auto mb-8">Выделись среди других игроков уникальным цветным префиксом в чате. Все титулы навсегда!</p>
         <div class="flex items-center justify-center gap-2 text-orange-400 font-bold text-2xl md:text-3xl">
-            <i data-lucide="tag" class="w-8 h-8"></i>
-            <span>Всего по 40 рублей</span>
+            <i data-lucide="tag" class="w-8 h-8"></i> <span>Всего по 40 рублей</span>
         </div>
     </div>
 </section>
@@ -200,301 +89,184 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
             <!-- ZEUS -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-blue-500/20 hover:border-blue-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-blue-500/20 hover:border-blue-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-900/30 flex items-center justify-center border border-blue-500/30">
-                        <i data-lucide="zap" class="w-6 h-6 text-blue-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Мифический</span>
+                    <div class="w-12 h-12 rounded-xl bg-blue-900/30 flex items-center justify-center border border-blue-500/30"><i data-lucide="zap" class="w-6 h-6 text-blue-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Мифический</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-zeus mb-2">ZEUS</h3>
                 <p class="text-gray-400 text-sm mb-4">Громовержец Олимпа</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('ZEUS', 40)" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 text-blue-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('ZEUS', 40)" class="bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/50 text-blue-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- HYPER -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-purple-500/20 hover:border-purple-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-purple-500/20 hover:border-purple-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-purple-900/30 flex items-center justify-center border border-purple-500/30">
-                        <i data-lucide="rocket" class="w-6 h-6 text-purple-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Легендарный</span>
+                    <div class="w-12 h-12 rounded-xl bg-purple-900/30 flex items-center justify-center border border-purple-500/30"><i data-lucide="rocket" class="w-6 h-6 text-purple-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Легендарный</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-hyper mb-2">HYPER</h3>
                 <p class="text-gray-400 text-sm mb-4">Сверхскорость и мощь</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('HYPER', 40)" class="bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/50 text-purple-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('HYPER', 40)" class="bg-purple-600/20 hover:bg-purple-600/40 border border-purple-500/50 text-purple-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Крушитель -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-red-500/20 hover:border-red-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/10 rounded-full blur-2xl group-hover:bg-red-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-red-500/20 hover:border-red-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-red-900/30 flex items-center justify-center border border-red-500/30">
-                        <i data-lucide="hammer" class="w-6 h-6 text-red-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Силач</span>
+                    <div class="w-12 h-12 rounded-xl bg-red-900/30 flex items-center justify-center border border-red-500/30"><i data-lucide="hammer" class="w-6 h-6 text-red-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Силач</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-red mb-2">Крушитель</h3>
                 <p class="text-gray-400 text-sm mb-4">Разрушитель миров</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Крушитель', 40)" class="bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Крушитель', 40)" class="bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 text-red-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Король -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-yellow-500/20 hover:border-yellow-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl group-hover:bg-yellow-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-yellow-500/20 hover:border-yellow-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-900/30 flex items-center justify-center border border-yellow-500/30">
-                        <i data-lucide="crown" class="w-6 h-6 text-yellow-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Королевский</span>
+                    <div class="w-12 h-12 rounded-xl bg-yellow-900/30 flex items-center justify-center border border-yellow-500/30"><i data-lucide="crown" class="w-6 h-6 text-yellow-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Королевский</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-gold mb-2">Король</h3>
                 <p class="text-gray-400 text-sm mb-4">Правитель сервера</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Король', 40)" class="bg-yellow-600/20 hover:bg-yellow-600/40 border border-yellow-500/50 text-yellow-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Король', 40)" class="bg-yellow-600/20 hover:bg-yellow-600/40 border border-yellow-500/50 text-yellow-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Титан -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-gray-500/20 hover:border-gray-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-gray-500/10 rounded-full blur-2xl group-hover:bg-gray-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-gray-500/20 hover:border-gray-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center border border-gray-500/30">
-                        <i data-lucide="shield" class="w-6 h-6 text-gray-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Гигант</span>
+                    <div class="w-12 h-12 rounded-xl bg-gray-800 flex items-center justify-center border border-gray-500/30"><i data-lucide="shield" class="w-6 h-6 text-gray-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Гигант</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-gray-300 mb-2">Титан</h3>
                 <p class="text-gray-400 text-sm mb-4">Непоколебимая мощь</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Титан', 40)" class="bg-gray-600/20 hover:bg-gray-600/40 border border-gray-500/50 text-gray-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Титан', 40)" class="bg-gray-600/20 hover:bg-gray-600/40 border border-gray-500/50 text-gray-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Царь -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-orange-500/20 hover:border-orange-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl group-hover:bg-orange-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-orange-500/20 hover:border-orange-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-orange-900/30 flex items-center justify-center border border-orange-500/30">
-                        <i data-lucide="landmark" class="w-6 h-6 text-orange-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Имперский</span>
+                    <div class="w-12 h-12 rounded-xl bg-orange-900/30 flex items-center justify-center border border-orange-500/30"><i data-lucide="landmark" class="w-6 h-6 text-orange-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Имперский</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-gradient mb-2">Царь</h3>
                 <p class="text-gray-400 text-sm mb-4">Властелин земель</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Царь', 40)" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Царь', 40)" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Элита -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-emerald-500/20 hover:border-emerald-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-emerald-500/20 hover:border-emerald-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-emerald-900/30 flex items-center justify-center border border-emerald-500/30">
-                        <i data-lucide="gem" class="w-6 h-6 text-emerald-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Престиж</span>
+                    <div class="w-12 h-12 rounded-xl bg-emerald-900/30 flex items-center justify-center border border-emerald-500/30"><i data-lucide="gem" class="w-6 h-6 text-emerald-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Престиж</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-green mb-2">Элита</h3>
                 <p class="text-gray-400 text-sm mb-4">Избранный игрок</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Элита', 40)" class="bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-500/50 text-emerald-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Элита', 40)" class="bg-emerald-600/20 hover:bg-emerald-600/40 border border-emerald-500/50 text-emerald-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Главарь -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-red-700/20 hover:border-red-700/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-red-700/10 rounded-full blur-2xl group-hover:bg-red-700/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-red-700/20 hover:border-red-700/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-red-950 flex items-center justify-center border border-red-700/30">
-                        <i data-lucide="swords" class="w-6 h-6 text-red-500"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Банда</span>
+                    <div class="w-12 h-12 rounded-xl bg-red-950 flex items-center justify-center border border-red-700/30"><i data-lucide="swords" class="w-6 h-6 text-red-500"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Банда</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-red-500 mb-2">Главарь</h3>
                 <p class="text-gray-400 text-sm mb-4">Лидер бандитов</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Главарь', 40)" class="bg-red-700/20 hover:bg-red-700/40 border border-red-700/50 text-red-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Главарь', 40)" class="bg-red-700/20 hover:bg-red-700/40 border border-red-700/50 text-red-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Ангел -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-cyan-500/20 hover:border-cyan-500/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-2xl group-hover:bg-cyan-500/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-cyan-500/20 hover:border-cyan-500/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-900/30 flex items-center justify-center border border-cyan-500/30">
-                        <i data-lucide="feather" class="w-6 h-6 text-cyan-400"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Небесный</span>
+                    <div class="w-12 h-12 rounded-xl bg-cyan-900/30 flex items-center justify-center border border-cyan-500/30"><i data-lucide="feather" class="w-6 h-6 text-cyan-400"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Небесный</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-cyan mb-2">Ангел</h3>
                 <p class="text-gray-400 text-sm mb-4">Небесный покровитель</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Ангел', 40)" class="bg-cyan-600/20 hover:bg-cyan-600/40 border border-cyan-500/50 text-cyan-400 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Ангел', 40)" class="bg-cyan-600/20 hover:bg-cyan-600/40 border border-cyan-500/50 text-cyan-400 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Алмаз -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-cyan-400/20 hover:border-cyan-400/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-400/10 rounded-full blur-2xl group-hover:bg-cyan-400/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-cyan-400/20 hover:border-cyan-400/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-950 flex items-center justify-center border border-cyan-400/30">
-                        <i data-lucide="diamond" class="w-6 h-6 text-cyan-300"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Редкий</span>
+                    <div class="w-12 h-12 rounded-xl bg-cyan-950 flex items-center justify-center border border-cyan-400/30"><i data-lucide="diamond" class="w-6 h-6 text-cyan-300"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Редкий</span>
                 </div>
-
                 <h3 class="text-3xl font-bold title-gradient-diamond mb-2">Алмаз</h3>
                 <p class="text-gray-400 text-sm mb-4">Драгоценный игрок</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Алмаз', 40)" class="bg-cyan-600/20 hover:bg-cyan-600/40 border border-cyan-400/50 text-cyan-300 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Алмаз', 40)" class="bg-cyan-600/20 hover:bg-cyan-600/40 border border-cyan-400/50 text-cyan-300 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Герой -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-orange-400/20 hover:border-orange-400/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-orange-400/10 rounded-full blur-2xl group-hover:bg-orange-400/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-orange-400/20 hover:border-orange-400/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-orange-950 flex items-center justify-center border border-orange-400/30">
-                        <i data-lucide="badge" class="w-6 h-6 text-orange-300"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Защитник</span>
+                    <div class="w-12 h-12 rounded-xl bg-orange-950 flex items-center justify-center border border-orange-400/30"><i data-lucide="badge" class="w-6 h-6 text-orange-300"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Защитник</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-orange-400 mb-2">Герой</h3>
                 <p class="text-gray-400 text-sm mb-4">Защитник сервера</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Герой', 40)" class="bg-orange-400/20 hover:bg-orange-400/40 border border-orange-400/50 text-orange-300 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Герой', 40)" class="bg-orange-400/20 hover:bg-orange-400/40 border border-orange-400/50 text-orange-300 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Звезда -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-yellow-300/20 hover:border-yellow-300/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-yellow-300/10 rounded-full blur-2xl group-hover:bg-yellow-300/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-yellow-300/20 hover:border-yellow-300/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-950 flex items-center justify-center border border-yellow-300/30">
-                        <i data-lucide="star" class="w-6 h-6 text-yellow-300"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Популярность</span>
+                    <div class="w-12 h-12 rounded-xl bg-yellow-950 flex items-center justify-center border border-yellow-300/30"><i data-lucide="star" class="w-6 h-6 text-yellow-300"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Популярность</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-yellow-300 mb-2">Звезда</h3>
                 <p class="text-gray-400 text-sm mb-4">Свети ярче всех</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
                     <div class="text-2xl font-bold text-white">40 ₽</div>
-                    <button onclick="buyTitle('Звезда', 40)" class="bg-yellow-500/20 hover:bg-yellow-500/40 border border-yellow-300/50 text-yellow-300 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <button onclick="buyTitle('Звезда', 40)" class="bg-yellow-500/20 hover:bg-yellow-500/40 border border-yellow-300/50 text-yellow-300 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
             <!-- Акула -->
-            <div class="glass rounded-2xl p-6 hover-scale relative overflow-hidden group border border-blue-400/20 hover:border-blue-400/50">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-blue-400/10 rounded-full blur-2xl group-hover:bg-blue-400/20 transition-all"></div>
-
+            <div class="glass rounded-2xl p-6 hover-scale border border-blue-400/20 hover:border-blue-400/50">
                 <div class="flex items-center justify-between mb-4">
-                    <div class="w-12 h-12 rounded-xl bg-blue-950 flex items-center justify-center border border-blue-400/30">
-                        <i data-lucide="fish" class="w-6 h-6 text-blue-300"></i>
-                    </div>
-                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Хищник</span>
+                    <div class="w-12 h-12 rounded-xl bg-blue-950 flex items-center justify-center border border-blue-400/30"><i data-lucide="fish" class="w-6 h-6 text-blue-300"></i></div>
+                    <span class="text-xs font-bold text-gray-500">Хищник</span>
                 </div>
-
                 <h3 class="text-3xl font-bold text-blue-400 mb-2">Акула</h3>
                 <p class="text-gray-400 text-sm mb-4">Властелин океана</p>
-
                 <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
-                    <div class="text-2xl font-bold text-white">10 ₽</div>
-                    <button onclick="buyTitle('Акула', 10)" class="bg-blue-500/20 hover:bg-blue-500/40 border border-blue-400/50 text-blue-300 hover:text-white px-4 py-2 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
-                        Купить
-                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
+                    <div class="text-2xl font-bold text-white">40 ₽</div>
+                    <button onclick="buyTitle('Акула', 40)" class="bg-blue-500/20 hover:bg-blue-500/40 border border-blue-400/50 text-blue-300 hover:text-white px-4 py-2 rounded-lg font-semibold text-sm flex items-center gap-2">Купить <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
                 </div>
             </div>
 
@@ -505,212 +277,148 @@
 <!-- Footer -->
 <footer class="border-t border-orange-900/30 py-12 px-4 mt-12">
     <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-3">
-            <a href="index.html" class="flex items-center gap-3 group">
-                <div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center group-hover:shadow-lg group-hover:shadow-orange-500/30 transition-all">
-                    <i data-lucide="box" class="w-4 h-4 text-white"></i>
-                </div>
-                <span class="text-xl font-bold text-gradient">GoodCube</span>
-            </a>
-        </div>
-
-        <p class="text-gray-500 text-sm">
-            © 2026 GoodCube. Все права защищены. Не является официальным продуктом Mojang.
-        </p>
-
+        <div class="flex items-center gap-3"><div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center"><i data-lucide="box" class="w-4 h-4 text-white"></i></div><span class="text-xl font-bold text-gradient">GoodCube</span></div>
+        <p class="text-gray-500 text-sm">© 2026 GoodCube. Все права защищены. Не является официальным продуктом Mojang.</p>
         <div class="flex items-center gap-4">
-            <a href="https://t.me/move123_YT" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#0088cc] hover:border-[#0088cc]/50 transition-all">
-                <i data-lucide="send" class="w-5 h-5"></i>
-            </a>
-            <div onclick="copyToClipboard('move123_yt')" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#5865F2] hover:border-[#5865F2]/50 transition-all cursor-pointer">
-                <i data-lucide="message-circle" class="w-5 h-5"></i>
-            </div>
+            <a href="https://t.me/move123_YT" target="_blank" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#0088cc]"><i data-lucide="send" class="w-5 h-5"></i></a>
+            <div onclick="copyToClipboard('move123_yt')" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#5865F2] cursor-pointer"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
         </div>
     </div>
 </footer>
 
-<!-- Contact Modal -->
+<!-- Currency Modal -->
+<div id="currencyModal" class="fixed inset-0 z-[100] hidden">
+    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeCurrencyModal()"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass w-full max-w-lg rounded-3xl p-8 relative my-8">
+            <button onclick="closeCurrencyModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10"><i data-lucide="x" class="w-5 h-5 text-gray-400"></i></button>
+            <div class="text-center mb-6"><div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-yellow-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="coins" class="w-8 h-8 text-white"></i></div><h3 class="text-2xl font-bold text-white mb-2">Покупка валюты</h3><p class="text-gray-400">Выберите количество монет</p></div>
+            <div class="mb-6 p-4 rounded-xl bg-yellow-500/10"><div class="flex justify-between"><span class="text-gray-400">Курс:</span><span class="text-yellow-400 font-bold">1₽ = 100 монет</span></div></div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50"><label class="block text-sm text-gray-400 mb-2">Ник в Minecraft:</label><div class="flex gap-2"><input type="text" id="currencyNick" placeholder="Введите ник" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white"><button onclick="saveCurrencyNick()" class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm">Сохранить</button></div><p class="text-xs text-gray-500 mt-2">Ник: <span id="displayCurrencyNick">не указан</span></p></div>
+            <div class="mb-6"><div class="flex justify-between mb-2"><label class="text-sm text-gray-400">Монет:</label><span class="text-yellow-400 font-bold text-xl" id="coinAmount">0</span></div><input type="range" id="coinSlider" min="0" max="5000000" step="1000" value="0" class="w-full mb-4" oninput="updateCoinAmount(this.value)"><div class="flex gap-2"><input type="number" id="coinInput" min="0" max="5000000" step="1000" value="0" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white" onchange="updateCoinFromInput(this.value)"><div class="bg-gray-800 rounded-lg px-4 py-3"><span class="text-gray-400">монет</span></div></div></div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50"><div class="flex justify-between"><span class="text-gray-400">К оплате:</span><span class="text-3xl font-bold text-white" id="rubAmount">0</span><span class="text-gray-400">₽</span></div></div>
+            <div class="mb-6 flex justify-between"><button onclick="setMaxCoins()" class="text-yellow-400">Максимум (5 млн)</button><span class="text-gray-500">≈ 50,000 ₽</span></div>
+            <div class="space-y-4">
+                <div onclick="buyCurrency()" class="flex items-center gap-4 p-4 rounded-2xl bg-yellow-600/10 hover:bg-yellow-600/20 border border-yellow-600/30 cursor-pointer"><div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center"><i data-lucide="wallet" class="w-6 h-6 text-white"></i></div><div class="flex-1"><p class="text-white font-semibold">Оплатить ЮMoney</p><p class="text-yellow-500 text-sm">Картой или из кошелька</p></div><i data-lucide="credit-card" class="w-5 h-5 text-yellow-500"></i></div>
+                <a href="https://t.me/goodcube_news?direct" class="flex items-center gap-4 p-4 rounded-2xl bg-[#0088cc]/10 border border-[#0088cc]/30"><div class="w-12 h-12 rounded-xl bg-[#0088cc]"><i data-lucide="send" class="w-6 h-6 text-white"></i></div><div class="flex-1"><p class="text-white font-semibold">Telegram</p><p class="text-[#0088cc] text-sm">Директ</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#0088cc]"></i></a>
+                <a href="https://discord.gg/goodcube" class="flex items-center gap-4 p-4 rounded-2xl bg-[#5865F2]/10 border border-[#5865F2]/30"><div class="w-12 h-12 rounded-xl bg-[#5865F2]"><i data-lucide="message-circle" class="w-6 h-6 text-white"></i></div><div class="flex-1"><p class="text-white font-semibold">Discord</p><p class="text-[#5865F2] text-sm">Через тикет</p></div><i data-lucide="external-link" class="w-5 h-5 text-[#5865F2]"></i></a>
+            </div>
+            <div class="mt-6 p-4 rounded-xl bg-yellow-500/10"><p class="text-yellow-400 text-sm text-center"><i data-lucide="info" class="w-4 h-4 inline"></i>Минимум: 10₽ (1000 монет)</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Modal для покупки титулов -->
 <div id="contactModal" class="fixed inset-0 z-[100] hidden">
     <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeContactModal()"></div>
-    <div class="absolute inset-0 flex items-center justify-center p-4">
-        <div class="glass w-full max-w-lg rounded-3xl p-8 relative animate-[float_0.3s_ease-out]">
-            <button onclick="closeContactModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-gray-400 transition-colors">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 rounded-2xl bg-orange-600 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-orange-600/30">
-                    <i data-lucide="shopping-bag" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-2" id="modalTitle">Покупка титула</h3>
-                <p class="text-gray-400" id="modalDescription">Выберите способ оплаты</p>
-            </div>
-
-            <!-- Никнейм игрока -->
-            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
-                <label class="block text-sm font-medium text-gray-400 mb-2">
-                    Ваш ник в Minecraft:
-                </label>
-                <div class="flex gap-2">
-                    <input type="text" id="minecraftNick" placeholder="Введите ник"
-                           class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500">
-                    <button onclick="saveNickname()" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm font-semibold">
-                        Сохранить
-                    </button>
-                </div>
-                <p class="text-xs text-gray-500 mt-2" id="savedNickDisplay">
-                    Сохраненный ник: <span id="displayNick">не указан</span>
-                </p>
-            </div>
-
-            <!-- Поле для промокода -->
-            <div class="mb-6 p-4 rounded-xl bg-gray-800/50 border border-gray-700">
-                <label class="block text-sm font-medium text-gray-400 mb-2">
-                    Промокод (если есть):
-                </label>
-                <div class="flex gap-2">
-                    <input type="text" id="promocodeInput" placeholder="Введите промокод"
-                           class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500 uppercase">
-                    <button onclick="applyPromocode()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all">
-                        Применить
-                    </button>
-                </div>
-                <div id="promocodeMessage" class="text-xs mt-2 hidden"></div>
-            </div>
-
+    <div class="absolute inset-0 flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass w-full max-w-lg rounded-3xl p-8 relative my-8">
+            <button onclick="closeContactModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10"><i data-lucide="x" class="w-5 h-5 text-gray-400"></i></button>
+            <div class="text-center mb-6"><div class="w-16 h-16 rounded-2xl bg-orange-600 flex items-center justify-center mx-auto mb-4"><i data-lucide="shopping-bag" class="w-8 h-8 text-white"></i></div><h3 class="text-2xl font-bold text-white mb-2" id="modalTitle">Покупка титула</h3><p class="text-gray-400" id="modalDescription">Выберите способ оплаты</p></div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50"><label class="block text-sm text-gray-400 mb-2">Ваш ник в Minecraft:</label><div class="flex gap-2"><input type="text" id="minecraftNick" placeholder="Введите ник" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white"><button onclick="saveNickname()" class="bg-orange-600 hover:bg-orange-700 text-white px-4 py-2 rounded-lg text-sm">Сохранить</button></div><p class="text-xs text-gray-500 mt-2">Сохраненный ник: <span id="displayNick">не указан</span></p></div>
+            <div class="mb-6 p-4 rounded-xl bg-gray-800/50"><label class="block text-sm text-gray-400 mb-2">Промокод (если есть):</label><div class="flex gap-2"><input type="text" id="promocodeInput" placeholder="Введите промокод" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white uppercase"><button onclick="applyPromocode()" class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm">Применить</button></div><div id="promocodeMessage" class="text-xs mt-2 hidden"></div></div>
             <div class="space-y-4">
                 <!-- ЮMoney Option -->
-                <div class="flex items-center gap-4 p-4 rounded-2xl bg-yellow-600/10 hover:bg-yellow-600/20 border border-yellow-600/30 transition-all group cursor-pointer" onclick="openYooMoney()">
-                    <div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center">
-                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="currentColor"/>
-                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
-                        </svg>
+                <div onclick="openYooMoney()" class="flex items-center gap-4 p-4 rounded-2xl bg-yellow-600/10 hover:bg-yellow-600/20 border border-yellow-600/30 transition-all group cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-yellow-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="wallet" class="w-6 h-6 text-white"></i>
                     </div>
                     <div class="flex-1 text-left">
                         <p class="text-white font-semibold">Оплатить ЮMoney</p>
                         <p class="text-yellow-500 text-sm">Банковской картой или из кошелька</p>
                     </div>
-                    <i data-lucide="credit-card" class="w-5 h-5 text-yellow-500"></i>
+                    <i data-lucide="credit-card" class="w-5 h-5 text-yellow-500 flex-shrink-0"></i>
                 </div>
 
                 <!-- Telegram Option -->
                 <a href="https://t.me/dqaaq" target="_blank" class="flex items-center gap-4 p-4 rounded-2xl bg-[#0088cc]/10 hover:bg-[#0088cc]/20 border border-[#0088cc]/30 transition-all group">
-                    <div class="w-12 h-12 rounded-xl bg-[#0088cc] flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-xl bg-[#0088cc] flex items-center justify-center flex-shrink-0">
                         <i data-lucide="send" class="w-6 h-6 text-white"></i>
                     </div>
                     <div class="flex-1 text-left">
                         <p class="text-white font-semibold">Написать в Telegram</p>
                         <p class="text-[#0088cc] text-sm">@dqaaq</p>
                     </div>
-                    <i data-lucide="external-link" class="w-5 h-5 text-[#0088cc]"></i>
+                    <i data-lucide="external-link" class="w-5 h-5 text-[#0088cc] flex-shrink-0"></i>
                 </a>
 
                 <!-- Discord Option -->
-                <div onclick="showDiscordBuyInfo()" class="flex items-center gap-4 p-4 rounded-2xl bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30 transition-all group cursor-pointer">
-                    <div class="w-12 h-12 rounded-xl bg-[#5865F2] flex items-center justify-center">
+                <div onclick="copyToClipboard('pixelglimmer')" class="flex items-center gap-4 p-4 rounded-2xl bg-[#5865F2]/10 hover:bg-[#5865F2]/20 border border-[#5865F2]/30 transition-all group cursor-pointer">
+                    <div class="w-12 h-12 rounded-xl bg-[#5865F2] flex items-center justify-center flex-shrink-0">
                         <i data-lucide="message-circle" class="w-6 h-6 text-white"></i>
                     </div>
                     <div class="flex-1 text-left">
                         <p class="text-white font-semibold">Написать в Discord</p>
                         <p class="text-[#5865F2] text-sm">@pixelglimmer</p>
                     </div>
-                    <i data-lucide="copy" class="w-5 h-5 text-[#5865F2]"></i>
+                    <i data-lucide="copy" class="w-5 h-5 text-[#5865F2] flex-shrink-0"></i>
                 </div>
             </div>
-
-            <div class="mt-6 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20">
-                <p class="text-orange-400 text-sm text-center">
-                    <i data-lucide="info" class="w-4 h-4 inline mr-1"></i>
-                    При оплате через ЮMoney донат выдается автоматически в течение 5 минут
-                </p>
-            </div>
+            <div class="mt-6 p-4 rounded-xl bg-orange-500/10"><p class="text-orange-400 text-sm text-center"><i data-lucide="clock" class="w-4 h-4 inline"></i>При оплате через ЮMoney донат выдается автоматически в течение 5 минут</p></div>
         </div>
     </div>
 </div>
 
-<!-- Toast Notification -->
-<div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]">
-    <div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3 shadow-2xl">
-        <i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i>
-        <span id="toastMessage" class="text-white font-medium">Скопировано!</span>
-    </div>
-</div>
+<!-- Toast -->
+<div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]"><div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i><span id="toastMessage" class="text-white font-medium">Скопировано!</span></div></div>
 
+<canvas id="particles"></canvas>
+<style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;}</style>
 <script>
-    // Initialize Lucide icons
-    lucide.createIcons();
+    // Particles
+    (function(){const c=document.getElementById('particles');if(!c)return;const ctx=c.getContext('2d');let p=[];function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}function init(){p=[];for(let i=0;i<80;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});}}function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#f97316';for(let i of p){ctx.beginPath();ctx.arc(i.x,i.y,i.r,0,Math.PI*2);ctx.fill();i.x+=i.dx;i.y+=i.dy;if(i.x<0||i.x>c.width)i.dx*=-1;if(i.y<0||i.y>c.height)i.dy*=-1;}requestAnimationFrame(draw);}window.addEventListener('resize',()=>{resize();init();});resize();init();draw();})();
 
-    // Текущий выбранный товар
-    let currentProduct = { name: 'Титул', price: 40 };
-
-    // Промокод переменные
+    // ========== ОСНОВНЫЕ ФУНКЦИИ ==========
+    let currentProduct = { name: 'Титул', price: 0, type: 'title' };
     let currentDiscount = 0;
     let currentDiscountedPrice = 0;
     let currentPromoCode = null;
 
-    // Функция покупки титула
     function buyTitle(titleName, price) {
-        currentProduct = { name: titleName, price: price };
-
-        // Сбрасываем промокод при новом выборе
+        currentProduct = { name: titleName, price: price, type: 'title' };
+        document.getElementById('modalTitle').innerHTML = `Покупка: ${titleName}`;
+        document.getElementById('modalDescription').innerHTML = `Сумма: ${price} ₽`;
         resetPromo();
-
-        // Обновляем модальное окно
-        document.getElementById('modalTitle').textContent = `Покупка: ${titleName}`;
-        document.getElementById('modalDescription').textContent = `Сумма: ${price} ₽`;
-
-        // Открываем модальное окно
         openContactModal();
     }
 
-    // Сброс промокода
     function resetPromo() {
         currentDiscount = 0;
         currentDiscountedPrice = 0;
         currentPromoCode = null;
-        const input = document.getElementById('promocodeInput');
+        let input = document.getElementById('promocodeInput');
         if (input) input.value = '';
-        const msgDiv = document.getElementById('promocodeMessage');
+        let msgDiv = document.getElementById('promocodeMessage');
         if (msgDiv) msgDiv.classList.add('hidden');
-        const modalDesc = document.getElementById('modalDescription');
+        let modalDesc = document.getElementById('modalDescription');
         if (modalDesc && currentProduct.price) {
-            modalDesc.textContent = `Сумма: ${currentProduct.price} ₽`;
+            modalDesc.innerHTML = `Сумма: ${currentProduct.price} ₽`;
         }
     }
 
-    // Применение промокода
     function applyPromocode() {
-        const input = document.getElementById('promocodeInput');
-        const msgDiv = document.getElementById('promocodeMessage');
-        const code = input.value.trim();
-
-        if (!code) {
-            showMessage('Введите промокод', 'error', msgDiv);
-            return;
-        }
-
-        const amount = currentProduct.price;
-        const result = PromoCodes.validatePromocode(code, amount);
-
+        let input = document.getElementById('promocodeInput');
+        let msgDiv = document.getElementById('promocodeMessage');
+        let code = input.value.trim();
+        if (!code) { showMsg('Введите промокод', 'error', msgDiv); return; }
+        let amount = currentProduct.price;
+        let result = window.PromoCodes ? PromoCodes.validatePromocode(code, amount) : { valid: false, message: 'Промокоды временно недоступны' };
         if (result.valid) {
             currentDiscount = result.discount;
             currentDiscountedPrice = result.discountedPrice;
             currentPromoCode = code;
-            showMessage(result.message, 'success', msgDiv);
-
-            // Обновляем отображение цены
-            const modalDesc = document.getElementById('modalDescription');
+            showMsg(result.message, 'success', msgDiv);
+            let modalDesc = document.getElementById('modalDescription');
             modalDesc.innerHTML = `Сумма: <span class="line-through text-gray-500">${amount} ₽</span> <span class="text-green-400 font-bold">${currentDiscountedPrice} ₽</span> (скидка ${currentDiscount}%)`;
         } else {
             currentDiscount = 0;
             currentPromoCode = null;
-            showMessage(result.message, 'error', msgDiv);
-            document.getElementById('modalDescription').textContent = `Сумма: ${amount} ₽`;
+            showMsg(result.message, 'error', msgDiv);
+            document.getElementById('modalDescription').innerHTML = `Сумма: ${amount} ₽`;
         }
     }
 
-    function showMessage(msg, type, msgDiv) {
+    function showMsg(msg, type, msgDiv) {
         msgDiv.textContent = msg;
         msgDiv.classList.remove('hidden');
         msgDiv.className = `text-xs mt-2 ${type === 'success' ? 'text-green-400' : 'text-red-400'}`;
@@ -718,41 +426,24 @@
     }
 
     function openYooMoney() {
-        const walletNumber = '4100118384508073';
-
-        // Получаем финальную цену с учетом промокода
         let finalPrice = currentProduct.price;
         let promoInfo = '';
-
         if (currentDiscount > 0) {
             finalPrice = currentDiscountedPrice;
             promoInfo = ` (скидка ${currentDiscount}%, было ${currentProduct.price}₽)`;
         }
+        let playerName = localStorage.getItem('minecraft_nick') || 'Не указан';
+        if (playerName === 'Не указан' && !confirm('Вы не указали ник в Minecraft. Продолжить?')) return;
 
-        // Получаем ник игрока
-        const playerName = localStorage.getItem('minecraft_nick') || 'Не указан';
-
-        if (playerName === 'Не указан') {
-            if (!confirm('Вы не указали ник в Minecraft. Продолжить?')) {
-                return;
-            }
-        }
-
-        // Создаем форму для отправки в ЮMoney
-        const form = document.createElement('form');
+        let form = document.createElement('form');
         form.method = 'POST';
         form.action = 'https://yoomoney.ru/quickpay/confirm.xml';
         form.target = '_blank';
-        form.acceptCharset = 'UTF-8';
-
-        // Генерируем уникальный номер заказа
-        const orderId = 'goodcube_' + Date.now() + '_' + Math.random().toString(36).substring(7);
-
-        // Параметры платежа
-        const params = {
-            'receiver': walletNumber,
+        let orderId = 'goodcube_' + Date.now() + '_' + Math.random().toString(36).substring(7);
+        let params = {
+            'receiver': '4100118384508073',
             'quickpay-form': 'button',
-            'paymentType': 'AC', // AC - карта, PC - кошелек
+            'paymentType': 'AC',
             'sum': finalPrice,
             'label': orderId,
             'targets': `Титул ${currentProduct.name} для ${playerName}${promoInfo}`,
@@ -760,87 +451,33 @@
             'short-dest': `GoodCube: ${currentProduct.name}`,
             'comment': `Покупка титула ${currentProduct.name}. Ник: ${playerName}. Промокод: ${currentPromoCode || 'нет'}`
         };
-
-        // Добавляем поля в форму
-        for (let key in params) {
-            const input = document.createElement('input');
-            input.type = 'hidden';
-            input.name = key;
-            input.value = params[key];
-            form.appendChild(input);
-        }
-
-        document.body.appendChild(form);
-        form.submit();
-        document.body.removeChild(form);
-
-        showToast('Перенаправляем на страницу оплаты ЮMoney...');
-
-        // Если промокод был использован, увеличиваем счетчик
-        if (currentPromoCode) {
-            PromoCodes.applyPromocode(currentPromoCode);
-        }
-
-        // Сохраняем информацию о покупке
-        const purchases = JSON.parse(localStorage.getItem('purchases') || '[]');
-        purchases.push({
-            orderId: orderId,
-            product: currentProduct.name,
-            price: currentProduct.price,
-            finalPrice: finalPrice,
-            discount: currentDiscount,
-            promoCode: currentPromoCode || null,
-            playerName: playerName,
-            date: new Date().toISOString()
-        });
-        localStorage.setItem('purchases', JSON.stringify(purchases));
-
-        // Закрываем модальное окно через 2 секунды
+        for (let key in params) { let input = document.createElement('input'); input.type = 'hidden'; input.name = key; input.value = params[key]; form.appendChild(input); }
+        document.body.appendChild(form); form.submit(); document.body.removeChild(form);
+        showToast('Перенаправляем на оплату...');
+        if (currentPromoCode && window.PromoCodes) PromoCodes.applyPromocode(currentPromoCode);
         setTimeout(closeContactModal, 2000);
     }
 
-    // Функция для сохранения ника
     function saveNickname() {
-        const nickInput = document.getElementById('minecraftNick');
+        let nickInput = document.getElementById('minecraftNick');
         if (nickInput && nickInput.value.trim()) {
-            const nick = nickInput.value.trim();
+            let nick = nickInput.value.trim();
             localStorage.setItem('minecraft_nick', nick);
-            document.getElementById('displayNick').textContent = nick;
-            document.getElementById('savedNickDisplay').classList.remove('hidden');
+            document.getElementById('displayNick').innerText = nick;
             showToast(`Ник ${nick} сохранен!`);
             nickInput.value = '';
-        } else {
-            showToast('Введите ник');
-        }
+        } else { showToast('Введите ник'); }
     }
 
-    // Функция для отображения сохраненного ника
     function displaySavedNick() {
-        const savedNick = localStorage.getItem('minecraft_nick');
-        if (savedNick) {
-            document.getElementById('displayNick').textContent = savedNick;
-            document.getElementById('savedNickDisplay').classList.remove('hidden');
-        }
+        let savedNick = localStorage.getItem('minecraft_nick');
+        if (savedNick) document.getElementById('displayNick').innerText = savedNick;
     }
 
-    // Copy to clipboard function
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            showToast(`Скопировано: ${text}`);
-        });
-    }
-
-    // Show Discord buy info
-    function showDiscordBuyInfo() {
-        copyToClipboard('pixelglimmer');
-        showToast('Добавь в друзья: pixelglimmer');
-    }
-
-    // Modal functions
     function openContactModal() {
         document.getElementById('contactModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
-        lucide.createIcons();
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         displaySavedNick();
     }
 
@@ -849,28 +486,34 @@
         document.body.style.overflow = 'auto';
     }
 
-    // Toast notification
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toastMessage');
-        toastMessage.textContent = message;
-        toast.classList.remove('translate-y-20', 'opacity-0');
-
-        setTimeout(() => {
-            toast.classList.add('translate-y-20', 'opacity-0');
-        }, 3000);
+    // ========== ВАЛЮТА ==========
+    function updateCoinAmount(v) { let coins = parseInt(v); document.getElementById('coinAmount').innerText = coins.toLocaleString(); document.getElementById('coinInput').value = coins; document.getElementById('rubAmount').innerText = Math.floor(coins/100); }
+    function updateCoinFromInput(v) { let coins = parseInt(v)||0; if(coins>5000000) coins=5000000; if(coins<0) coins=0; coins = Math.round(coins/1000)*1000; document.getElementById('coinSlider').value = coins; document.getElementById('coinAmount').innerText = coins.toLocaleString(); document.getElementById('coinInput').value = coins; document.getElementById('rubAmount').innerText = Math.floor(coins/100); }
+    function setMaxCoins() { updateCoinFromInput(5000000); }
+    function saveCurrencyNick() { let nick = document.getElementById('currencyNick').value.trim(); if(nick) { localStorage.setItem('minecraft_nick', nick); document.getElementById('displayCurrencyNick').innerText = nick; showToast('Ник сохранен'); } }
+    function buyCurrency() {
+        let coins = parseInt(document.getElementById('coinSlider').value);
+        if(coins < 1000) { showToast('Минимум 1000 монет'); return; }
+        let rub = Math.floor(coins/100);
+        let player = localStorage.getItem('minecraft_nick') || 'Не указан';
+        let form = document.createElement('form'); form.method='POST'; form.action='https://yoomoney.ru/quickpay/confirm.xml'; form.target='_blank';
+        let params = { receiver:'4100118384508073', 'quickpay-form':'button', paymentType:'AC', sum:rub, label:'goodcube_'+Date.now()+'_'+Math.random().toString(36).substring(7), targets:`${coins} монет для ${player}`, comment:`Покупка ${coins} монет. Ник: ${player}` };
+        for(let k in params) { let i = document.createElement('input'); i.type='hidden'; i.name=k; i.value=params[k]; form.appendChild(i); }
+        document.body.appendChild(form); form.submit(); document.body.removeChild(form);
+        showToast('Перенаправление...');
+        setTimeout(closeCurrencyModal, 2000);
     }
+    function openCurrencyModal() { document.getElementById('currencyModal').classList.remove('hidden'); document.body.style.overflow = 'hidden'; lucide.createIcons(); }
+    function closeCurrencyModal() { document.getElementById('currencyModal').classList.add('hidden'); document.body.style.overflow = 'auto'; }
+    function copyToClipboard(text) { navigator.clipboard.writeText(text); showToast(`Скопировано: ${text}`); }
+    function showToast(msg) { let t = document.getElementById('toast'); if(t) { document.getElementById('toastMessage').innerText = msg; t.classList.remove('translate-y-20', 'opacity-0'); setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 3000); } }
 
-    // Close modal on Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeContactModal();
-    });
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        lucide.createIcons();
+    document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
         displaySavedNick();
+        document.getElementById('displayCurrencyNick').innerText = localStorage.getItem('minecraft_nick') || 'не указан';
     });
 </script>
+
 </body>
 </html>
