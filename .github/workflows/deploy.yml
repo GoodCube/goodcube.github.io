@@ -1,0 +1,36 @@
+﻿name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create config with secrets
+        run: |
+          echo "// Автоматически сгенерировано" > assets/js/config.js
+          echo "const BOT_TOKEN = '${{ secrets.TELEGRAM_BOT_TOKEN }}';" >> assets/js/config.js
+          echo "const ADMIN_CHAT_ID = '${{ secrets.TELEGRAM_CHAT_ID }}';" >> assets/js/config.js
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4

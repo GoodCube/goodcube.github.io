@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>GoodCube - Оплата успешна</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .minecraft-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
+        @media (max-width: 768px) { .glass.p-12 { padding: 1.5rem !important; } }
+    </style>
+</head>
+<body class="font-sans antialiased minecraft-pattern min-h-screen flex flex-col">
+
+<nav class="w-full z-50 glass border-b border-orange-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30">
+                        <i data-lucide="box" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gradient">GoodCube</span>
+                </a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-full font-semibold transition-all flex items-center gap-2">
+                    <i data-lucide="home" class="w-4 h-4"></i> На главную
+                </a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main class="flex-1 flex items-center justify-center px-4 py-16">
+    <div class="glass rounded-3xl p-8 md:p-12 max-w-2xl mx-auto text-center">
+        <div class="w-20 h-20 rounded-2xl bg-green-500 flex items-center justify-center mx-auto mb-6 shadow-lg shadow-green-500/30">
+            <i data-lucide="check-circle" class="w-10 h-10 text-white"></i>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">
+            <span class="text-gradient">Оплата прошла успешно!</span>
+        </h1>
+        <p class="text-gray-400 mb-6">Спасибо за поддержку проекта! Информация о покупке сохранена.</p>
+
+        <div id="purchaseInfo" class="bg-gray-800/50 rounded-xl p-4 mb-6 text-left">
+            <p class="text-sm text-gray-400 mb-2">Детали покупки:</p>
+            <div id="purchaseDetails" class="text-white text-sm space-y-2">
+                <div class="flex justify-between border-b border-gray-700 pb-2">
+                    <span class="text-gray-400">Товар:</span>
+                    <span id="productName" class="text-orange-400 font-medium">Загрузка...</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-700 pb-2">
+                    <span class="text-gray-400">Сумма:</span>
+                    <span id="productPrice" class="text-green-400 font-medium">...</span>
+                </div>
+                <div class="flex justify-between border-b border-gray-700 pb-2">
+                    <span class="text-gray-400">Ник игрока:</span>
+                    <span id="playerName" class="text-white">...</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-400">Промокод:</span>
+                    <span id="promoCode" class="text-white">нет</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 mb-6">
+            <p class="text-orange-400 text-sm flex items-center justify-center gap-2">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+                Донат будет выдан в течение 5-10 минут после подтверждения платежа
+            </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="index.html" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all">Вернуться на главную</a>
+            <a href="https://t.me/dqaaq" target="_blank" class="glass hover:bg-white/10 px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                <i data-lucide="send" class="w-4 h-4"></i> Написать в поддержку
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer class="border-t border-orange-900/30 py-6 px-4 text-center text-gray-500 text-sm">
+    © 2026 GoodCube. Все права защищены.
+</footer>
+
+<canvas id="particles"></canvas>
+<style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;}</style>
+
+<script>
+    (function() {
+        const canvas = document.getElementById('particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        function init() {
+            particles = [];
+            for (let i = 0; i < 80; i++) {
+                particles.push({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.8, dy: (Math.random() - 0.5) * 0.8 });
+            }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#f97316';
+            for (let p of particles) {
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+            }
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize(); init(); draw();
+    })();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('order');
+
+    function loadPurchaseInfo() {
+        const purchases = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
+        let lastPurchase = null;
+        if (orderId) lastPurchase = purchases.find(p => p.orderId === orderId);
+        if (!lastPurchase && purchases.length > 0) lastPurchase = purchases[purchases.length - 1];
+
+        if (lastPurchase) {
+            document.getElementById('productName').innerHTML = lastPurchase.productName;
+            document.getElementById('productPrice').innerHTML = `${lastPurchase.finalPrice} ₽`;
+            document.getElementById('playerName').innerHTML = lastPurchase.playerName;
+            document.getElementById('promoCode').innerHTML = lastPurchase.promoCode || 'нет';
+            if (lastPurchase.discount > 0) {
+                document.getElementById('productPrice').innerHTML = `<span class="line-through text-gray-500">${lastPurchase.originalPrice} ₽</span> <span class="text-green-400">${lastPurchase.finalPrice} ₽</span> (скидка ${lastPurchase.discount}%)`;
+            }
+
+            const purchaseIndex = purchases.findIndex(p => p.orderId === lastPurchase.orderId);
+            if (purchaseIndex !== -1 && purchases[purchaseIndex].status !== 'success') {
+                purchases[purchaseIndex].status = 'success';
+                purchases[purchaseIndex].paidAt = new Date().toISOString();
+                localStorage.setItem('goodcube_purchases', JSON.stringify(purchases));
+
+                if (typeof sendTelegramNotification === 'function') {
+                    sendTelegramNotification({
+                        status: 'success',
+                        playerName: purchases[purchaseIndex].playerName,
+                        productName: purchases[purchaseIndex].productName,
+                        productType: purchases[purchaseIndex].productType,
+                        finalPrice: purchases[purchaseIndex].finalPrice,
+                        promoCode: purchases[purchaseIndex].promoCode,
+                        orderId: purchases[purchaseIndex].orderId,
+                        timestamp: purchases[purchaseIndex].timestamp
+                    });
+                }
+            }
+        } else {
+            document.getElementById('productName').innerHTML = 'Неизвестно';
+            document.getElementById('productPrice').innerHTML = '...';
+            document.getElementById('playerName').innerHTML = localStorage.getItem('minecraft_nick') || 'Не указан';
+        }
+    }
+
+    loadPurchaseInfo();
+    lucide.createIcons();
+</script>
+</body>
+</html>

@@ -1,20 +1,15 @@
-﻿# WebStorm IDE
+﻿# IDE
 .idea/
 *.iml
 
-# OS files
+# OS
 .DS_Store
 Thumbs.db
 
-# Temp files
+# Config with secrets (ВАЖНО!)
+assets/js/config.js
+telegram-config.js
+
+# Temp
 *.tmp
 *.log
-test.gg
-*.backup
-
-# Node modules (if any)
-node_modules/
-
-# Build outputs
-dist/
-build/

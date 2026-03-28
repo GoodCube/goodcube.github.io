@@ -14,6 +14,17 @@ const PromoCodes = {
             oneTimeOnly: false,
             active: true,
             description: "Скидка 50% на весь сезон"
+        },
+        "TESTPROMO99": {
+            name: "ff",
+            discount: 90,
+            validUntil: "2026-06-01 00:00:00",
+            maxUses: 0,
+            usedCount: 0,
+            minAmount: 0,
+            oneTimeOnly: false,
+            active: true,
+            description: "Скидfка 50% на весь сезон"
         }
     },
 
