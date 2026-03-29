@@ -1,4 +1,4 @@
-﻿name: Deploy to GitHub Pages
+﻿name: deploy to github pages
 
 on:
   push:
@@ -18,15 +18,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: checkout
         uses: actions/checkout@v4
 
-      - name: Inject Telegram token into payment.js
+      - name: inject telegram token into payment.js
         run: |
           sed -i "s|let BOT_TOKEN = '';|let BOT_TOKEN = '${{ secrets.TELEGRAM_BOT_TOKEN }}';|" assets/js/payment.js
           sed -i "s|let ADMIN_CHAT_ID = '';|let ADMIN_CHAT_ID = '${{ secrets.TELEGRAM_CHAT_ID }}';|" assets/js/payment.js
 
-      - name: Upload artifact
+      - name: upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
@@ -38,6 +38,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Deploy to GitHub Pages
+      - name: deploy to github pages
         id: deployment
         uses: actions/deploy-pages@v4
