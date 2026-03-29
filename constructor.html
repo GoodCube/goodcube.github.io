@@ -280,6 +280,12 @@
 <canvas id="particles"></canvas>
 <style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}</style>
 
+<script src="assets/js/promocodes.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/payment.js"></script>
+<script src="assets/js/services.js"></script>
+<script src="assets/js/admin.js"></script>
+
 <script>
     // Particles
     (function(){const c=document.getElementById('particles');if(!c)return;const ctx=c.getContext('2d');let p=[];function resize(){c.width=window.innerWidth;c.height=window.innerHeight;}function init(){p=[];for(let i=0;i<80;i++){p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+1,dx:(Math.random()-0.5)*0.8,dy:(Math.random()-0.5)*0.8});}}function draw(){ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#f97316';for(let i of p){ctx.beginPath();ctx.arc(i.x,i.y,i.r,0,Math.PI*2);ctx.fill();i.x+=i.dx;i.y+=i.dy;if(i.x<0||i.x>c.width)i.dx*=-1;if(i.y<0||i.y>c.height)i.dy*=-1;}requestAnimationFrame(draw);}window.addEventListener('resize',()=>{resize();init();});resize();init();draw();})();
