@@ -1,5 +1,13 @@
-﻿window.BOT_TOKEN = '';
-window.ADMIN_CHAT_ID = '';
+﻿// Загрузка конфига
+(function() {
+    const script = document.createElement('script');
+    script.src = '/assets/js/telegram-config.js';
+    script.onload = () => {
+        window.BOT_TOKEN = BOT_TOKEN;
+        window.ADMIN_CHAT_ID = ADMIN_CHAT_ID;
+    };
+    document.head.appendChild(script);
+})();
 
 let currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 let currentDiscount = 0;
