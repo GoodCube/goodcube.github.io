@@ -92,6 +92,7 @@
 <canvas id="particles"></canvas>
 <style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;}</style>
 
+<script src="assets/js/payment.js"></script>
 <script>
     (function() {
         const canvas = document.getElementById('particles');
@@ -144,6 +145,7 @@
                 purchases[purchaseIndex].paidAt = new Date().toISOString();
                 localStorage.setItem('goodcube_purchases', JSON.stringify(purchases));
 
+                // Отправляем уведомление об успешной оплате
                 if (typeof sendTelegramNotification === 'function') {
                     sendTelegramNotification({
                         status: 'success',
