@@ -1,21 +1,5 @@
-﻿let BOT_TOKEN = '';
-let ADMIN_CHAT_ID = '';
-
-async function loadTelegramConfig() {
-    try {
-        const response = await fetch('/assets/js/config.js');
-        const text = await response.text();
-        eval(text);
-        console.log('✅ Конфиг загружен');
-    } catch(e) {
-        console.log('⚠️ Конфиг не загружен');
-    }
-}
-loadTelegramConfig();
-
-// дальше весь остальной код без измененийgit add assets/js/config.js
-// git commit -m "feat: добавил config.js с пустыми переменными"
-// git push origin main
+﻿window.BOT_TOKEN = '';
+window.ADMIN_CHAT_ID = '';
 
 let currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 let currentDiscount = 0;
@@ -28,7 +12,7 @@ function escapeTelegram(text) {
 }
 
 async function sendTelegramNotification(purchase) {
-    if (!BOT_TOKEN || !ADMIN_CHAT_ID) {
+    if (!window.BOT_TOKEN || !window.ADMIN_CHAT_ID) {
         console.log('⚠️ Телеграм не настроен');
         return;
     }
@@ -51,23 +35,23 @@ ${statusEmoji} Статус: ${statusText}
 `;
 
     try {
-        await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+        await fetch('https://api.telegram.org/bot' + window.BOT_TOKEN + '/sendMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
+            body: JSON.stringify({ chat_id: window.ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
         });
     } catch(e) {}
 }
 
 function testTelegramNotification() {
-    if (!BOT_TOKEN || !ADMIN_CHAT_ID) {
+    if (!window.BOT_TOKEN || !window.ADMIN_CHAT_ID) {
         console.log('⚠️ Телеграм не настроен');
         return;
     }
-    fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+    fetch('https://api.telegram.org/bot' + window.BOT_TOKEN + '/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: '✅ GoodCube бот работает!' })
+        body: JSON.stringify({ chat_id: window.ADMIN_CHAT_ID, text: '✅ GoodCube бот работает!' })
     }).then(r => r.json()).then(d => console.log(d.ok ? '✅ Отправлено' : '❌ Ошибка: ' + d.description));
 }
 
