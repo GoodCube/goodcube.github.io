@@ -1,8 +1,5 @@
-﻿// payment.js
-let BOT_TOKEN = '';
+﻿let BOT_TOKEN = '';
 let ADMIN_CHAT_ID = '';
-
-// Эти переменные будут заменены при сборке
 
 let currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 let currentDiscount = 0;
@@ -15,8 +12,8 @@ function escapeTelegram(text) {
 }
 
 async function sendTelegramNotification(purchase) {
-    if (typeof BOT_TOKEN === 'undefined' || !BOT_TOKEN) {
-        console.log('⚠️ Telegram не настроен');
+    if (!BOT_TOKEN || !ADMIN_CHAT_ID) {
+        console.log('⚠️ Телеграм не настроен');
         return;
     }
 
@@ -33,12 +30,12 @@ ${statusEmoji} Статус: ${statusText}
 🏷️ Товар: ${typeRu} - ${purchase.productName}
 💰 Сумма: ${purchase.finalPrice} ₽
 🎫 Промокод: ${purchase.promoCode || 'нет'}
-🆔 ID: ${purchase.orderId}
+🆔 ID заказа: ${purchase.orderId}
 📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
 `;
 
     try {
-        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        await fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
@@ -47,28 +44,28 @@ ${statusEmoji} Статус: ${statusText}
 }
 
 function testTelegramNotification() {
-    if (typeof BOT_TOKEN === 'undefined' || !BOT_TOKEN) {
-        console.log('⚠️ Telegram не настроен');
+    if (!BOT_TOKEN || !ADMIN_CHAT_ID) {
+        console.log('⚠️ Телеграм не настроен');
         return;
     }
-    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+    fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: '✅ GoodCube бот работает!' })
-    }).then(r => r.json()).then(d => console.log(d.ok ? '✅ Отправлено' : '❌ ' + d.description));
+    }).then(r => r.json()).then(d => console.log(d.ok ? '✅ Отправлено' : '❌ Ошибка: ' + d.description));
 }
 
 function showPurchases() {
     let p = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
     if (!p.length) { console.log('📭 Нет покупок'); return; }
-    p.forEach((x,i) => console.log(`${i+1}. ${x.timestamp} | ${x.playerName} | ${x.productName} | ${x.finalPrice}₽ | ${x.promoCode || 'нет'}`));
-    console.log(`💰 Всего: ${p.reduce((s,x)=>s+x.finalPrice,0)}₽`);
+    p.forEach((x,i) => console.log((i+1) + '. ' + x.timestamp + ' | ' + x.playerName + ' | ' + x.productName + ' | ' + x.finalPrice + '₽ | промо: ' + (x.promoCode || 'нет')));
+    console.log('💰 Всего: ' + p.reduce((s,x)=>s+x.finalPrice,0) + '₽');
 }
 
 function copyPurchasesToClipboard() {
     let p = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
     if (!p.length) return showToast('Нет покупок');
-    let text = p.map(x => `${x.timestamp} | ${x.playerName} | ${x.productName} | ${x.finalPrice}₽ | промо: ${x.promoCode || 'нет'}`).join('\n');
+    let text = p.map(x => x.timestamp + ' | ' + x.playerName + ' | ' + x.productName + ' | ' + x.finalPrice + '₽ | промо: ' + (x.promoCode || 'нет')).join('\n');
     navigator.clipboard.writeText(text);
     showToast('📋 Скопировано');
 }
@@ -76,10 +73,10 @@ function copyPurchasesToClipboard() {
 function downloadPurchasesCSV() {
     let p = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
     if (!p.length) return showToast('Нет данных');
-    let csv = "Дата,Ник,Товар,Цена,Промокод\n" + p.map(x => `${x.timestamp},${x.playerName},${x.productName},${x.finalPrice},${x.promoCode || ''}`).join('\n');
+    let csv = "Дата,Ник,Товар,Цена,Промокод\n" + p.map(x => x.timestamp + ',' + x.playerName + ',' + x.productName + ',' + x.finalPrice + ',' + (x.promoCode || '')).join('\n');
     let a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv'}));
-    a.download = `purchases_${Date.now()}.csv`;
+    a.download = 'purchases_' + Date.now() + '.csv';
     a.click();
     showToast('📥 CSV скачан');
 }
@@ -94,8 +91,8 @@ function buyTitle(name, price) { buy('title', name, price); }
 
 function buy(type, name, price) {
     currentProduct = { name, price, type };
-    document.getElementById('modalTitle').innerHTML = `Покупка: ${name}`;
-    document.getElementById('modalDescription').innerHTML = `Сумма: ${price} ₽`;
+    document.getElementById('modalTitle').innerHTML = 'Покупка: ' + name;
+    document.getElementById('modalDescription').innerHTML = 'Сумма: ' + price + ' ₽';
     resetPromo();
     openContactModal();
 }
@@ -108,7 +105,7 @@ function resetPromo() {
     let msg = document.getElementById('promocodeMessage');
     if (msg) msg.classList.add('hidden');
     let desc = document.getElementById('modalDescription');
-    if (desc && currentProduct.price) desc.innerHTML = `Сумма: ${currentProduct.price} ₽`;
+    if (desc && currentProduct.price) desc.innerHTML = 'Сумма: ' + currentProduct.price + ' ₽';
 }
 
 function applyPromocode() {
@@ -123,29 +120,29 @@ function applyPromocode() {
         currentDiscountedPrice = res.discountedPrice;
         currentPromoCode = code;
         showMsg(res.message, 'success', msgDiv);
-        document.getElementById('modalDescription').innerHTML = `Сумма: <s>${currentProduct.price} ₽</s> <span class="text-green-400">${currentDiscountedPrice} ₽</span> (скидка ${currentDiscount}%)`;
+        document.getElementById('modalDescription').innerHTML = 'Сумма: <s>' + currentProduct.price + ' ₽</s> <span class="text-green-400">' + currentDiscountedPrice + ' ₽</span> (скидка ' + currentDiscount + '%)';
     } else {
         currentDiscount = 0;
         currentPromoCode = null;
         showMsg(res.message, 'error', msgDiv);
-        document.getElementById('modalDescription').innerHTML = `Сумма: ${currentProduct.price} ₽`;
+        document.getElementById('modalDescription').innerHTML = 'Сумма: ' + currentProduct.price + ' ₽';
     }
 }
 
 function showMsg(msg, type, div) {
     div.textContent = msg;
     div.classList.remove('hidden');
-    div.className = `text-xs mt-2 ${type === 'success' ? 'text-green-400' : 'text-red-400'}`;
+    div.className = 'text-xs mt-2 ' + (type === 'success' ? 'text-green-400' : 'text-red-400');
     setTimeout(() => div.classList.add('hidden'), 3000);
 }
 
 function openYooMoney() {
     let price = currentDiscount > 0 ? currentDiscountedPrice : currentProduct.price;
     let nick = localStorage.getItem('minecraft_nick') || 'Не указан';
-    if (nick === 'Не указан' && !confirm('Укажите ник?')) return;
+    if (nick === 'Не указан' && !confirm('Вы не указали ник. Продолжить?')) return;
 
     let typeText = { privilege: 'привилегию', title: 'титул', service: 'услугу' }[currentProduct.type] || 'товар';
-    let comment = currentPromoCode ? `${nick} купил ${typeText} ${currentProduct.name} с промокодом ${currentPromoCode} (скидка ${currentDiscount}%). Итог: ${price}₽` : `${nick} купил ${typeText} ${currentProduct.name} без промокода. Сумма: ${price}₽`;
+    let comment = currentPromoCode ? nick + ' купил ' + typeText + ' ' + currentProduct.name + ' с промокодом ' + currentPromoCode + ' (скидка ' + currentDiscount + '%). Итог: ' + price + '₽' : nick + ' купил ' + typeText + ' ' + currentProduct.name + ' без промокода. Сумма: ' + price + '₽';
     let orderId = 'goodcube_' + Date.now() + '_' + Math.random().toString(36).substring(7);
 
     let purchases = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
@@ -170,7 +167,7 @@ function openYooMoney() {
 
     let params = {
         receiver: '4100118384508073', 'quickpay-form': 'button', paymentType: 'AC', sum: price,
-        label: orderId, targets: `${nick} | ${currentProduct.name}`, comment: comment,
+        label: orderId, targets: nick + ' | ' + currentProduct.name, comment: comment,
         successURL: window.location.origin + '/payment-success.html?order=' + orderId,
         cancelURL: window.location.origin + '/payment-cancel.html?order=' + orderId
     };
@@ -187,7 +184,7 @@ function openYooMoney() {
     form.submit();
     document.body.removeChild(form);
 
-    showToast('💰 Перенаправление...');
+    showToast('💰 Перенаправление на оплату...');
     if (currentPromoCode) PromoCodes.applyPromocode(currentPromoCode);
     setTimeout(closeContactModal, 2000);
 }
@@ -199,6 +196,8 @@ function saveNickname() {
         document.getElementById('displayNick').innerHTML = inp.value.trim();
         showToast('✅ Ник сохранен');
         inp.value = '';
+    } else {
+        showToast('Введите ник');
     }
 }
 
@@ -269,19 +268,19 @@ function saveCurrencyNick() {
 function buyCurrency() {
     let coins = parseInt(document.getElementById('coinSlider').value);
     let rub = Math.floor(coins / 100);
-    if (coins < 1000) { showToast('⚠️ Минимум 1000 монет'); return; }
+    if (coins < 1000) { showToast('Минимум 1000 монет (10 рублей)'); return; }
 
     let nick = localStorage.getItem('minecraft_nick') || 'Не указан';
     if (nick === 'Не указан' && !confirm('Укажите ник?')) return;
 
     let orderId = 'curr_' + Date.now() + '_' + Math.random().toString(36).substring(7);
-    let comment = `${nick} купил ${coins} монет. Сумма: ${rub}₽`;
+    let comment = nick + ' купил ' + coins + ' монет. Сумма: ' + rub + '₽';
 
     let p = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
-    p.push({ id: Date.now(), timestamp: new Date().toISOString(), orderId, playerName: nick, productName: `${coins} монет`, productType: 'currency', finalPrice: rub, status: 'pending' });
+    p.push({ id: Date.now(), timestamp: new Date().toISOString(), orderId, playerName: nick, productName: coins + ' монет', productType: 'currency', finalPrice: rub, status: 'pending' });
     localStorage.setItem('goodcube_purchases', JSON.stringify(p));
 
-    sendTelegramNotification({ status: 'pending', playerName: nick, productName: `${coins} монет`, productType: 'currency', finalPrice: rub, orderId, timestamp: new Date().toISOString() });
+    sendTelegramNotification({ status: 'pending', playerName: nick, productName: coins + ' монет', productType: 'currency', finalPrice: rub, orderId, timestamp: new Date().toISOString() });
 
     let form = document.createElement('form');
     form.method = 'POST';
@@ -290,7 +289,7 @@ function buyCurrency() {
 
     let params = {
         receiver: '4100118384508073', 'quickpay-form': 'button', paymentType: 'AC', sum: rub,
-        label: orderId, targets: `${nick} | ${coins} монет`, comment: comment,
+        label: orderId, targets: nick + ' | ' + coins + ' монет', comment: comment,
         successURL: window.location.origin + '/payment-success.html?order=' + orderId,
         cancelURL: window.location.origin + '/payment-cancel.html?order=' + orderId
     };
@@ -307,13 +306,13 @@ function buyCurrency() {
     form.submit();
     document.body.removeChild(form);
 
-    showToast(`💰 Перенаправление...`);
+    showToast('💰 Перенаправление на оплату...');
     setTimeout(closeCurrencyModal, 2000);
 }
 
 function copyToClipboard(t) {
     navigator.clipboard.writeText(t);
-    showToast(`📋 Скопировано`);
+    showToast('📋 Скопировано');
 }
 
 function showToast(m) {
@@ -333,4 +332,4 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof calculateUnbanPrice === 'function') calculateUnbanPrice();
 });
 
-console.log(`💡 АДМИН-КОМАНДЫ: showPurchases() | copyPurchasesToClipboard() | downloadPurchasesCSV() | clearPurchases() | testTelegramNotification()`);
+console.log('💡 АДМИН-КОМАНДЫ: showPurchases() | copyPurchasesToClipboard() | downloadPurchasesCSV() | clearPurchases() | testTelegramNotification()');
