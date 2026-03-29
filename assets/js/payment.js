@@ -1,21 +1,8 @@
-﻿// Ждём загрузки конфига
+﻿// payment.js
 let BOT_TOKEN = '';
 let ADMIN_CHAT_ID = '';
 
-// Функция загрузки конфига
-async function loadTelegramConfig() {
-    try {
-        const response = await fetch('/assets/js/config.js');
-        const text = await response.text();
-        eval(text);
-        console.log('✅ Telegram config loaded');
-    } catch(e) {
-        console.log('⚠️ Telegram config not loaded');
-    }
-}
-
-// Вызов при загрузке
-loadTelegramConfig();
+// Эти переменные будут заменены при сборке
 
 let currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 let currentDiscount = 0;
