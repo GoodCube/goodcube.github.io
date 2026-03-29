@@ -92,8 +92,8 @@
 <canvas id="particles"></canvas>
 <style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;pointer-events:none;}</style>
 
-<script src="assets/js/payment.js"></script>
 <script>
+    // Particles
     (function() {
         const canvas = document.getElementById('particles');
         if (!canvas) return;
@@ -121,6 +121,37 @@
         resize(); init(); draw();
     })();
 
+    // Telegram настройки (токен и ID)
+    const BOT_TOKEN = '8654927849:AAHxfCoiU5CkGjmoeuIrRGE2jniD77bNUmQ';
+    const ADMIN_CHAT_ID = '6323863855';
+
+    // Функция отправки уведомления
+    function sendTelegramNotification(purchase) {
+        let statusEmoji = purchase.status === 'success' ? '✅' : (purchase.status === 'cancelled' ? '❌' : '⏳');
+        let statusText = purchase.status === 'success' ? 'УСПЕШНО' : (purchase.status === 'cancelled' ? 'ОТМЕНЕНО' : 'ОЖИДАНИЕ');
+
+        let typeRu = { privilege: 'Привилегия', title: 'Титул', service: 'Услуга', currency: 'Валюта' }[purchase.productType] || 'Товар';
+
+        const message = `
+🛒 НОВАЯ ПОКУПКА!
+
+${statusEmoji} Статус: ${statusText}
+👤 Игрок: ${purchase.playerName}
+🏷️ Товар: ${typeRu} - ${purchase.productName}
+💰 Сумма: ${purchase.finalPrice} ₽
+🎫 Промокод: ${purchase.promoCode || 'нет'}
+🆔 ID заказа: ${purchase.orderId}
+📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
+`;
+
+        fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
+        }).catch(e => console.log('Ошибка отправки:', e));
+    }
+
+    // Загрузка информации о покупке
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('order');
 
@@ -145,19 +176,17 @@
                 purchases[purchaseIndex].paidAt = new Date().toISOString();
                 localStorage.setItem('goodcube_purchases', JSON.stringify(purchases));
 
-                // Отправляем уведомление об успешной оплате
-                if (typeof sendTelegramNotification === 'function') {
-                    sendTelegramNotification({
-                        status: 'success',
-                        playerName: purchases[purchaseIndex].playerName,
-                        productName: purchases[purchaseIndex].productName,
-                        productType: purchases[purchaseIndex].productType,
-                        finalPrice: purchases[purchaseIndex].finalPrice,
-                        promoCode: purchases[purchaseIndex].promoCode,
-                        orderId: purchases[purchaseIndex].orderId,
-                        timestamp: purchases[purchaseIndex].timestamp
-                    });
-                }
+                // Отправляем уведомление
+                sendTelegramNotification({
+                    status: 'success',
+                    playerName: purchases[purchaseIndex].playerName,
+                    productName: purchases[purchaseIndex].productName,
+                    productType: purchases[purchaseIndex].productType,
+                    finalPrice: purchases[purchaseIndex].finalPrice,
+                    promoCode: purchases[purchaseIndex].promoCode,
+                    orderId: purchases[purchaseIndex].orderId,
+                    timestamp: purchases[purchaseIndex].timestamp
+                });
             }
         } else {
             document.getElementById('productName').innerHTML = 'Неизвестно';
