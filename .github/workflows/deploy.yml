@@ -23,6 +23,7 @@ jobs:
 
       - name: Create config with secrets
         run: |
+          mkdir -p assets/js
           echo "// Автоматически сгенерировано" > assets/js/config.js
           echo "const BOT_TOKEN = '${{ secrets.TELEGRAM_BOT_TOKEN }}';" >> assets/js/config.js
           echo "const ADMIN_CHAT_ID = '${{ secrets.TELEGRAM_CHAT_ID }}';" >> assets/js/config.js
@@ -32,5 +33,13 @@ jobs:
         with:
           path: '.'
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
