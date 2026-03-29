@@ -1,5 +1,4 @@
-﻿// payment.js — в самом начале
-let BOT_TOKEN = '';
+﻿let BOT_TOKEN = '';
 let ADMIN_CHAT_ID = '';
 
 async function loadTelegramConfig() {
