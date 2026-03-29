@@ -1,5 +1,22 @@
-﻿let BOT_TOKEN = '';
+﻿// payment.js — в самом начале
+let BOT_TOKEN = '';
 let ADMIN_CHAT_ID = '';
+
+async function loadTelegramConfig() {
+    try {
+        const response = await fetch('/assets/js/config.js');
+        const text = await response.text();
+        eval(text);
+        console.log('✅ Конфиг загружен');
+    } catch(e) {
+        console.log('⚠️ Конфиг не загружен');
+    }
+}
+loadTelegramConfig();
+
+// дальше весь остальной код без измененийgit add assets/js/config.js
+// git commit -m "feat: добавил config.js с пустыми переменными"
+// git push origin main
 
 let currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 let currentDiscount = 0;

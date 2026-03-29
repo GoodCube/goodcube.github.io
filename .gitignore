@@ -7,7 +7,6 @@
 Thumbs.db
 
 # Config with secrets (ВАЖНО!)
-assets/js/config.js
 telegram-config.js
 
 # Temp

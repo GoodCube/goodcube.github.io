@@ -21,10 +21,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
 
-      - name: inject telegram token into payment.js
+      - name: inject telegram token into config.js
         run: |
-          sed -i "s|let BOT_TOKEN = '';|let BOT_TOKEN = '${{ secrets.TELEGRAM_BOT_TOKEN }}';|" assets/js/payment.js
-          sed -i "s|let ADMIN_CHAT_ID = '';|let ADMIN_CHAT_ID = '${{ secrets.TELEGRAM_CHAT_ID }}';|" assets/js/payment.js
+          echo "const BOT_TOKEN = '${{ secrets.TELEGRAM_BOT_TOKEN }}';" > assets/js/config.js
+          echo "const ADMIN_CHAT_ID = '${{ secrets.TELEGRAM_CHAT_ID }}';" >> assets/js/config.js
 
       - name: upload artifact
         uses: actions/upload-pages-artifact@v3
