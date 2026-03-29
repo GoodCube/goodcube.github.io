@@ -23,7 +23,7 @@ const PromoCodes = {
             usedCount: 0,
             minAmount: 0,
             oneTimeOnly: false,
-            active: true,
+            active: false,
             description: "Скидfка 50% на весь сезон"
         }
     },
