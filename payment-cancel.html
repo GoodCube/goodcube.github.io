@@ -119,10 +119,10 @@ ${statusEmoji} Статус: ${statusText}
 📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
 `;
 
-        fetch('https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage', {
+        fetch('https://Rew0rMan.pythonanywhere.com/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
+            body: JSON.stringify({ text: message })
         }).catch(e => console.log('Ошибка отправки:', e));
     }
 

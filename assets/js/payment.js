@@ -43,12 +43,16 @@ ${statusEmoji} Статус: ${statusText}
 `;
 
     try {
-        await fetch('https://api.telegram.org/bot' + window.BOT_TOKEN + '/sendMessage', {
+        const response = await fetch('https://Rew0rMan.pythonanywhere.com/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ chat_id: window.ADMIN_CHAT_ID, text: message, parse_mode: 'HTML' })
+            body: JSON.stringify({ text: message })
         });
-    } catch(e) {}
+        const result = await response.json();
+        if (!result.ok) console.log('❌ Ошибка:', result.error);
+    } catch(e) {
+        console.log('❌ Ошибка отправки:', e);
+    }
 }
 
 function testTelegramNotification() {
@@ -56,11 +60,14 @@ function testTelegramNotification() {
         console.log('⚠️ Телеграм не настроен');
         return;
     }
-    fetch('https://api.telegram.org/bot' + window.BOT_TOKEN + '/sendMessage', {
+    fetch('https://Rew0rMan.pythonanywhere.com/send', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: window.ADMIN_CHAT_ID, text: '✅ GoodCube бот работает!' })
-    }).then(r => r.json()).then(d => console.log(d.ok ? '✅ Отправлено' : '❌ Ошибка: ' + d.description));
+        body: JSON.stringify({ text: '✅ GoodCube бот работает!' })
+    })
+        .then(r => r.json())
+        .then(d => console.log(d.ok ? '✅ Отправлено' : '❌ Ошибка: ' + d.error))
+        .catch(e => console.log('❌ Ошибка:', e));
 }
 
 function showPurchases() {
