@@ -43,7 +43,7 @@ ${statusEmoji} Статус: ${statusText}
 `;
 
     try {
-        const response = await fetch('https://Rew0rMan.pythonanywhere.com/send', {
+        const response = await fetch('https://ch923372.tw1.ru/telegram_proxy.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: message })
@@ -60,7 +60,7 @@ function testTelegramNotification() {
         console.log('⚠️ Телеграм не настроен');
         return;
     }
-    fetch('https://Rew0rMan.pythonanywhere.com/send', {
+    fetch('https://ch923372.tw1.ru/telegram_proxy.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: '✅ GoodCube бот работает!' })

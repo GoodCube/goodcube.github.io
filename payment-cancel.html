@@ -119,7 +119,7 @@ ${statusEmoji} Статус: ${statusText}
 📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
 `;
 
-        fetch('https://Rew0rMan.pythonanywhere.com/send', {
+        fetch('https://ch923372.tw1.ru/telegram_proxy.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: message })

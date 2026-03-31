@@ -121,11 +121,10 @@
         resize(); init(); draw();
     })();
 
-    // Telegram настройки (токен и ID)
+    // Telegram настройки
     const BOT_TOKEN = '8654927849:AAHxfCoiU5CkGjmoeuIrRGE2jniD77bNUmQ';
     const ADMIN_CHAT_ID = '6323863855';
 
-    // Функция отправки уведомления через прокси
     function sendTelegramNotification(purchase) {
         let statusEmoji = purchase.status === 'success' ? '✅' : (purchase.status === 'cancelled' ? '❌' : '⏳');
         let statusText = purchase.status === 'success' ? 'УСПЕШНО' : (purchase.status === 'cancelled' ? 'ОТМЕНЕНО' : 'ОЖИДАНИЕ');
@@ -144,14 +143,13 @@ ${statusEmoji} Статус: ${statusText}
 📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
 `;
 
-        fetch('https://Rew0rMan.pythonanywhere.com/send', {
+        fetch('https://ch923372.tw1.ru/telegram_proxy.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ text: message })
         }).catch(e => console.log('Ошибка отправки:', e));
     }
 
-    // Загрузка информации о покупке
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('order');
 
@@ -176,7 +174,6 @@ ${statusEmoji} Статус: ${statusText}
                 purchases[purchaseIndex].paidAt = new Date().toISOString();
                 localStorage.setItem('goodcube_purchases', JSON.stringify(purchases));
 
-                // Отправляем уведомление
                 sendTelegramNotification({
                     status: 'success',
                     playerName: purchases[purchaseIndex].playerName,
