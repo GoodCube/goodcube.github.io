@@ -1,192 +1,253 @@
 ﻿// ============================================
-// promocodes.js - система промокодов для GoodCube
+// promocodes.js - Система промокодов через Supabase
 // ============================================
 
 const PromoCodes = {
-    codes: {
-        "SPRING26": {
-            name: "Сезонный",
-            discount: 50,
-            validUntil: "2026-06-01 00:00:00",
-            maxUses: 0,
-            usedCount: 0,
-            minAmount: 0,
-            oneTimeOnly: false,
-            active: true,
-            description: "Скидка 50% на весь сезон"
-        },
-        "TESTPROMO99": {
-            name: "ff",
-            discount: 90,
-            validUntil: "2026-06-01 00:00:00",
-            maxUses: 0,
-            usedCount: 0,
-            minAmount: 0,
-            oneTimeOnly: false,
-            active: false,
-            description: "Скидfка 50% на весь сезон"
+    supabase: null,
+
+    // Принимает либо готовый клиент Supabase, либо URL и ключ
+    init: function(clientOrUrl, key) {
+        // Если передан готовый клиент Supabase
+        if (clientOrUrl && typeof clientOrUrl === 'object' && clientOrUrl.from) {
+            this.supabase = clientOrUrl;
+            return;
+        }
+
+        // Если переданы URL и ключ
+        if (typeof clientOrUrl === 'string' && typeof supabase !== 'undefined') {
+            this.supabase = supabase.createClient(clientOrUrl, key);
+            return;
+        }
+
+        // Пробуем взять глобальный клиент
+        if (window.supabaseClient) {
+            this.supabase = window.supabaseClient;
         }
     },
 
-    validatePromocode: function(code, amount, playerName = null) {
+    // Проверка промокода
+    validatePromocode: async function(code, amount, playerName = null) {
         code = code.toUpperCase().trim();
-        const promo = this.codes[code];
 
-        if (!promo) {
-            return { valid: false, message: "Промокод не найден" };
+        if (!this.supabase) {
+            console.error('Supabase не инициализирован');
+            return { valid: false, message: "База данных недоступна" };
         }
 
-        // ПРОВЕРКА НА АКТИВНОСТЬ (НОВОЕ!)
-        if (promo.active === false) {
-            return { valid: false, message: "Промокод временно отключен администрацией" };
-        }
+        try {
+            const { data: promos, error } = await this.supabase
+                .from('promocodes')
+                .select('*')
+                .eq('code', code)
+                .eq('active', true)
+                .or(`valid_until.is.null,valid_until.gte.${new Date().toISOString()}`)
+                .limit(1);
 
-        const today = new Date();
-        const validUntil = new Date(promo.validUntil);
-        if (today > validUntil) {
-            return { valid: false, message: "Срок действия промокода истек" };
-        }
-
-        if (promo.oneTimeOnly && playerName && playerName !== 'Не указан') {
-            if (this.checkPlayerUsed(code, playerName)) {
-                return { valid: false, message: "Этот промокод уже был использован! Он действует только на одну покупку." };
+            if (error) throw error;
+            if (!promos || promos.length === 0) {
+                return { valid: false, message: "Промокод не найден или истёк" };
             }
-        }
 
-        if (promo.maxUses > 0 && promo.usedCount >= promo.maxUses) {
-            return { valid: false, message: "Промокод больше не активен (достигнут лимит использований)" };
-        }
+            const promo = promos[0];
 
-        if (amount < promo.minAmount) {
-            return { valid: false, message: `Промокод действует при сумме от ${promo.minAmount}₽` };
-        }
-
-        const discountedPrice = amount - (amount * promo.discount / 100);
-        return {
-            valid: true,
-            message: `Промокод активирован! Скидка ${promo.discount}%`,
-            discount: promo.discount,
-            discountedPrice: Math.floor(discountedPrice),
-            promoData: promo
-        };
-    },
-
-    checkPlayerUsed: function(code, playerName) {
-        const usedPromos = JSON.parse(localStorage.getItem('player_used_promocodes') || '{}');
-        const key = `${code}_${playerName}`;
-        return usedPromos[key] === true;
-    },
-
-    markPlayerUsed: function(code, playerName) {
-        const usedPromos = JSON.parse(localStorage.getItem('player_used_promocodes') || '{}');
-        const key = `${code}_${playerName}`;
-        usedPromos[key] = true;
-        localStorage.setItem('player_used_promocodes', JSON.stringify(usedPromos));
-    },
-
-    applyPromocode: function(code, playerName = null) {
-        code = code.toUpperCase().trim();
-        const promo = this.codes[code];
-        if (!promo) return false;
-
-        // Не применяем если отключен
-        if (promo.active === false) return false;
-
-        if (promo.oneTimeOnly && playerName && playerName !== 'Не указан') {
-            this.markPlayerUsed(code, playerName);
-        }
-
-        if (promo.maxUses > 0 && promo.usedCount < promo.maxUses) {
-            promo.usedCount++;
-            this.saveToLocalStorage();
-            return true;
-        } else if (promo.maxUses === 0) {
-            this.saveToLocalStorage();
-            return true;
-        }
-        return false;
-    },
-
-    saveToLocalStorage: function() {
-        const usedCodes = {};
-        for (let code in this.codes) {
-            if (this.codes[code].maxUses > 0) {
-                usedCodes[code] = {
-                    usedCount: this.codes[code].usedCount
-                };
+            if (promo.max_uses > 0 && promo.used_count >= promo.max_uses) {
+                return { valid: false, message: "Лимит использований исчерпан" };
             }
-        }
-        localStorage.setItem('used_promocodes', JSON.stringify(usedCodes));
-    },
 
-    loadFromLocalStorage: function() {
-        const saved = localStorage.getItem('used_promocodes');
-        if (saved) {
-            const usedCodes = JSON.parse(saved);
-            for (let code in usedCodes) {
-                if (this.codes[code] && this.codes[code].maxUses > 0) {
-                    this.codes[code].usedCount = usedCodes[code].usedCount || 0;
+            if (amount < promo.min_amount) {
+                return { valid: false, message: `Минимальная сумма: ${promo.min_amount}₽` };
+            }
+
+            if (promo.one_time_only && playerName && playerName !== 'Не указан') {
+                const { data: uses } = await this.supabase
+                    .from('promocode_uses')
+                    .select('id')
+                    .eq('code', code)
+                    .eq('player_name', playerName)
+                    .limit(1);
+
+                if (uses && uses.length > 0) {
+                    return { valid: false, message: "Вы уже использовали этот промокод" };
                 }
             }
-        }
-    },
 
-    addPromocode: function(code, data) {
-        this.codes[code.toUpperCase()] = {
-            name: data.name || "Новый промокод",
-            discount: data.discount || 10,
-            validUntil: data.validUntil || "2026-12-31",
-            maxUses: data.maxUses || 100,
-            usedCount: 0,
-            minAmount: data.minAmount || 0,
-            oneTimeOnly: data.oneTimeOnly || false,
-            active: data.active !== undefined ? data.active : true,  // по умолчанию активен
-            description: data.description || "Новый промокод"
-        };
-        this.saveToLocalStorage();
-        return true;
-    },
+            const discountedPrice = Math.floor(amount - (amount * promo.discount / 100));
 
-    deletePromocode: function(code) {
-        code = code.toUpperCase().trim();
-        if (this.codes[code]) {
-            delete this.codes[code];
-            this.saveToLocalStorage();
-            return true;
-        }
-        return false;
-    },
-
-    // НОВАЯ ФУНКЦИЯ: включить/выключить промокод
-    togglePromocode: function(code, active) {
-        code = code.toUpperCase().trim();
-        if (this.codes[code]) {
-            this.codes[code].active = active;
-            this.saveToLocalStorage();
-            return true;
-        }
-        return false;
-    },
-
-    getStats: function() {
-        const stats = [];
-        for (let code in this.codes) {
-            const promo = this.codes[code];
-            stats.push({
-                code: code,
-                name: promo.name,
+            return {
+                valid: true,
+                message: `Промокод активирован! Скидка ${promo.discount}%`,
                 discount: promo.discount,
-                validUntil: promo.validUntil,
-                usedCount: promo.usedCount,
-                maxUses: promo.maxUses === 0 ? "∞" : promo.maxUses,
-                remaining: promo.maxUses === 0 ? "∞" : promo.maxUses - promo.usedCount,
-                minAmount: promo.minAmount,
-                oneTimeOnly: promo.oneTimeOnly || false,
-                active: promo.active || false      // показываем статус активности
-            });
+                discountedPrice: discountedPrice,
+                promoData: promo
+            };
+
+        } catch (error) {
+            console.error('Ошибка проверки промокода:', error);
+            return { valid: false, message: "Ошибка проверки промокода" };
         }
-        return stats;
+    },
+
+    // Применить промокод (увеличить счётчик)
+    applyPromocode: async function(code, playerName = null, orderId = null, amount = 0) {
+        code = code.toUpperCase().trim();
+
+        if (!this.supabase) return false;
+
+        try {
+            const { data: promos } = await this.supabase
+                .from('promocodes')
+                .select('*')
+                .eq('code', code)
+                .limit(1);
+
+            if (!promos || promos.length === 0) return false;
+
+            const promo = promos[0];
+
+            await this.supabase
+                .from('promocodes')
+                .update({ used_count: promo.used_count + 1 })
+                .eq('id', promo.id);
+
+            if (playerName && playerName !== 'Не указан') {
+                await this.supabase
+                    .from('promocode_uses')
+                    .insert({
+                        promocode_id: promo.id,
+                        code: code,
+                        player_name: playerName,
+                        order_id: orderId,
+                        discount_amount: Math.floor(amount * promo.discount / 100)
+                    });
+            }
+
+            return true;
+
+        } catch (error) {
+            console.error('Ошибка применения промокода:', error);
+            return false;
+        }
+    },
+
+    // Получить все промокоды (для админки)
+    getAllPromocodes: async function() {
+        if (!this.supabase) return [];
+
+        const { data, error } = await this.supabase
+            .from('promocodes')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error) {
+            console.error('Ошибка получения промокодов:', error);
+            return [];
+        }
+
+        return data;
+    },
+
+    // Добавить промокод
+    addPromocode: async function(code, data) {
+        if (!this.supabase) return false;
+
+        try {
+            const { error } = await this.supabase
+                .from('promocodes')
+                .insert({
+                    code: code.toUpperCase(),
+                    name: data.name || code,
+                    discount: data.discount,
+                    max_uses: data.max_uses || 0,
+                    min_amount: data.min_amount || 0,
+                    one_time_only: data.oneTimeOnly || false,
+                    active: data.active !== undefined ? data.active : true,
+                    valid_until: data.validUntil,
+                    description: data.description,
+                    created_by: data.created_by
+                });
+
+            if (error) {
+                console.error('Ошибка добавления:', error);
+                return false;
+            }
+
+            return true;
+
+        } catch (error) {
+            console.error('Ошибка добавления:', error);
+            return false;
+        }
+    },
+
+    // Обновить промокод
+    updatePromocode: async function(code, updates) {
+        if (!this.supabase) return false;
+
+        try {
+            const { error } = await this.supabase
+                .from('promocodes')
+                .update(updates)
+                .eq('code', code.toUpperCase());
+
+            return !error;
+
+        } catch (error) {
+            console.error('Ошибка обновления:', error);
+            return false;
+        }
+    },
+
+    // Включить/выключить промокод
+    togglePromocode: async function(code, active) {
+        return await this.updatePromocode(code, { active: active });
+    },
+
+    // Удалить промокод
+    deletePromocode: async function(code) {
+        if (!this.supabase) return false;
+
+        try {
+            const { error } = await this.supabase
+                .from('promocodes')
+                .delete()
+                .eq('code', code.toUpperCase());
+
+            return !error;
+
+        } catch (error) {
+            console.error('Ошибка удаления:', error);
+            return false;
+        }
+    },
+
+    // Получить статистику
+    getStats: async function() {
+        const promos = await this.getAllPromocodes();
+        return promos.map(p => ({
+            code: p.code,
+            name: p.name,
+            discount: p.discount,
+            validUntil: p.valid_until,
+            usedCount: p.used_count,
+            maxUses: p.max_uses === 0 ? "∞" : p.max_uses,
+            remaining: p.max_uses === 0 ? "∞" : p.max_uses - p.used_count,
+            minAmount: p.min_amount,
+            oneTimeOnly: p.one_time_only,
+            active: p.active
+        }));
+    },
+
+    // Проверить, использовал ли игрок промокод
+    hasPlayerUsed: async function(code, playerName) {
+        if (!this.supabase || !playerName) return false;
+
+        const { data } = await this.supabase
+            .from('promocode_uses')
+            .select('id')
+            .eq('code', code.toUpperCase())
+            .eq('player_name', playerName)
+            .limit(1);
+
+        return data && data.length > 0;
     }
 };
-
-PromoCodes.loadFromLocalStorage();

@@ -69,6 +69,13 @@
             </div>
         </div>
 
+        <div id="rconStatus" class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 mb-6 hidden">
+            <p class="text-orange-400 text-sm flex items-center justify-center gap-2" id="rconStatusText">
+                <i data-lucide="clock" class="w-4 h-4"></i>
+                <span>Выдача привилегии...</span>
+            </p>
+        </div>
+
         <div class="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 mb-6">
             <p class="text-orange-400 text-sm flex items-center justify-center gap-2">
                 <i data-lucide="clock" class="w-4 h-4"></i>
@@ -78,15 +85,15 @@
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <a href="index.html" class="bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-xl font-semibold transition-all">Вернуться на главную</a>
-            <a href="https://t.me/dqaaq" target="_blank" class="glass hover:bg-white/10 px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
-                <i data-lucide="send" class="w-4 h-4"></i> Написать в поддержку
+            <a href="account.html" class="glass hover:bg-white/10 px-6 py-3 rounded-xl font-semibold transition-all flex items-center justify-center gap-2">
+                <i data-lucide="user" class="w-4 h-4"></i> Личный кабинет
             </a>
         </div>
     </div>
 </main>
 
 <footer class="border-t border-orange-900/30 py-6 px-4 text-center text-gray-500 text-sm">
-    © 2026 GoodCube. Все права защищены.
+    © 2026 GoodCube. Все права защищены. <a href="mailto:support@goodcube.site" class="hover:text-orange-400">support@goodcube.site</a>
 </footer>
 
 <canvas id="particles"></canvas>
@@ -121,39 +128,65 @@
         resize(); init(); draw();
     })();
 
-    // Telegram настройки
-    const BOT_TOKEN = '8654927849:AAHxfCoiU5CkGjmoeuIrRGE2jniD77bNUmQ';
-    const ADMIN_CHAT_ID = '6323863855';
-
-    function sendTelegramNotification(purchase) {
-        let statusEmoji = purchase.status === 'success' ? '✅' : (purchase.status === 'cancelled' ? '❌' : '⏳');
-        let statusText = purchase.status === 'success' ? 'УСПЕШНО' : (purchase.status === 'cancelled' ? 'ОТМЕНЕНО' : 'ОЖИДАНИЕ');
-
-        let typeRu = { privilege: 'Привилегия', title: 'Титул', service: 'Услуга', currency: 'Валюта' }[purchase.productType] || 'Товар';
-
-        const message = `
-🛒 НОВАЯ ПОКУПКА!
-
-${statusEmoji} Статус: ${statusText}
-👤 Игрок: ${purchase.playerName}
-🏷️ Товар: ${typeRu} - ${purchase.productName}
-💰 Сумма: ${purchase.finalPrice} ₽
-🎫 Промокод: ${purchase.promoCode || 'нет'}
-🆔 ID заказа: ${purchase.orderId}
-📅 Время: ${new Date(purchase.timestamp).toLocaleString('ru-RU')}
-`;
-
-        fetch('https://ch923372.tw1.ru/telegram_proxy.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: message })
-        }).catch(e => console.log('Ошибка отправки:', e));
-    }
+    // Конфигурация
+    const PROXY_URL = 'https://proxy.goodcube.site/telegram_proxy.php';
+    const EMAIL_PROXY_URL = 'https://proxy.goodcube.site/send_purchase_email.php';
+    const RCON_PROXY_URL = 'https://proxy.goodcube.site/rcon_proxy.php';
+    const SUPABASE_URL = 'https://sxuvodwuqhyievbnvaye.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_7Q_z0BWiR7xWnD8YqeiBSA_afgPot8z';
 
     const urlParams = new URLSearchParams(window.location.search);
     const orderId = urlParams.get('order');
 
-    function loadPurchaseInfo() {
+    async function sendTelegramNotification(purchase) {
+        let statusEmoji = '✅';
+        let statusText = 'УСПЕШНО';
+        let typeRu = { privilege: 'Привилегия', title: 'Титул', service: 'Услуга', currency: 'Валюта' }[purchase.productType] || 'Товар';
+        const message = `\n🛒 ПОКУПКА ОПЛАЧЕНА!\n\n${statusEmoji} Статус: ${statusText}\n👤 Игрок: ${purchase.playerName}\n🏷️ Товар: ${typeRu} - ${purchase.productName}\n💰 Сумма: ${purchase.finalPrice} ₽\n🎫 Промокод: ${purchase.promoCode || 'нет'}\n🆔 ID заказа: ${purchase.orderId}\n📅 Время: ${new Date().toLocaleString('ru-RU')}`;
+        try { await fetch(PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text: message }) }); } catch(e) {}
+    }
+
+    async function sendEmailNotification(purchase) {
+        try {
+            await fetch(EMAIL_PROXY_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...purchase, status: 'success' })
+            });
+        } catch(e) {}
+    }
+
+    async function giveTitleViaRcon(playerName, titleName) {
+        const command = `lp user ${playerName} meta addprefix 100 "[${titleName}] "`;
+        try {
+            const response = await fetch(RCON_PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ command }) });
+            const result = await response.json();
+            return result.ok;
+        } catch(e) { return false; }
+    }
+
+    async function givePrivilegeViaRcon(playerName, privilege) {
+        const commands = { 'VIP': 'vip', 'PREMIUM': 'premium', 'LEGEND': 'legend', 'D MODER': 'dmoder', 'D ADMIN': 'dadmin' };
+        const group = commands[privilege] || privilege.toLowerCase();
+        const command = `lp user ${playerName} parent add ${group}`;
+        try {
+            const response = await fetch(RCON_PROXY_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ command }) });
+            const result = await response.json();
+            return result.ok;
+        } catch(e) { return false; }
+    }
+
+    async function saveTitleToDatabase(playerName, titleName, orderId) {
+        try {
+            await fetch(`${SUPABASE_URL}/rest/v1/player_titles`, {
+                method: 'POST',
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+                body: JSON.stringify({ player_name: playerName, title_name: titleName, title_color: '§6', order_id: orderId, active: true })
+            });
+        } catch(e) {}
+    }
+
+    async function loadPurchaseInfo() {
         const purchases = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
         let lastPurchase = null;
         if (orderId) lastPurchase = purchases.find(p => p.orderId === orderId);
@@ -164,6 +197,7 @@ ${statusEmoji} Статус: ${statusText}
             document.getElementById('productPrice').innerHTML = `${lastPurchase.finalPrice} ₽`;
             document.getElementById('playerName').innerHTML = lastPurchase.playerName;
             document.getElementById('promoCode').innerHTML = lastPurchase.promoCode || 'нет';
+
             if (lastPurchase.discount > 0) {
                 document.getElementById('productPrice').innerHTML = `<span class="line-through text-gray-500">${lastPurchase.originalPrice} ₽</span> <span class="text-green-400">${lastPurchase.finalPrice} ₽</span> (скидка ${lastPurchase.discount}%)`;
             }
@@ -174,16 +208,30 @@ ${statusEmoji} Статус: ${statusText}
                 purchases[purchaseIndex].paidAt = new Date().toISOString();
                 localStorage.setItem('goodcube_purchases', JSON.stringify(purchases));
 
-                sendTelegramNotification({
-                    status: 'success',
-                    playerName: purchases[purchaseIndex].playerName,
-                    productName: purchases[purchaseIndex].productName,
-                    productType: purchases[purchaseIndex].productType,
-                    finalPrice: purchases[purchaseIndex].finalPrice,
-                    promoCode: purchases[purchaseIndex].promoCode,
-                    orderId: purchases[purchaseIndex].orderId,
-                    timestamp: purchases[purchaseIndex].timestamp
-                });
+                sendTelegramNotification({ ...purchases[purchaseIndex], status: 'success' });
+                sendEmailNotification({ ...purchases[purchaseIndex], status: 'success' });
+
+                // RCON выдача
+                const rconStatus = document.getElementById('rconStatus');
+                const rconStatusText = document.getElementById('rconStatusText');
+                rconStatus.classList.remove('hidden');
+
+                let rconSuccess = false;
+                if (lastPurchase.productType === 'title') {
+                    rconStatusText.innerHTML = '<i data-lucide="clock" class="w-4 h-4"></i> <span>Выдаём титул на сервер...</span>';
+                    rconSuccess = await giveTitleViaRcon(lastPurchase.playerName, lastPurchase.productName);
+                    if (rconSuccess) await saveTitleToDatabase(lastPurchase.playerName, lastPurchase.productName, lastPurchase.orderId);
+                } else if (lastPurchase.productType === 'privilege') {
+                    rconStatusText.innerHTML = '<i data-lucide="clock" class="w-4 h-4"></i> <span>Выдаём привилегию на сервер...</span>';
+                    rconSuccess = await givePrivilegeViaRcon(lastPurchase.playerName, lastPurchase.productName);
+                }
+
+                if (rconSuccess) {
+                    rconStatusText.innerHTML = '<i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> <span class="text-green-400">✅ Выдано в игре!</span>';
+                } else {
+                    rconStatusText.innerHTML = '<i data-lucide="alert-circle" class="w-4 h-4 text-yellow-400"></i> <span class="text-yellow-400">⚠️ Выдано на сайте. В игре появится позже.</span>';
+                }
+                lucide.createIcons();
             }
         } else {
             document.getElementById('productName').innerHTML = 'Неизвестно';
