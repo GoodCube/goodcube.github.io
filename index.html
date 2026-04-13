@@ -59,7 +59,6 @@
                 <a href="index.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Главная</a>
                 <a href="#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
                 <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
-                <a href="constructor.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Конструктор</a>
                 <a href="account.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Кабинет</a>
                 <a href="commits.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Commits</a>
                 <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
@@ -566,6 +565,20 @@
     // Close modals on Escape
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeContactModal(); closeCurrencyModal(); } });
     document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
+
+    // ============================================
+    // ИНИЦИАЛИЗАЦИЯ SUPABASE И PROMOCODES
+    // ============================================
+    const SUPABASE_URL = 'https://sxuvodwuqhyievbnvaye.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_7Q_z0BWiR7xWnD8YqeiBSA_afgPot8z';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    window.supabaseClient = supabaseClient;
+
+    // Инициализируем PromoCodes
+    if (typeof PromoCodes !== 'undefined') {
+        PromoCodes.init(supabaseClient);
+        console.log('✅ PromoCodes инициализирован в index.html');
+    }
 
     // Initialize
     document.addEventListener('DOMContentLoaded', function() { if (typeof lucide !== 'undefined') { lucide.createIcons(); } if (document.getElementById('banMinutes')) calculateUnbanPrice(); if (document.getElementById('muteMinutes')) calculateUnmutePrice(); });
