@@ -1,0 +1,318 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тикеты - GoodCube</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        body { background: #0f0f0f; color: white; font-family: 'Inter', sans-serif; }
+        .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        .text-gradient { background: linear-gradient(135deg, #f97316, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .minecraft-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+    </style>
+</head>
+<body class="minecraft-pattern">
+
+<nav class="fixed w-full z-50 glass border-b border-orange-900/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+            <div class="flex items-center gap-3">
+                <a href="index.html" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all">
+                        <i data-lucide="box" class="w-6 h-6 text-white"></i>
+                    </div>
+                    <span class="text-2xl font-bold text-gradient">GoodCube</span>
+                </a>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8">
+                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
+                <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
+                <a href="constructor.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Конструктор</a>
+                <a href="account.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Кабинет</a>
+                <a href="commits.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Commits</a>
+                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
+                <a href="tickets.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Обращения</a>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-yellow-500/40 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    Купить валюту
+                </button>
+                <button class="mobile-menu-btn md:hidden w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
+                    <i data-lucide="menu" class="w-5 h-5 text-white"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<section class="pt-32 pb-20 px-4">
+    <div class="max-w-3xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold mb-2"><span class="text-gradient">Тикеты</span></h1>
+            <p class="text-gray-400">Создайте обращение, мы ответим в ближайшее время</p>
+        </div>
+
+        <div id="createForm" class="glass rounded-2xl p-8">
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Ваш ник в Minecraft *</label>
+                    <input type="text" id="ticketNickname" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" placeholder="NickName">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Тема *</label>
+                    <input type="text" id="ticketSubject" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" placeholder="Кратко опишите проблему">
+                </div>
+                <div>
+                    <label class="block text-sm text-gray-400 mb-1">Сообщение *</label>
+                    <textarea id="ticketMessage" rows="5" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500" placeholder="Опишите подробно..."></textarea>
+                </div>
+                <button onclick="createTicket()" class="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white py-3 rounded-xl font-bold transition-all">
+                    Отправить обращение
+                </button>
+            </div>
+        </div>
+
+        <div id="ticketView" class="hidden glass rounded-2xl p-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold" id="ticketTitle">Тикет #</h2>
+                <button onclick="backToForm()" class="text-gray-400 hover:text-orange-400 text-sm">← Создать новый</button>
+            </div>
+            <div id="ticketMessages" class="space-y-3 mb-4 max-h-96 overflow-y-auto"></div>
+            <textarea id="replyMessage" rows="3" placeholder="Ваш ответ..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 mb-3"></textarea>
+            <button onclick="sendReply()" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 py-2 rounded-xl font-bold transition-all">Ответить</button>
+        </div>
+    </div>
+</section>
+
+<canvas id="particles"></canvas>
+<footer class="border-t border-orange-900/30 py-6 px-4 text-center text-gray-500 text-sm">
+    © 2026 GoodCube
+</footer>
+
+<script>
+    // Своя инициализация Supabase с уникальным именем
+    const TICKET_SUPABASE_URL = 'https://sxuvodwuqhyievbnvaye.supabase.co';
+    const TICKET_SUPABASE_KEY = 'sb_publishable_7Q_z0BWiR7xWnD8YqeiBSA_afgPot8z';
+    const ticketSupabase = supabase.createClient(TICKET_SUPABASE_URL, TICKET_SUPABASE_KEY);
+    const PROXY_URL = 'https://proxy.goodcube.site/telegram_proxy.php';
+
+    let currentTicketId = null;
+    let currentNickname = null;
+
+    function checkExistingTicket() {
+        const savedTicket = localStorage.getItem('activeTicket');
+        if (savedTicket) {
+            const ticket = JSON.parse(savedTicket);
+            currentTicketId = ticket.id;
+            currentNickname = ticket.nickname;
+            loadTicket(ticket.id);
+        }
+    }
+
+    window.createTicket = async function() {
+        const nickname = document.getElementById('ticketNickname').value.trim();
+        const subject = document.getElementById('ticketSubject').value.trim();
+        const message = document.getElementById('ticketMessage').value.trim();
+
+        if (!nickname || !subject || !message) {
+            alert('Заполните все поля');
+            return;
+        }
+
+        const ticketNumber = 'TCK-' + Date.now();
+
+        const { data: ticket, error: ticketError } = await ticketSupabase
+            .from('tickets')
+            .insert({
+                ticket_number: ticketNumber,
+                nickname: nickname,
+                subject: subject,
+                status: 'open',
+                created_at: new Date(),
+                last_reply_at: new Date()
+            })
+            .select()
+            .single();
+
+        if (ticketError) {
+            console.error(ticketError);
+            alert('Ошибка создания тикета: ' + ticketError.message);
+            return;
+        }
+
+        const { error: replyError } = await ticketSupabase
+            .from('ticket_replies')
+            .insert({
+                ticket_id: ticket.id,
+                message: message,
+                is_admin: false,
+                author: nickname,
+                created_at: new Date()
+            });
+
+        if (replyError) {
+            console.error(replyError);
+            alert('Ошибка создания сообщения');
+            return;
+        }
+
+        const adminLink = `https://goodcube.ru/admin/ticket?id=${ticket.id}`;
+        const tgMessage = `📬 НОВЫЙ ТИКЕТ\n\n🎮 Игрок: ${nickname}\n📋 Тема: ${subject}\n💬 Сообщение: ${message.substring(0, 150)}${message.length > 150 ? '...' : ''}\n\n🔗 ${adminLink}`;
+
+        fetch(PROXY_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: tgMessage })
+        }).catch(e => console.log('Telegram error:', e));
+
+        localStorage.setItem('activeTicket', JSON.stringify({
+            id: ticket.id,
+            nickname: nickname
+        }));
+
+        currentTicketId = ticket.id;
+        currentNickname = nickname;
+        loadTicket(ticket.id);
+    }
+
+    async function loadTicket(ticketId) {
+        const { data: replies, error } = await ticketSupabase
+            .from('ticket_replies')
+            .select('*')
+            .eq('ticket_id', ticketId)
+            .order('created_at', { ascending: true });
+
+        if (error) {
+            console.error(error);
+            return;
+        }
+
+        const { data: ticket } = await ticketSupabase
+            .from('tickets')
+            .select('*')
+            .eq('id', ticketId)
+            .single();
+
+        document.getElementById('ticketTitle').innerHTML = `Тикет #${ticketId} - ${ticket.subject}`;
+
+        const container = document.getElementById('ticketMessages');
+        container.innerHTML = '';
+
+        replies.forEach(reply => {
+            const isAdmin = reply.is_admin;
+            const div = document.createElement('div');
+            div.className = `p-3 rounded-lg ${isAdmin ? 'bg-orange-500/20 border border-orange-500/30' : 'bg-gray-800/50'}`;
+            div.innerHTML = `
+                <div class="flex justify-between items-start mb-1">
+                    <span class="font-bold ${isAdmin ? 'text-orange-400' : 'text-white'}">${escapeHtml(reply.author)}</span>
+                    <span class="text-xs text-gray-500">${new Date(reply.created_at).toLocaleString()}</span>
+                </div>
+                <p class="text-gray-300 text-sm whitespace-pre-wrap">${escapeHtml(reply.message)}</p>
+            `;
+            container.appendChild(div);
+        });
+
+        container.scrollTop = container.scrollHeight;
+
+        document.getElementById('createForm').classList.add('hidden');
+        document.getElementById('ticketView').classList.remove('hidden');
+    }
+
+    window.sendReply = async function() {
+        const message = document.getElementById('replyMessage').value.trim();
+
+        if (!message) {
+            alert('Введите сообщение');
+            return;
+        }
+
+        const { error } = await ticketSupabase
+            .from('ticket_replies')
+            .insert({
+                ticket_id: currentTicketId,
+                message: message,
+                is_admin: false,
+                author: currentNickname,
+                created_at: new Date()
+            });
+
+        if (error) {
+            alert('Ошибка отправки');
+            return;
+        }
+
+        await ticketSupabase
+            .from('tickets')
+            .update({ last_reply_at: new Date() })
+            .eq('id', currentTicketId);
+
+        document.getElementById('replyMessage').value = '';
+        loadTicket(currentTicketId);
+    }
+
+    window.backToForm = function() {
+        localStorage.removeItem('activeTicket');
+        currentTicketId = null;
+        currentNickname = null;
+        document.getElementById('createForm').classList.remove('hidden');
+        document.getElementById('ticketView').classList.add('hidden');
+        document.getElementById('ticketNickname').value = '';
+        document.getElementById('ticketSubject').value = '';
+        document.getElementById('ticketMessage').value = '';
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    checkExistingTicket();
+
+    setTimeout(() => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }, 100);
+
+    (function() {
+        const c = document.getElementById('particles');
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        let p = [];
+        function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+        function init() {
+            p = [];
+            for (let i = 0; i < 80; i++) {
+                p.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.8, dy: (Math.random() - 0.5) * 0.8 });
+            }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.fillStyle = '#f97316';
+            for (let i of p) {
+                ctx.beginPath();
+                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2);
+                ctx.fill();
+                i.x += i.dx;
+                i.y += i.dy;
+                if (i.x < 0 || i.x > c.width) i.dx *= -1;
+                if (i.y < 0 || i.y > c.height) i.dy *= -1;
+            }
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize();
+        init();
+        draw();
+    })();
+</script>
+</body>
+</html>

@@ -1,9 +1,4 @@
-﻿// ============================================
-// admin.js - админ-команды для консоли
-// ============================================
-
-// Показать статистику промокодов
-function PromoStats() {
+﻿function PromoStats() {
     console.log("📊 Статистика промокодов:");
     console.table(PromoCodes.getStats());
 
@@ -23,7 +18,7 @@ function PromoStats() {
     `);
 }
 
-// Включить промокод
+
 function PromoEnable(code) {
     const result = PromoCodes.togglePromocode(code, true);
     if (result) {
@@ -34,7 +29,7 @@ function PromoEnable(code) {
     PromoStats();
 }
 
-// Выключить промокод
+
 function PromoDisable(code) {
     const result = PromoCodes.togglePromocode(code, false);
     if (result) {
@@ -45,7 +40,7 @@ function PromoDisable(code) {
     PromoStats();
 }
 
-// Добавить обычный промокод
+
 function PromoAdd(code, discount, maxUses = 100, validUntil = "2026-12-31", minAmount = 0) {
     PromoCodes.addPromocode(code, {
         name: `Промокод ${code}`,
@@ -60,7 +55,7 @@ function PromoAdd(code, discount, maxUses = 100, validUntil = "2026-12-31", minA
     PromoStats();
 }
 
-// Добавить одноразовый промокод
+
 function PromoOneTime(code, discount, validUntil = "2026-12-31", minAmount = 0) {
     PromoCodes.addPromocode(code, {
         name: `One-time ${code}`,
@@ -76,7 +71,7 @@ function PromoOneTime(code, discount, validUntil = "2026-12-31", minAmount = 0) 
     PromoStats();
 }
 
-// Добавить бесконечный промокод
+
 function PromoInfinity(code, discount, validUntil = "2026-12-31", minAmount = 0) {
     PromoCodes.addPromocode(code, {
         name: `Бесконечный ${code}`,
@@ -92,7 +87,7 @@ function PromoInfinity(code, discount, validUntil = "2026-12-31", minAmount = 0)
     PromoStats();
 }
 
-// Удалить промокод
+
 function PromoDelete(code) {
     const result = PromoCodes.deletePromocode(code);
     if (result) {
@@ -103,7 +98,7 @@ function PromoDelete(code) {
     PromoStats();
 }
 
-// Обновить параметры промокода
+
 function PromoUpdate(code, updates) {
     const promoCode = code.toUpperCase().trim();
     if (PromoCodes.codes[promoCode]) {
@@ -116,7 +111,7 @@ function PromoUpdate(code, updates) {
     }
 }
 
-// Проверить промокод
+
 function PromoCheck(code, amount = 100, playerName = "Тестовый_игрок") {
     const result = PromoCodes.validatePromocode(code, amount, playerName);
     if (result.valid) {
@@ -128,7 +123,7 @@ function PromoCheck(code, amount = 100, playerName = "Тестовый_игро�
     return result;
 }
 
-// Очистить историю
+
 function PromoClearHistory() {
     localStorage.removeItem('player_used_promocodes');
     console.log(`✅ История использования промокодов игроками очищена!`);
