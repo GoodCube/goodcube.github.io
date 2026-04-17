@@ -1,8 +1,8 @@
-﻿// ============================================
-// main.js - общие функции для GoodCube
-// ============================================
+﻿
 
-// Инициализация иконок Lucide
+
+
+
 function initIcons() {
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -10,14 +10,14 @@ function initIcons() {
 }
 
 
-// Копирование в буфер обмена
+
 function copyToClipboard(text) {
     navigator.clipboard.writeText(text).then(() => {
         showToast(`Скопировано: ${text}`);
     });
 }
 
-// Показать уведомление
+
 function showToast(message) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toastMessage');
@@ -31,7 +31,7 @@ function showToast(message) {
     }, 3000);
 }
 
-// Сохранение ника
+
 function saveNickname() {
     const nickInput = document.getElementById('minecraftNick');
     if (nickInput && nickInput.value.trim()) {
@@ -46,7 +46,7 @@ function saveNickname() {
     }
 }
 
-// Отображение сохраненного ника
+
 function displaySavedNick() {
     const savedNick = localStorage.getItem('minecraft_nick');
     const displayNick = document.getElementById('displayNick');
@@ -55,7 +55,7 @@ function displaySavedNick() {
     }
 }
 
-// Модальное окно для привилегий
+
 function openContactModal() {
     const modal = document.getElementById('contactModal');
     if (modal) {
@@ -74,7 +74,7 @@ function closeContactModal() {
     }
 }
 
-// Модальное окно для валюты
+
 function openCurrencyModal() {
     const modal = document.getElementById('currencyModal');
     if (modal) {
@@ -83,7 +83,7 @@ function openCurrencyModal() {
         initIcons();
         displaySavedCurrencyNick();
 
-        // Сбрасываем значения
+        
         const coinSlider = document.getElementById('coinSlider');
         const coinInput = document.getElementById('coinInput');
         const coinAmount = document.getElementById('coinAmount');
@@ -112,7 +112,7 @@ function displaySavedCurrencyNick() {
     }
 }
 
-// Копирование IP
+
 function copyIP() {
     navigator.clipboard.writeText('секрет').then(() => {
         showToast('IP сервера скопирован!');
@@ -126,7 +126,7 @@ function copyIP() {
     });
 }
 
-// Закрытие модальных окон по Escape
+
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
         closeContactModal();
@@ -134,7 +134,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Плавный скролл для якорных ссылок
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
@@ -148,7 +148,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Инициализация при загрузке
+
 document.addEventListener('DOMContentLoaded', function() {
     initIcons();
     displaySavedNick();

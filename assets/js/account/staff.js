@@ -1,6 +1,6 @@
-// ============================================
-// account/staff.js - Управление администрацией
-// ============================================
+
+
+
 
 async function getStaffTab(){const r=await fetch(`${SUPABASE_URL}/rest/v1/staff_list?select=*`,{headers:{'apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`}});const staff=await r.json();const isOwnerUser=isOwner();let h=`<div class="flex flex-wrap justify-between items-center mb-4"><h3 class="text-lg font-bold"><i data-lucide="users" class="w-5 h-5 inline text-purple-400 mr-1"></i>Администрация (${staff.length})</h3>${isOwnerUser?'<button onclick="showAddStaffForm()" class="bg-purple-600 hover:bg-purple-700 text-white px-3 py-2 rounded-lg text-xs"><i data-lucide="plus" class="w-3 h-3 inline mr-1"></i>Добавить</button>':''}</div><div id="staffFormContainer"></div><div class="space-y-2">`;staff.forEach(s=>{h+=`<div class="glass rounded-lg p-3 flex flex-wrap justify-between items-center gap-2"><div><span class="font-bold">${s.player_name}</span><span class="text-orange-400 ml-2 text-sm">${s.role_display}</span><div class="text-xs text-gray-400">${s.telegram?'📱 '+s.telegram:''} ${s.discord?'💬 '+s.discord:''}</div></div>${isOwnerUser?`<button onclick="removeStaff('${s.player_name}')" class="text-red-400"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`:''}</div>`;});return h+'</div>';}
 

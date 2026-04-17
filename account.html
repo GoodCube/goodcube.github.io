@@ -112,11 +112,11 @@
 
         /* Фикс для хедера на ПК */
         @media (min-width: 769px) {
-            nav .hidden.md\\:flex {
+            nav .hidden.md\:flex {
                 flex-wrap: wrap;
                 gap: 0.5rem !important;
             }
-            nav .hidden.md\\:flex a {
+            nav .hidden.md\:flex a {
                 font-size: 14px !important;
                 padding: 0.25rem 0.5rem !important;
                 white-space: nowrap;
@@ -134,10 +134,10 @@
         }
 
         @media (min-width: 769px) and (max-width: 900px) {
-            nav .hidden.md\\:flex {
+            nav .hidden.md\:flex {
                 gap: 0.25rem !important;
             }
-            nav .hidden.md\\:flex a {
+            nav .hidden.md\:flex a {
                 font-size: 12px !important;
                 padding: 0.25rem 0.25rem !important;
             }
@@ -145,6 +145,36 @@
                 font-size: 12px !important;
                 padding-left: 0.75rem !important;
                 padding-right: 0.75rem !important;
+            }
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        /* Скрываем Конструктор и Лаунчер на экранах до 1100px */
+        @media (min-width: 769px) and (max-width: 1100px) {
+            nav .hidden.md\:flex a[href="constructor.html"],
+            nav .hidden.md\:flex a[href="launcher.html"] {
+                display: none !important;
+            }
+        }
+        @media (min-width: 769px) and (max-width: 1050px) {
+            nav .hidden.md\:flex {
+                gap: 0.2rem !important;
+            }
+            nav .hidden.md\:flex a {
+                font-size: 11px !important;
+                padding: 0.15rem 0.2rem !important;
+            }
+            nav .bg-gradient-to-r {
+                font-size: 11px !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+            nav .text-2xl {
+                font-size: 1rem !important;
             }
         }
     </style>
@@ -172,17 +202,17 @@
                 <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors">Лаунчер</a>
             </div>
             <div class="flex items-center gap-2 md:gap-4">
-                <!-- Бургер-меню -->
+                
                 <button class="mobile-menu-btn w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
                     <i data-lucide="menu" class="w-5 h-5 text-white"></i>
                 </button>
 
-                <!-- Админ-кнопка ТОЛЬКО для мобилок -->
+                
                 <button onclick="openAdminModal()" id="mobileAdminHeaderBtn" class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/50 items-center justify-center">
                     <i data-lucide="shield" class="w-5 h-5 text-red-400"></i>
                 </button>
 
-                <!-- Купить валюту -->
+                
                 <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-4 md:px-6 py-2 rounded-full font-semibold flex items-center gap-2 text-sm md:text-base whitespace-nowrap">
                     <i data-lucide="coins" class="w-4 h-4"></i> Купить валюту
                 </button>
@@ -191,7 +221,7 @@
     </div>
 </nav>
 
-<!-- Мобильное меню -->
+
 <div class="mobile-menu" id="mobileMenu">
     <button class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
         <i data-lucide="x" class="w-5 h-5 text-white"></i>
@@ -204,7 +234,7 @@
     <a href="rules.html">Правила</a>
     <a href="launcher.html">Лаунчер</a>
 
-    <!-- Админ-панель в мобильном меню -->
+    
     <a href="#" onclick="openAdminModal(); toggleMobileMenu(); return false;" id="mobileAdminMenuLink" class="admin-link" style="display: none;">
         <i data-lucide="shield" class="w-4 h-4 inline mr-2"></i>🛡️ Админ-панель
     </a>
@@ -352,7 +382,7 @@
 <canvas id="particles"></canvas>
 <style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}</style>
 
-<!-- Подключаем все скрипты -->
+
 <script src="assets/js/promocodes.js"></script>
 <script src="assets/js/account/core.js"></script>
 <script src="assets/js/account/admin.js"></script>

@@ -1,31 +1,27 @@
-﻿// ============================================
-// promocodes.js - Система промокодов через Supabase
-// ============================================
-
-const PromoCodes = {
+﻿const PromoCodes = {
     supabase: null,
 
-    // Принимает либо готовый клиент Supabase, либо URL и ключ
+    
     init: function(clientOrUrl, key) {
-        // Если передан готовый клиент Supabase
+        
         if (clientOrUrl && typeof clientOrUrl === 'object' && clientOrUrl.from) {
             this.supabase = clientOrUrl;
             return;
         }
 
-        // Если переданы URL и ключ
+        
         if (typeof clientOrUrl === 'string' && typeof supabase !== 'undefined') {
             this.supabase = supabase.createClient(clientOrUrl, key);
             return;
         }
 
-        // Пробуем взять глобальный клиент
+        
         if (window.supabaseClient) {
             this.supabase = window.supabaseClient;
         }
     },
 
-    // Проверка промокода
+    
     validatePromocode: async function(code, amount, playerName = null) {
         code = code.toUpperCase().trim();
 
@@ -87,7 +83,7 @@ const PromoCodes = {
         }
     },
 
-    // Применить промокод (увеличить счётчик)
+    
     applyPromocode: async function(code, playerName = null, orderId = null, amount = 0) {
         code = code.toUpperCase().trim();
 
@@ -129,7 +125,7 @@ const PromoCodes = {
         }
     },
 
-    // Получить все промокоды (для админки)
+    
     getAllPromocodes: async function() {
         if (!this.supabase) return [];
 
@@ -146,7 +142,7 @@ const PromoCodes = {
         return data;
     },
 
-    // Добавить промокод
+    
     addPromocode: async function(code, data) {
         if (!this.supabase) return false;
 
@@ -179,7 +175,7 @@ const PromoCodes = {
         }
     },
 
-    // Обновить промокод
+    
     updatePromocode: async function(code, updates) {
         if (!this.supabase) return false;
 
@@ -197,12 +193,12 @@ const PromoCodes = {
         }
     },
 
-    // Включить/выключить промокод
+    
     togglePromocode: async function(code, active) {
         return await this.updatePromocode(code, { active: active });
     },
 
-    // Удалить промокод
+    
     deletePromocode: async function(code) {
         if (!this.supabase) return false;
 
@@ -220,7 +216,7 @@ const PromoCodes = {
         }
     },
 
-    // Получить статистику
+    
     getStats: async function() {
         const promos = await this.getAllPromocodes();
         return promos.map(p => ({
@@ -237,7 +233,7 @@ const PromoCodes = {
         }));
     },
 
-    // Проверить, использовал ли игрок промокод
+    
     hasPlayerUsed: async function(code, playerName) {
         if (!this.supabase || !playerName) return false;
 

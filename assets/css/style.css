@@ -1,6 +1,4 @@
-﻿/* ============================================
-   Общие стили для GoodCube
-   ============================================ */
+﻿
 
 body {
     background-color: #0f0f0f;
@@ -8,7 +6,7 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* Стеклянные эффекты */
+
 .glass {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
@@ -21,7 +19,7 @@ body {
     border: 1px solid rgba(234, 88, 12, 0.3);
 }
 
-/* Градиентные тексты */
+
 .text-gradient {
     background: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
     -webkit-background-clip: text;
@@ -29,7 +27,7 @@ body {
     background-clip: text;
 }
 
-/* Анимации */
+
 .hover-scale {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -39,13 +37,13 @@ body {
     box-shadow: 0 20px 40px rgba(234, 88, 12, 0.3);
 }
 
-/* Minecraft паттерн фона */
+
 .minecraft-pattern {
     background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0);
     background-size: 20px 20px;
 }
 
-/* Анимация премиум-блоков */
+
 .premium {
     animation: premiumGlow 2s infinite alternate;
 }
@@ -59,7 +57,7 @@ body {
     }
 }
 
-/* Ползунок для валюты */
+
 input[type=range] {
     -webkit-appearance: none;
     height: 8px;
@@ -86,7 +84,7 @@ input[type=range]::-webkit-slider-thumb:hover {
     background: #fb923c;
 }
 
-/* Стили для числовых полей */
+
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
     opacity: 1;
@@ -94,7 +92,7 @@ input[type=number]::-webkit-outer-spin-button {
     background: #f97316;
 }
 
-/* Частицы */
+
 #particles {
     position: fixed;
     top: 0;
@@ -103,29 +101,27 @@ input[type=number]::-webkit-outer-spin-button {
     height: 100%;
     z-index: -1;
 }
-/* ============================================
-   Мобильная адаптация
-   ============================================ */
 
-/* Базовые стили */
+
+
 * {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* Мобильное меню */
+
 @media (max-width: 768px) {
-    /* Навигация */
+    
     nav .hidden.md\\:flex {
         display: none !important;
     }
 
-    /* Герой секция */
+    
     .hero-title {
         font-size: 2rem !important;
         line-height: 1.3 !important;
     }
 
-    /* Карточки привилегий */
+    
     .grid {
         gap: 1rem !important;
     }
@@ -134,7 +130,7 @@ input[type=number]::-webkit-outer-spin-button {
         padding: 1.25rem !important;
     }
 
-    /* Кнопки */
+    
     .px-8 {
         padding-left: 1rem !important;
         padding-right: 1rem !important;
@@ -145,7 +141,7 @@ input[type=number]::-webkit-outer-spin-button {
         padding-bottom: 0.75rem !important;
     }
 
-    /* Модальные окна */
+    
     .max-w-lg {
         margin: 1rem !important;
         width: calc(100% - 2rem) !important;
@@ -156,18 +152,18 @@ input[type=number]::-webkit-outer-spin-button {
         padding: 1.25rem !important;
     }
 
-    /* Поля ввода */
+    
     input, button {
-        font-size: 16px !important; /* Предотвращает масштабирование на iOS */
+        font-size: 16px !important; 
     }
 
-    /* Ползунок валюты */
+    
     input[type="range"] {
         height: 44px !important;
         padding: 12px 0 !important;
     }
 
-    /* Кнопки в модалке */
+    
     .space-y-4 > div, .space-y-4 > a {
         padding: 0.75rem !important;
     }
@@ -177,7 +173,7 @@ input[type=number]::-webkit-outer-spin-button {
         height: 2.5rem !important;
     }
 
-    /* Текст */
+    
     .text-4xl {
         font-size: 1.75rem !important;
     }
@@ -190,7 +186,7 @@ input[type=number]::-webkit-outer-spin-button {
         font-size: 1.5rem !important;
     }
 
-    /* Коммиты */
+    
     .commit-item .flex.items-start {
         flex-direction: column !important;
     }
@@ -202,7 +198,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 }
 
-/* Планшеты */
+
 @media (min-width: 769px) and (max-width: 1024px) {
     .grid {
         grid-template-columns: repeat(2, 1fr) !important;
@@ -213,7 +209,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 }
 
-/* Мобильное меню (бургер) - добавим в HTML */
+
 .mobile-menu-btn {
     display: none;
 }
@@ -268,7 +264,7 @@ input[type=number]::-webkit-outer-spin-button {
     }
 }
 
-/* Улучшение тач-целей */
+
 button,
 a,
 [onclick] {
@@ -277,7 +273,7 @@ a,
     min-width: 44px;
 }
 
-/* Фикс для модальных окон на мобильных */
+
 @media (max-width: 768px) {
     .fixed.inset-0 {
         overflow-y: auto !important;
@@ -288,7 +284,7 @@ a,
         padding-top: 2rem !important;
     }
 }
-/* Мобильное меню - по умолчанию скрыто */
+
 .mobile-menu-btn {
     display: none;
 }
@@ -298,7 +294,7 @@ a,
     display: none;
 }
 
-/* Только на мобильных */
+
 @media (max-width: 768px) {
     .mobile-menu-btn {
         display: block;
@@ -343,7 +339,7 @@ a,
         visibility: visible;
     }
 }
-/* Исправление навигации */
+
 nav .flex.items-center {
     align-items: center !important;
 }
@@ -359,7 +355,7 @@ nav .text-2xl {
     line-height: 1;
 }
 
-/* Для мобильных */
+
 @media (max-width: 768px) {
     nav .hidden.md\\:flex {
         display: flex !important;

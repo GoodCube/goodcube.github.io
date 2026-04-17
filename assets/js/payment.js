@@ -1,28 +1,18 @@
-﻿// ============================================
-// payment.js - функции оплаты и уведомлений
-// ============================================
-
-// Конфигурация
-const PROXY_URL = 'https://proxy.goodcube.site/telegram_proxy.php';
+﻿const PROXY_URL = 'https://proxy.goodcube.site/telegram_proxy.php';
 const EMAIL_PROXY_URL = 'https://proxy.goodcube.site/send_purchase_email.php';
 const RCON_PROXY_URL = 'https://proxy.goodcube.site/rcon_proxy.php';
 const SUPABASE_URL = 'https://sxuvodwuqhyievbnvaye.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_7Q_z0BWiR7xWnD8YqeiBSA_afgPot8z';
 
-// Глобальные переменные
 var currentProduct = { name: 'Привилегия', price: 0, type: 'privilege' };
 var currentDiscount = 0;
 var currentDiscountedPrice = 0;
 var currentPromoCode = null;
 
-// Для валюты
+
 var currentCurrencyDiscount = 0;
 var currentCurrencyDiscountedPrice = 0;
 var currentCurrencyPromoCode = null;
-
-// ============================================
-// Отправка уведомлений
-// ============================================
 
 async function sendTelegramNotification(purchase) {
     let statusEmoji = purchase.status === 'success' ? '✅' : (purchase.status === 'cancelled' ? '❌' : '⏳');
@@ -63,9 +53,7 @@ function testEmailNotification() {
     }).then(r => r.json()).then(d => console.log(d.ok ? '✅ Письмо отправлено' : '❌ Ошибка')).catch(e => console.log('❌ Ошибка:', e));
 }
 
-// ============================================
-// Админ-команды
-// ============================================
+
 
 function showPurchases() {
     let p = JSON.parse(localStorage.getItem('goodcube_purchases') || '[]');
@@ -93,9 +81,6 @@ function clearPurchases() {
     if (confirm('Удалить все покупки?')) { localStorage.removeItem('goodcube_purchases'); showToast('История очищена'); }
 }
 
-// ============================================
-// Покупка привилегий/титулов/услуг
-// ============================================
 
 function buyPrivilege(name, price) { buy('privilege', name, price); }
 function buyService(name, price) { buy('service', name, price); }
@@ -120,9 +105,6 @@ function resetPromo() {
     if (desc && currentProduct.price) desc.innerHTML = 'Сумма: ' + currentProduct.price + ' ₽';
 }
 
-// ============================================
-// Промокоды
-// ============================================
 
 async function applyPromocode() {
     console.log('🟢 applyPromocode вызвана');
@@ -207,10 +189,6 @@ function showMsg(msg, type, div) {
     setTimeout(() => div.classList.add('hidden'), 3000);
 }
 
-// ============================================
-// Оплата через ЮMoney
-// ============================================
-
 async function openYooMoney() {
     let price = currentDiscount > 0 ? currentDiscountedPrice : currentProduct.price;
     let nick = localStorage.getItem('minecraft_nick') || 'Не указан';
@@ -250,10 +228,6 @@ async function openYooMoney() {
     showToast('💰 Перенаправление на оплату...');
     setTimeout(closeContactModal, 2000);
 }
-
-// ============================================
-// Покупка валюты
-// ============================================
 
 function updateCoinAmount(v) { let coins = parseInt(v); document.getElementById('coinAmount').innerHTML = coins.toLocaleString(); document.getElementById('coinInput').value = coins; document.getElementById('rubAmount').innerHTML = Math.floor(coins / 100); }
 function updateCoinFromInput(v) { let coins = parseInt(v) || 0; if (coins > 5000000) coins = 5000000; if (coins < 0) coins = 0; coins = Math.round(coins / 1000) * 1000; document.getElementById('coinSlider').value = coins; document.getElementById('coinAmount').innerHTML = coins.toLocaleString(); document.getElementById('coinInput').value = coins; document.getElementById('rubAmount').innerHTML = Math.floor(coins / 100); }
@@ -301,9 +275,6 @@ async function buyCurrency() {
     setTimeout(closeCurrencyModal, 2000);
 }
 
-// ============================================
-// Модальные окна
-// ============================================
 
 function saveNickname() {
     let inp = document.getElementById('minecraftNick');
@@ -343,9 +314,6 @@ function closeCurrencyModal() {
     if (modal) { modal.classList.add('hidden'); document.body.style.overflow = 'auto'; }
 }
 
-// ============================================
-// Дополнительные услуги
-// ============================================
 
 function calculateUnmutePrice() {
     let minutes = parseInt(document.getElementById('muteMinutes')?.value) || 0;
@@ -385,16 +353,9 @@ function buyAccountTransfer() {
     openContactModal();
 }
 
-// ============================================
-// Вспомогательные функции
-// ============================================
-
 function copyToClipboard(t) { navigator.clipboard.writeText(t); showToast('📋 Скопировано: ' + t); }
 function showToast(m) { let t = document.getElementById('toast'), tm = document.getElementById('toastMessage'); if (t && tm) { tm.textContent = m; t.classList.remove('translate-y-20', 'opacity-0'); setTimeout(() => t.classList.add('translate-y-20', 'opacity-0'), 3000); } }
 
-// ============================================
-// ГЛОБАЛЬНЫЕ ФУНКЦИИ ДЛЯ ONCLICK
-// ============================================
 window.applyPromocode = applyPromocode;
 window.applyCurrencyPromocode = applyCurrencyPromocode;
 window.openYooMoney = openYooMoney;
@@ -417,9 +378,6 @@ window.buyUnmute = buyUnmute;
 window.buyUnban = buyUnban;
 window.buyAccountTransfer = buyAccountTransfer;
 
-// ============================================
-// Инициализация
-// ============================================
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof lucide !== 'undefined') lucide.createIcons();
     displaySavedNick();

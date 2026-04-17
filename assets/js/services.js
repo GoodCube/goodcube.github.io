@@ -1,8 +1,8 @@
-﻿// ============================================
-// services.js - функции для дополнительных услуг
-// ============================================
+﻿
 
-// ===== ФУНКЦИИ ДЛЯ РАЗМЬЮТА (по минутам) =====
+
+
+
 function calculateUnmutePrice() {
     const minutesInput = document.getElementById('muteMinutes');
     if (!minutesInput) return 150;
@@ -14,8 +14,8 @@ function calculateUnmutePrice() {
     let priceDetail = '';
     const hours = minutes / 60;
 
-    // Формула: до 180 минут (3 часа) - 150₽
-    // Свыше 180 минут - +30₽ за каждые 10 минут
+    
+    
     if (minutes <= 180) {
         price = 150;
         priceDetail = `Фиксированная цена за мут до 180 минут (3 часа)`;
@@ -76,7 +76,7 @@ function buyUnmute() {
     openContactModal();
 }
 
-// ===== ФУНКЦИИ ДЛЯ ПЕРЕНОСА АККАУНТА =====
+
 function buyAccountTransfer() {
     const oldNickInput = document.getElementById('oldNickname');
     const newNickInput = document.getElementById('newNickname');
@@ -118,7 +118,7 @@ function buyAccountTransfer() {
     openContactModal();
 }
 
-// ===== ФУНКЦИИ ДЛЯ РАЗБАНА (по минутам) =====
+
 function calculateUnbanPrice() {
     const minutesInput = document.getElementById('banMinutes');
     if (!minutesInput) return 50;
@@ -129,8 +129,8 @@ function calculateUnbanPrice() {
     let price = 0;
     let priceDetail = '';
 
-    // Формула: до 180 минут (3 часа) - 50₽
-    // Свыше 180 минут - +10₽ за каждые 10 минут
+    
+    
     if (minutes <= 180) {
         price = 50;
         priceDetail = `Фиксированная цена за бан до 180 минут (3 часа)`;
