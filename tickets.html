@@ -15,6 +15,11 @@
         .text-gradient { background: linear-gradient(135deg, #f97316, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .minecraft-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
         #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .closed-ticket { opacity: 0.6; }
+        .closed-badge { background: rgba(107,114,128,0.3); color: #9ca3af; font-size: 10px; padding: 2px 6px; border-radius: 20px; }
+        .status-badge { font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+        .status-open { background: rgba(34,197,94,0.2); color: #22c55e; }
+        .status-closed { background: rgba(107,114,128,0.2); color: #9ca3af; }
     </style>
 </head>
 <body class="minecraft-pattern">
@@ -32,13 +37,14 @@
             </div>
 
             <div class="hidden md:flex items-center gap-8">
-                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
+                <a href="index.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Главная</a>
+                <a href="#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
                 <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
                 <a href="constructor.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Конструктор</a>
                 <a href="account.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Кабинет</a>
                 <a href="commits.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Commits</a>
                 <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
-                <a href="tickets.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Обращения</a>
+                <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер</a>
             </div>
 
             <div class="flex items-center gap-4">
@@ -61,6 +67,7 @@
             <p class="text-gray-400">Создайте обращение, мы ответим в ближайшее время</p>
         </div>
 
+        <!-- Форма создания тикета -->
         <div id="createForm" class="glass rounded-2xl p-8">
             <div class="space-y-4">
                 <div>
@@ -81,14 +88,25 @@
             </div>
         </div>
 
-        <div id="ticketView" class="hidden glass rounded-2xl p-8">
+        <!-- История тикетов -->
+        <div id="historyView" class="glass rounded-2xl p-8 mt-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">📋 Мои обращения</h2>
+                <button onclick="refreshHistory()" class="text-gray-400 hover:text-orange-400 text-sm">Обновить</button>
+            </div>
+            <div id="historyList" class="space-y-3 max-h-96 overflow-y-auto">
+                <p class="text-gray-400 text-center py-4">Загрузка...</p>
+            </div>
+        </div>
+
+        <!-- Просмотр тикета -->
+        <div id="ticketView" class="hidden glass rounded-2xl p-8 mt-6">
             <div class="flex justify-between items-center mb-4">
                 <h2 class="text-xl font-bold" id="ticketTitle">Тикет #</h2>
-                <button onclick="backToForm()" class="text-gray-400 hover:text-orange-400 text-sm">← Создать новый</button>
+                <button onclick="closeTicketView()" class="text-gray-400 hover:text-orange-400 text-sm">← К списку</button>
             </div>
             <div id="ticketMessages" class="space-y-3 mb-4 max-h-96 overflow-y-auto"></div>
-            <textarea id="replyMessage" rows="3" placeholder="Ваш ответ..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 mb-3"></textarea>
-            <button onclick="sendReply()" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 py-2 rounded-xl font-bold transition-all">Ответить</button>
+            <div id="replyArea" class="mt-4"></div>
         </div>
     </div>
 </section>
@@ -99,7 +117,6 @@
 </footer>
 
 <script>
-    // Своя инициализация Supabase с уникальным именем
     const TICKET_SUPABASE_URL = 'https://sxuvodwuqhyievbnvaye.supabase.co';
     const TICKET_SUPABASE_KEY = 'sb_publishable_7Q_z0BWiR7xWnD8YqeiBSA_afgPot8z';
     const ticketSupabase = supabase.createClient(TICKET_SUPABASE_URL, TICKET_SUPABASE_KEY);
@@ -108,16 +125,91 @@
     let currentTicketId = null;
     let currentNickname = null;
 
-    function checkExistingTicket() {
-        const savedTicket = localStorage.getItem('activeTicket');
-        if (savedTicket) {
-            const ticket = JSON.parse(savedTicket);
-            currentTicketId = ticket.id;
-            currentNickname = ticket.nickname;
-            loadTicket(ticket.id);
+    // Загрузка истории тикетов по нику
+    async function loadHistory() {
+        const nickname = localStorage.getItem('ticketViewerNickname');
+        if (!nickname) {
+            document.getElementById('historyList').innerHTML = '<p class="text-gray-400 text-center py-4">Введите ник для просмотра обращений</p><div class="flex gap-2"><input type="text" id="historyNickname" placeholder="Ваш ник" class="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2"><button onclick="setHistoryNickname()" class="bg-orange-600 px-4 py-2 rounded-lg">Показать</button></div>';
+            return;
+        }
+
+        const { data: tickets, error } = await ticketSupabase
+            .from('tickets')
+            .select('*')
+            .eq('nickname', nickname)
+            .order('created_at', { ascending: false });
+
+        if (error || !tickets || tickets.length === 0) {
+            document.getElementById('historyList').innerHTML = '<p class="text-gray-400 text-center py-4">У вас нет обращений</p>';
+            return;
+        }
+
+        let html = '';
+        tickets.forEach(t => {
+            const statusClass = t.status === 'open' ? 'status-open' : 'status-closed';
+            const statusText = t.status === 'open' ? '🟢 Открыт' : '🔴 Закрыт';
+            const closedInfo = t.closed_at ? `<span class="closed-badge ml-2">Закрыт ${new Date(t.closed_at).toLocaleDateString()}</span>` : '';
+
+            html += `
+                <div class="glass rounded-lg p-4 cursor-pointer hover:bg-white/5 transition-all" onclick="openTicketFromHistory(${t.id})">
+                    <div class="flex justify-between items-start flex-wrap gap-2">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-bold text-orange-400">#${t.id}</span>
+                                <span class="text-white">${escapeHtml(t.subject)}</span>
+                                <span class="status-badge ${statusClass}">${statusText}</span>
+                                ${closedInfo}
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">${new Date(t.created_at).toLocaleString()}</p>
+                        </div>
+                        <i data-lucide="chevron-right" class="w-5 h-5 text-gray-500"></i>
+                    </div>
+                </div>
+            `;
+        });
+        document.getElementById('historyList').innerHTML = html;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    window.setHistoryNickname = function() {
+        const nickname = document.getElementById('historyNickname').value.trim();
+        if (nickname) {
+            localStorage.setItem('ticketViewerNickname', nickname);
+            loadHistory();
         }
     }
 
+    window.refreshHistory = function() {
+        loadHistory();
+    }
+
+    // Открыть тикет из истории
+    window.openTicketFromHistory = async function(ticketId) {
+        const { data: ticket } = await ticketSupabase
+            .from('tickets')
+            .select('*')
+            .eq('id', ticketId)
+            .single();
+
+        currentTicketId = ticketId;
+        currentNickname = ticket.nickname;
+
+        document.getElementById('historyView').classList.add('hidden');
+        document.getElementById('createForm').classList.add('hidden');
+        document.getElementById('ticketView').classList.remove('hidden');
+
+        loadTicket(ticketId);
+    }
+
+    window.closeTicketView = function() {
+        document.getElementById('ticketView').classList.add('hidden');
+        document.getElementById('createForm').classList.remove('hidden');
+        document.getElementById('historyView').classList.remove('hidden');
+        currentTicketId = null;
+        loadHistory();
+    }
+
+    // Создание тикета
     window.createTicket = async function() {
         const nickname = document.getElementById('ticketNickname').value.trim();
         const subject = document.getElementById('ticketSubject').value.trim();
@@ -144,7 +236,6 @@
             .single();
 
         if (ticketError) {
-            console.error(ticketError);
             alert('Ошибка создания тикета: ' + ticketError.message);
             return;
         }
@@ -160,7 +251,6 @@
             });
 
         if (replyError) {
-            console.error(replyError);
             alert('Ошибка создания сообщения');
             return;
         }
@@ -174,16 +264,17 @@
             body: JSON.stringify({ text: tgMessage })
         }).catch(e => console.log('Telegram error:', e));
 
-        localStorage.setItem('activeTicket', JSON.stringify({
-            id: ticket.id,
-            nickname: nickname
-        }));
+        localStorage.setItem('ticketViewerNickname', nickname);
 
-        currentTicketId = ticket.id;
-        currentNickname = nickname;
-        loadTicket(ticket.id);
+        document.getElementById('ticketNickname').value = '';
+        document.getElementById('ticketSubject').value = '';
+        document.getElementById('ticketMessage').value = '';
+
+        loadHistory();
+        alert('Тикет создан! Мы ответим в ближайшее время.');
     }
 
+    // Загрузка сообщений тикета
     async function loadTicket(ticketId) {
         const { data: replies, error } = await ticketSupabase
             .from('ticket_replies')
@@ -191,10 +282,7 @@
             .eq('ticket_id', ticketId)
             .order('created_at', { ascending: true });
 
-        if (error) {
-            console.error(error);
-            return;
-        }
+        if (error) return;
 
         const { data: ticket } = await ticketSupabase
             .from('tickets')
@@ -202,7 +290,8 @@
             .eq('id', ticketId)
             .single();
 
-        document.getElementById('ticketTitle').innerHTML = `Тикет #${ticketId} - ${ticket.subject}`;
+        const statusText = ticket.status === 'open' ? '🟢 Открыт' : '🔴 Закрыт';
+        document.getElementById('ticketTitle').innerHTML = `Тикет #${ticketId} - ${ticket.subject} <span class="text-sm font-normal ${ticket.status === 'open' ? 'text-green-400' : 'text-gray-400'}">${statusText}</span>`;
 
         const container = document.getElementById('ticketMessages');
         container.innerHTML = '';
@@ -223,15 +312,34 @@
 
         container.scrollTop = container.scrollHeight;
 
-        document.getElementById('createForm').classList.add('hidden');
-        document.getElementById('ticketView').classList.remove('hidden');
+        const replyArea = document.getElementById('replyArea');
+        if (ticket.status === 'closed') {
+            replyArea.innerHTML = '<p class="text-center text-gray-400 py-4">🔒 Этот тикет закрыт. Новые ответы невозможны.</p>';
+        } else {
+            replyArea.innerHTML = `
+                <textarea id="replyMessage" rows="3" placeholder="Ваш ответ..." class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500 mb-3"></textarea>
+                <button onclick="sendReply()" class="w-full bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 py-2 rounded-xl font-bold transition-all">Ответить</button>
+            `;
+        }
     }
 
+    // Отправка ответа
     window.sendReply = async function() {
         const message = document.getElementById('replyMessage').value.trim();
 
         if (!message) {
             alert('Введите сообщение');
+            return;
+        }
+
+        const { data: ticket } = await ticketSupabase
+            .from('tickets')
+            .select('status')
+            .eq('id', currentTicketId)
+            .single();
+
+        if (ticket.status === 'closed') {
+            alert('Тикет закрыт, ответить нельзя');
             return;
         }
 
@@ -259,29 +367,20 @@
         loadTicket(currentTicketId);
     }
 
-    window.backToForm = function() {
-        localStorage.removeItem('activeTicket');
-        currentTicketId = null;
-        currentNickname = null;
-        document.getElementById('createForm').classList.remove('hidden');
-        document.getElementById('ticketView').classList.add('hidden');
-        document.getElementById('ticketNickname').value = '';
-        document.getElementById('ticketSubject').value = '';
-        document.getElementById('ticketMessage').value = '';
-    }
-
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
     }
 
-    checkExistingTicket();
+    // Инициализация
+    loadHistory();
 
     setTimeout(() => {
         if (typeof lucide !== 'undefined') lucide.createIcons();
     }, 100);
 
+    // Частицы
     (function() {
         const c = document.getElementById('particles');
         if (!c) return;

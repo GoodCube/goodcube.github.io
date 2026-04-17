@@ -1,4 +1,8 @@
-﻿async function openAdminModal() {
+﻿// ============================================
+// account/admin.js - Админ-панель (вкладки, модалки)
+// ============================================
+
+async function openAdminModal() {
     if (!checkAdminAccess()) return;
     const role = currentUser.role;
     const isAdmin = isOwner();
@@ -66,6 +70,9 @@ async function switchAdminTab(tab, ev) {
     if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
+// ============================================
+// Тикеты для админ-панели
+// ============================================
 
 async function getTicketsTab() {
     const { data: tickets, error } = await supabaseClient
@@ -150,12 +157,28 @@ async function openAdminTicket(ticketId) {
 }
 
 async function closeTicket(ticketId) {
-    if (!confirm('Закрыть тикет?')) return;
+    const reason = prompt('Причина закрытия (необязательно):');
 
     await supabaseClient
         .from('tickets')
-        .update({ status: 'closed' })
+        .update({
+            status: 'closed',
+            closed_at: new Date(),
+            closed_by: currentUser?.username || 'Администратор'
+        })
         .eq('id', ticketId);
+
+    if (reason) {
+        await supabaseClient
+            .from('ticket_replies')
+            .insert({
+                ticket_id: ticketId,
+                message: `🔒 Тикет закрыт. Причина: ${reason}`,
+                is_admin: true,
+                author: currentUser?.username || 'Администратор',
+                created_at: new Date()
+            });
+    }
 
     showToast('Тикет закрыт');
     switchAdminTab('tickets');
