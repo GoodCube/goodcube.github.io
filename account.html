@@ -2,417 +2,277 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoodCube - Личный кабинет</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="icon" type="image/png" href="/assets/img/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
-    <link rel="shortcut icon" href="assets/img/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="GoodCube" />
-    <link rel="manifest" href="assets/img/site.webmanifest" />
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        body { background-color: #0f0f0f; color: #ffffff; font-family: 'Inter', sans-serif; }
+        body { background: #0f0f0f; color: white; font-family: 'Inter', sans-serif; }
         .glass { background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
-        .glass-orange { background: rgba(234,88,12,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(234,88,12,0.3); }
-        .text-gradient { background: linear-gradient(135deg, #f97316 0%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .minecraft-pattern { background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.05) 1px, transparent 0); background-size: 20px 20px; }
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #ea580c); display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: bold; color: white; }
-        .stat-card { transition: all 0.2s ease; }
-        .stat-card:hover { transform: translateY(-2px); background: rgba(249, 115, 22, 0.1); }
+        .text-gradient { background: linear-gradient(135deg, #f97316, #fb923c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .auth-tab { transition: all 0.2s ease; cursor: pointer; }
         .auth-tab.active { border-bottom: 2px solid #f97316; color: #f97316; }
-        .admin-tab { transition: all 0.2s ease; cursor: pointer; white-space: nowrap; }
-
-        .mobile-menu-btn { display: none; }
-        .mobile-menu, .mobile-menu-overlay { display: none; }
-
-        /* Мобильная админ-кнопка - скрыта по умолчанию */
-        #mobileAdminHeaderBtn {
-            display: none !important;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-menu-btn { display: block; }
-            .mobile-menu {
-                display: block;
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 80%;
-                max-width: 300px;
-                height: 100vh;
-                background: rgba(15, 15, 15, 0.98);
-                backdrop-filter: blur(20px);
-                z-index: 100;
-                transition: right 0.3s ease;
-                padding: 5rem 1.5rem;
-                border-left: 1px solid rgba(249, 115, 22, 0.3);
-            }
-            .mobile-menu.active { right: 0; }
-            .mobile-menu a {
-                display: block;
-                padding: 1rem 0;
-                font-size: 1.125rem;
-                color: #d1d5db;
-                text-decoration: none;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            }
-            .mobile-menu a:hover { color: #f97316; }
-            .mobile-menu .admin-link {
-                color: #f87171 !important;
-                font-weight: 600;
-            }
-            .mobile-menu-overlay {
-                display: block;
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background: rgba(0, 0, 0, 0.7);
-                z-index: 99;
-                opacity: 0;
-                visibility: hidden;
-                transition: all 0.3s ease;
-            }
-            .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
-
-            /* На мобилках показываем кнопку если есть класс admin-visible */
-            #mobileAdminHeaderBtn.admin-visible {
-                display: flex !important;
-            }
-
-            .admin-tab { white-space: normal; font-size: 11px; padding: 8px 10px !important; }
-            .admin-tab i { width: 14px; height: 14px; }
-            .max-w-6xl { max-width: 100% !important; }
-            .p-8 { padding: 1rem !important; }
-            .p-6 { padding: 1rem !important; }
-            .p-5 { padding: 0.75rem !important; }
-            .p-4 { padding: 0.75rem !important; }
-            .glass.rounded-3xl { padding: 1rem !important; }
-            .grid-cols-2 { grid-template-columns: 1fr !important; }
-            .md\:grid-cols-2, .md\:grid-cols-3, .md\:grid-cols-5 { grid-template-columns: 1fr !important; }
-            .sm\:grid-cols-2 { grid-template-columns: 1fr !important; }
-            .lg\:grid-cols-4 { grid-template-columns: 1fr !important; }
-            .overflow-x-auto { -webkit-overflow-scrolling: touch; }
-            table { font-size: 11px; }
-            th, td { padding: 0.5rem 0.25rem !important; }
-            .text-2xl { font-size: 1.25rem !important; }
-            .text-3xl { font-size: 1.5rem !important; }
-            .text-4xl { font-size: 1.75rem !important; }
-            button, .admin-tab, [onclick] { min-height: 44px; }
-            input, select, textarea { font-size: 16px !important; }
-            .admin-tab-container { flex-wrap: wrap; }
-            .admin-tab-container .admin-tab { flex: 1 0 auto; }
-        }
-
-        @media (min-width: 769px) and (max-width: 1024px) {
-            .grid { grid-template-columns: repeat(2, 1fr) !important; }
-            .admin-tab { font-size: 12px; padding: 8px 12px !important; }
-        }
-
-        /* Фикс для хедера на ПК */
-        @media (min-width: 769px) {
-            nav .hidden.md\:flex {
-                flex-wrap: wrap;
-                gap: 0.5rem !important;
-            }
-            nav .hidden.md\:flex a {
-                font-size: 14px !important;
-                padding: 0.25rem 0.5rem !important;
-                white-space: nowrap;
-            }
-            nav .bg-gradient-to-r {
-                font-size: 14px !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
-                white-space: nowrap;
-            }
-            .max-w-7xl {
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-        }
-
-        @media (min-width: 769px) and (max-width: 900px) {
-            nav .hidden.md\:flex {
-                gap: 0.25rem !important;
-            }
-            nav .hidden.md\:flex a {
-                font-size: 12px !important;
-                padding: 0.25rem 0.25rem !important;
-            }
-            nav .bg-gradient-to-r {
-                font-size: 12px !important;
-                padding-left: 0.75rem !important;
-                padding-right: 0.75rem !important;
-            }
-        }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-        /* Скрываем Конструктор и Лаунчер на экранах до 1100px */
-        @media (min-width: 769px) and (max-width: 1100px) {
-            nav .hidden.md\:flex a[href="constructor.html"],
-            nav .hidden.md\:flex a[href="launcher.html"] {
-                display: none !important;
-            }
-        }
-        @media (min-width: 769px) and (max-width: 1050px) {
-            nav .hidden.md\:flex {
-                gap: 0.2rem !important;
-            }
-            nav .hidden.md\:flex a {
-                font-size: 11px !important;
-                padding: 0.15rem 0.2rem !important;
-            }
-            nav .bg-gradient-to-r {
-                font-size: 11px !important;
-                padding-left: 0.5rem !important;
-                padding-right: 0.5rem !important;
-            }
-            nav .text-2xl {
-                font-size: 1rem !important;
-            }
-        }
+        #particles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
     </style>
 </head>
-<body class="font-sans antialiased minecraft-pattern">
+<body>
 
 <nav class="fixed w-full z-50 glass border-b border-orange-900/30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
             <div class="flex items-center gap-3">
                 <a href="index.html" class="flex items-center gap-3 group">
-                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30">
+                    <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:shadow-orange-500/50 transition-all">
                         <i data-lucide="box" class="w-6 h-6 text-white"></i>
                     </div>
                     <span class="text-2xl font-bold text-gradient">GoodCube</span>
                 </a>
             </div>
+
             <div class="hidden md:flex items-center gap-8">
-                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors">Главная</a>
-                <a href="index.html#donate" class="text-gray-300 hover:text-orange-400 transition-colors">Донат</a>
-                <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors">Титулы</a>
-                <a href="constructor.html" class="text-gray-300 hover:text-orange-400 transition-colors">Конструктор</a>
+                <a href="index.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Главная</a>
+                <a href="#donate" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Донат</a>
+                <a href="titles.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Титулы</a>
+                <a href="constructor.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Конструктор</a>
                 <a href="account.html" class="text-orange-400 font-semibold border-b-2 border-orange-500">Кабинет</a>
-                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors">Правила</a>
-                <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors">Лаунчер</a>
+                <a href="commits.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Commits</a>
+                <a href="rules.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Правила</a>
+                <a href="launcher.html" class="text-gray-300 hover:text-orange-400 transition-colors font-medium">Лаунчер</a>
             </div>
-            <div class="flex items-center gap-2 md:gap-4">
-                
-                <button class="mobile-menu-btn w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
+
+            <div class="flex items-center gap-4">
+                <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-6 py-2 rounded-full font-semibold transition-all hover:shadow-lg hover:shadow-yellow-500/40 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-4 h-4"></i>
+                    Купить валюту
+                </button>
+                <button class="mobile-menu-btn md:hidden w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
                     <i data-lucide="menu" class="w-5 h-5 text-white"></i>
-                </button>
-
-                
-                <button onclick="openAdminModal()" id="mobileAdminHeaderBtn" class="w-10 h-10 rounded-full bg-red-600/20 border border-red-500/50 items-center justify-center">
-                    <i data-lucide="shield" class="w-5 h-5 text-red-400"></i>
-                </button>
-
-                
-                <button onclick="openCurrencyModal()" class="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-white px-4 md:px-6 py-2 rounded-full font-semibold flex items-center gap-2 text-sm md:text-base whitespace-nowrap">
-                    <i data-lucide="coins" class="w-4 h-4"></i> Купить валюту
                 </button>
             </div>
         </div>
     </div>
 </nav>
 
-
-<div class="mobile-menu" id="mobileMenu">
-    <button class="absolute top-4 right-4 w-10 h-10 rounded-full glass flex items-center justify-center" onclick="toggleMobileMenu()">
-        <i data-lucide="x" class="w-5 h-5 text-white"></i>
-    </button>
-    <a href="index.html">Главная</a>
-    <a href="index.html#donate">Донат</a>
-    <a href="titles.html">Титулы</a>
-    <a href="constructor.html">Конструктор</a>
-    <a href="account.html">Кабинет</a>
-    <a href="rules.html">Правила</a>
-    <a href="launcher.html">Лаунчер</a>
-
-    
-    <a href="#" onclick="openAdminModal(); toggleMobileMenu(); return false;" id="mobileAdminMenuLink" class="admin-link" style="display: none;">
-        <i data-lucide="shield" class="w-4 h-4 inline mr-2"></i>🛡️ Админ-панель
-    </a>
-
-    <div class="mt-6 pt-4 border-t border-white/10">
-        <button onclick="openCurrencyModal(); toggleMobileMenu()" class="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 text-white py-3 rounded-xl font-semibold">
-            Купить валюту
-        </button>
-    </div>
-</div>
-<div class="mobile-menu-overlay" id="mobileMenuOverlay" onclick="toggleMobileMenu()"></div>
-
 <section class="pt-32 pb-20 px-4">
-    <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-            <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-orange text-orange-400 text-sm font-semibold mb-4">
-                <i data-lucide="user" class="w-4 h-4"></i>
-                Личный кабинет
-            </div>
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">
-                <span class="text-gradient">Добро пожаловать</span>
-            </h1>
-            <p class="text-gray-400 max-w-xl mx-auto">
-                Войдите, чтобы увидеть свои покупки
-            </p>
-        </div>
-
-        <div id="unauthorizedState" class="glass rounded-3xl p-8 max-w-md mx-auto">
-            <div class="flex border-b border-gray-700 mb-6">
-                <div onclick="switchAuthTab('login')" id="loginTab" class="auth-tab active flex-1 text-center py-2 font-semibold">Вход</div>
-                <div onclick="switchAuthTab('register')" id="registerTab" class="auth-tab flex-1 text-center py-2 font-semibold text-gray-400">Регистрация</div>
-                <div onclick="switchAuthTab('telegram')" id="telegramTab" class="auth-tab flex-1 text-center py-2 font-semibold text-gray-400">Telegram</div>
-            </div>
-
-            <div id="loginForm" class="space-y-4">
-                <div><input type="text" id="loginUsername" placeholder="Логин или Email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <div><input type="password" id="loginPassword" placeholder="Пароль" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <button onclick="loginWithPassword()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-semibold transition-all">Войти</button>
-                <p class="text-right text-xs mt-1">
-                    <button onclick="showForgotPasswordModal()" class="text-orange-400 hover:underline">Забыли пароль?</button>
-                </p>
-                <p class="text-center text-xs text-gray-500 mt-2">Нет аккаунта? <button onclick="switchAuthTab('register')" class="text-orange-400 hover:underline">Зарегистрируйтесь</button></p>
-            </div>
-
-            <div id="registerForm" style="display: none;" class="space-y-4">
-                <div><input type="text" id="regUsername" placeholder="Логин" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <div><input type="email" id="regEmail" placeholder="Email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <div><input type="password" id="regPassword" placeholder="Пароль (мин. 6 символов)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <div><input type="password" id="regPasswordConfirm" placeholder="Подтвердите пароль" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <div><input type="text" id="regMinecraftNick" placeholder="Ник в Minecraft (опционально)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-orange-500"></div>
-                <button onclick="registerWithPassword()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-semibold transition-all">Зарегистрироваться</button>
-                <p class="text-center text-xs text-gray-500 mt-2">Уже есть аккаунт? <button onclick="switchAuthTab('login')" class="text-orange-400 hover:underline">Войдите</button></p>
-            </div>
-
-            <div id="telegramForm" style="display: none;" class="space-y-4 text-center">
-                <div class="w-20 h-20 rounded-full bg-[#0088cc]/20 flex items-center justify-center mx-auto mb-4"><i data-lucide="send" class="w-10 h-10 text-[#0088cc]"></i></div>
-                <p class="text-gray-400 text-sm mb-4">Войдите через Telegram бота</p>
-                <button onclick="startTelegramAuth()" id="telegramAuthBtn" class="w-full bg-[#0088cc] hover:bg-[#0088cc]/80 text-white py-2 rounded-lg font-semibold transition-all">Получить код</button>
-                <div id="telegramStatus" class="text-xs text-gray-500 mt-2 hidden"></div>
-                <div id="telegramCodeDisplay" class="mt-4 p-4 bg-gray-800/50 rounded-lg hidden">
-                    <p class="text-sm text-gray-400 mb-2">Ваш код:</p>
-                    <p id="telegramCodeValue" class="text-3xl font-mono font-bold text-orange-400 tracking-wider"></p>
-                    <p class="text-xs text-gray-500 mt-2">Отправьте этот код боту <br><a href="https://t.me/goodcubeauth_bot" target="_blank" class="text-[#0088cc] hover:underline">@goodcubeauth_bot</a></p>
-                    <button onclick="copyTelegramCode()" class="mt-3 text-xs bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded transition-all"><i data-lucide="copy" class="w-3 h-3 inline mr-1"></i> Скопировать код</button>
+    <div class="max-w-md mx-auto">
+        <!-- Неавторизованный блок -->
+        <div id="unauthorizedState">
+            <div class="glass rounded-2xl p-8">
+                <div class="flex border-b border-gray-700 mb-6">
+                    <div onclick="switchTab('login')" id="loginTab" class="auth-tab active flex-1 text-center py-2 font-semibold">Вход</div>
+                    <div onclick="switchTab('register')" id="registerTab" class="auth-tab flex-1 text-center py-2 font-semibold text-gray-400">Регистрация</div>
                 </div>
+
+                <!-- Форма входа -->
+                <div id="loginForm">
+                    <input type="text" id="loginUsername" placeholder="Логин или Email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-3 text-white">
+                    <input type="password" id="loginPassword" placeholder="Пароль" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-4 text-white">
+                    <button onclick="loginWithPassword()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-semibold">Войти</button>
+                </div>
+
+                <!-- Форма регистрации -->
+                <div id="registerForm" style="display:none">
+                    <input type="text" id="regUsername" placeholder="Логин" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-3 text-white">
+                    <input type="email" id="regEmail" placeholder="Email" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-3 text-white">
+                    <input type="password" id="regPassword" placeholder="Пароль (мин. 6 символов)" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 mb-4 text-white">
+                    <button onclick="registerWithPassword()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-2 rounded-lg font-semibold">Зарегистрироваться</button>
+                </div>
+
+                <div class="relative my-6">
+                    <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-700"></div></div>
+                    <div class="relative flex justify-center text-xs"><span class="bg-gray-900 px-2 text-gray-400">Или</span></div>
+                </div>
+
+                <button onclick="loginWithGoogle()" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2 mb-3">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="white" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="white" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="white" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="white" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+                    Google (Бета!)
+                </button>
+
+                <button onclick="loginWithTelegram()" class="w-full bg-[#0088cc] hover:bg-[#0088cc]/80 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                    Telegram (Бета!)
+                </button>
             </div>
         </div>
 
-        <div id="authorizedState" class="hidden">
-            <div class="glass rounded-3xl p-8 mb-8">
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="avatar" id="userAvatar">G</div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h2 class="text-2xl font-bold" id="userName">Игрок</h2>
-                        <p class="text-gray-400" id="userLoginDisplay">@username</p>
-                        <p class="text-sm text-orange-400 mt-1" id="minecraftNickDisplay">Ник: не привязан</p>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="logout()" class="glass hover:bg-white/10 px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2"><i data-lucide="log-out" class="w-4 h-4"></i> Выйти</button>
-                        <button onclick="syncPurchases()" class="bg-orange-600/20 hover:bg-orange-600/40 border border-orange-500/50 text-orange-400 px-4 py-2 rounded-lg text-sm transition-all flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Синхронизировать</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="glass rounded-2xl p-5 text-center stat-card"><i data-lucide="shopping-bag" class="w-8 h-8 text-orange-400 mx-auto mb-2"></i><div class="text-3xl font-bold text-white" id="totalPurchases">0</div><div class="text-gray-400 text-sm">Всего покупок</div></div>
-                <div class="glass rounded-2xl p-5 text-center stat-card"><i data-lucide="credit-card" class="w-8 h-8 text-green-400 mx-auto mb-2"></i><div class="text-3xl font-bold text-white" id="totalSpent">0</div><div class="text-gray-400 text-sm">Потрачено (₽)</div></div>
-                <div class="glass rounded-2xl p-5 text-center stat-card"><i data-lucide="crown" class="w-8 h-8 text-yellow-400 mx-auto mb-2"></i><div class="text-3xl font-bold text-white" id="activePrivilege">Нет</div><div class="text-gray-400 text-sm">Активная привилегия</div></div>
-                <div class="glass rounded-2xl p-5 text-center stat-card"><i data-lucide="sparkles" class="w-8 h-8 text-purple-400 mx-auto mb-2"></i><div class="text-3xl font-bold text-white" id="titlesCount">0</div><div class="text-gray-400 text-sm">Титулов куплено</div></div>
-            </div>
-
-            <div class="glass rounded-3xl p-8">
-                <h3 class="text-xl font-bold mb-4 flex items-center gap-2"><i data-lucide="history" class="w-5 h-5 text-orange-400"></i>История покупок</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="border-b border-gray-700"><tr><th class="text-left py-3 text-gray-400">Дата</th><th class="text-left py-3 text-gray-400">Товар</th><th class="text-left py-3 text-gray-400">Сумма</th><th class="text-left py-3 text-gray-400">Промокод</th><th class="text-left py-3 text-gray-400">Статус</th></tr></thead>
-                        <tbody id="purchasesTable"><tr><td colspan="5" class="text-center py-8 text-gray-500"><i data-lucide="inbox" class="w-8 h-8 mx-auto mb-2 opacity-50"></i>Нет покупок</td></tr></tbody>
-                    </table>
-                </div>
-            </div>
+        <!-- Авторизованный блок -->
+        <div id="authorizedState" class="hidden glass rounded-2xl p-8 text-center">
+            <div class="avatar w-20 h-20 rounded-full bg-gradient-to-br from-orange-500 to-orange-700 flex items-center justify-center mx-auto mb-4 text-3xl font-bold" id="userAvatar">G</div>
+            <h2 class="text-xl font-bold" id="userName">Игрок</h2>
+            <p class="text-gray-400 text-sm" id="userEmail"></p>
+            <p class="text-orange-400 text-sm mt-1" id="userMinecraft"></p>
+            <button onclick="logout()" class="mt-6 glass px-4 py-2 rounded-lg text-sm">Выйти</button>
         </div>
     </div>
 </section>
 
-<footer class="border-t border-orange-900/30 py-12 px-4 mt-12">
-    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-        <div class="flex items-center gap-3"><div class="w-8 h-8 bg-gradient-to-br from-orange-500 to-orange-700 rounded-lg"><i data-lucide="box" class="w-4 h-4 text-white"></i></div><span class="text-xl font-bold text-gradient">GoodCube</span></div>
-        <p class="text-gray-500 text-sm">© 2026 GoodCube. Все права защищены. <a href="mailto:support@goodcube.site" class="hover:text-orange-400">support@goodcube.site</a></p>
-        <div class="flex items-center gap-4">
-            <a href="https://t.me/move123_YT" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#0088cc]"><i data-lucide="send" class="w-5 h-5"></i></a>
-            <div onclick="copyToClipboard('move123_yt')" class="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-400 hover:text-[#5865F2] cursor-pointer"><i data-lucide="message-circle" class="w-5 h-5"></i></div>
-        </div>
-    </div>
-</footer>
-
-<div id="forgotPasswordModal" class="fixed inset-0 z-[150] hidden">
-    <div class="absolute inset-0 bg-black/80 backdrop-blur-sm" onclick="closeForgotPasswordModal()"></div>
-    <div class="absolute inset-0 flex items-center justify-center p-4">
-        <div class="glass w-full max-w-md rounded-3xl p-8 relative">
-            <button onclick="closeForgotPasswordModal()" class="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center">
-                <i data-lucide="x" class="w-5 h-5 text-gray-400"></i>
-            </button>
-            <div class="text-center mb-6">
-                <div class="w-16 h-16 rounded-2xl bg-orange-600 flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="mail" class="w-8 h-8 text-white"></i>
-                </div>
-                <h3 class="text-2xl font-bold text-white mb-2">Восстановление пароля</h3>
-                <p class="text-gray-400">Введите email, указанный при регистрации</p>
-            </div>
-            <div id="forgotMessage" class="mb-4 p-3 rounded-lg hidden"></div>
-            <div class="mb-4">
-                <input type="email" id="forgotEmail" placeholder="your@email.com" class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-orange-500">
-            </div>
-            <button onclick="sendResetEmail()" class="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 rounded-xl font-semibold transition-all">
-                Отправить инструкцию
-            </button>
-            <p class="text-center text-gray-500 text-sm mt-4">
-                <button onclick="closeForgotPasswordModal(); switchAuthTab('login')" class="text-orange-400 hover:underline">Вернуться ко входу</button>
-            </p>
-        </div>
-    </div>
-</div>
-
-<div id="toast" class="fixed bottom-4 right-4 transform translate-y-20 opacity-0 transition-all duration-300 z-[110]"><div class="glass border-l-4 border-orange-500 rounded-lg p-4 flex items-center gap-3"><i data-lucide="check-circle" class="w-5 h-5 text-green-500"></i><span id="toastMessage" class="text-white font-medium">Готово</span></div></div>
 <canvas id="particles"></canvas>
-<style>#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}</style>
-
-
-<script src="assets/js/promocodes.js"></script>
-<script src="assets/js/account/core.js"></script>
-<script src="assets/js/account/admin.js"></script>
-<script src="assets/js/account/bans.js"></script>
-<script src="assets/js/account/players.js"></script>
-<script src="assets/js/account/stats.js"></script>
-<script src="assets/js/account/staff.js"></script>
-<script src="assets/js/account/history.js"></script>
-<script src="assets/js/account/purchases.js"></script>
-<script src="assets/js/account/promos.js"></script>
-<script src="assets/js/account/mailing.js"></script>
 
 <script>
-    // Мобильное меню
-    function toggleMobileMenu() {
-        const menu = document.getElementById('mobileMenu');
-        const overlay = document.getElementById('mobileMenuOverlay');
-        if (menu) {
-            menu.classList.toggle('active');
-            overlay.classList.toggle('active');
-            document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+    const API_URL = 'https://api.goodcube.site/auth';
+
+    // ========== Вкладки ==========
+    function switchTab(tab) {
+        document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+        document.getElementById('registerForm').style.display = tab === 'register' ? 'block' : 'none';
+        document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+        document.getElementById('registerTab').classList.toggle('active', tab === 'register');
+    }
+
+    // ========== Логин/Пароль ==========
+    async function loginWithPassword() {
+        const username = document.getElementById('loginUsername').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        const res = await fetch(`${API_URL}/login.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            checkAuth();
+        } else {
+            alert(data.error);
         }
     }
-</script>
 
+    async function registerWithPassword() {
+        const username = document.getElementById('regUsername').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+
+        const res = await fetch(`${API_URL}/register.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ username, email, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+            checkAuth();
+        } else {
+            alert(data.error);
+        }
+    }
+
+    // ========== Google ==========
+    function loginWithGoogle() {
+        window.location.href = `${API_URL}/google-login.php`;
+    }
+
+    // ========== Telegram ==========
+    function loginWithTelegram() {
+        // Telegram Login Widget
+        const script = document.createElement('script');
+        script.src = 'https://telegram.org/js/telegram-widget.js?22';
+        script.setAttribute('data-telegram-login', 'goodcube_auth_bot');
+        script.setAttribute('data-size', 'large');
+        script.setAttribute('data-radius', '12');
+        script.setAttribute('data-request-access', 'write');
+        script.setAttribute('data-auth-url', `${API_URL}/tg-login.php`);
+        script.setAttribute('data-userpic', 'true');
+
+        const modal = document.createElement('div');
+        modal.className = 'fixed inset-0 bg-black/80 flex items-center justify-center z-50';
+        modal.onclick = () => modal.remove();
+        const container = document.createElement('div');
+        container.className = 'glass rounded-2xl p-8 text-center';
+        container.onclick = (e) => e.stopPropagation();
+        container.innerHTML = '<h3 class="text-xl font-bold mb-4">Вход через Telegram</h3><div id="telegramWidget"></div><button onclick="this.closest(\'.fixed\').remove()" class="mt-4 text-gray-400 text-sm">Закрыть</button>';
+        modal.appendChild(container);
+        document.body.appendChild(modal);
+
+        const widgetContainer = container.querySelector('#telegramWidget');
+        const widgetScript = document.createElement('script');
+        widgetScript.src = 'https://telegram.org/js/telegram-widget.js?22';
+        widgetScript.setAttribute('data-telegram-login', 'goodcube_auth_bot');
+        widgetScript.setAttribute('data-size', 'large');
+        widgetScript.setAttribute('data-radius', '12');
+        widgetScript.setAttribute('data-request-access', 'write');
+        widgetScript.setAttribute('data-auth-url', `${API_URL}/tg-login.php`);
+        widgetScript.setAttribute('data-userpic', 'true');
+        widgetContainer.appendChild(widgetScript);
+    }
+
+    // ========== Выход ==========
+    function logout() {
+        window.location.href = `${API_URL}/logout.php`;
+    }
+
+    // ========== Проверка статуса ==========
+    async function checkAuth() {
+        try {
+            const res = await fetch(`${API_URL}/status.php`, { credentials: 'include' });
+            const data = await res.json();
+
+            if (data.logged_in) {
+                document.getElementById('unauthorizedState').style.display = 'none';
+                document.getElementById('authorizedState').style.display = 'block';
+                document.getElementById('userName').textContent = data.username;
+                document.getElementById('userEmail').textContent = data.email || 'Нет email';
+                if (data.avatar) {
+                    document.getElementById('userAvatar').innerHTML = `<img src="${data.avatar}" class="w-full h-full rounded-full object-cover">`;
+                }
+                if (data.minecraft_nick) {
+                    document.getElementById('userMinecraft').innerHTML = `🎮 ${data.minecraft_nick}`;
+                }
+            } else {
+                document.getElementById('unauthorizedState').style.display = 'block';
+                document.getElementById('authorizedState').style.display = 'none';
+            }
+        } catch(e) {
+            console.error('Auth check failed:', e);
+        }
+    }
+
+    // ========== Telegram Bot Name ==========
+    // Создай бота через @BotFather: goodcube_auth_bot
+    // Добавь домен в BotFather: /setdomain → https://api.goodcube.site
+
+    // Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+        checkAuth();
+        lucide.createIcons();
+    });
+
+    // Частицы
+    (function() {
+        const c = document.getElementById('particles');
+        if (!c) return;
+        const ctx = c.getContext('2d');
+        let p = [];
+        function resize() { c.width = window.innerWidth; c.height = window.innerHeight; }
+        function init() {
+            p = [];
+            for (let i = 0; i < 80; i++) {
+                p.push({ x: Math.random() * c.width, y: Math.random() * c.height, r: Math.random() * 2 + 1, dx: (Math.random() - 0.5) * 0.8, dy: (Math.random() - 0.5) * 0.8 });
+            }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.fillStyle = '#f97316';
+            for (let i of p) {
+                ctx.beginPath();
+                ctx.arc(i.x, i.y, i.r, 0, Math.PI * 2);
+                ctx.fill();
+                i.x += i.dx;
+                i.y += i.dy;
+                if (i.x < 0 || i.x > c.width) i.dx *= -1;
+                if (i.y < 0 || i.y > c.height) i.dy *= -1;
+            }
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', () => { resize(); init(); });
+        resize();
+        init();
+        draw();
+    })();
+</script>
 </body>
 </html>
